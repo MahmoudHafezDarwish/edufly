@@ -7,13 +7,13 @@ const kTextLightColor = Color(0xFFACACAC);
 const kDefaultPaddin = 16.0;
 const String appName = "E-Shopee";
 const String fontFamilayTajawal = "Tajawal";
-const Color dark_grey = Color(0xFF313A44);
+const Color dark_grey = Color(0xFFBFC5C6);
 
 const kPrimaryColor = Color(0xFF3A58F5);
 const black = Color(0xFF000000);
 const white = Color(0xFFFFFFFF);
 // const kPrimaryLightColor = Color(0xFFE4EDF8);
-const kPrimaryDarkColor = Color(0xFF222248);
+const kPrimaryDarkColor = Color(0xFFE4EDF8);
 const kPrimaryExtraLightColor = Color(0xFFF9F9F9);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,

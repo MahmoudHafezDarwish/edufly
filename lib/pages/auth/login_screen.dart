@@ -2,7 +2,9 @@ import 'package:edufly/utile/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/AppProvider.dart';
 import '../../utile/size_config.dart';
 import '../../utile/tost.dart';
 import '../HomeDesigner/mainNav.dart';
@@ -10,6 +12,8 @@ import '../admin/admin_app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+  static  String typeUser = 'user' ;
+
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -307,6 +311,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void logIn() {
+    if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
+      //Navigator.pushReplacementNamed(context, '/main');
+      // Navigator.pushReplacementNamed(context, '/main');
+      Provider.of<AppProvider>(context, listen: false)
+          .login(_email.text, _password.text);
+      // ToastMessage.showToast("Is Done", true);
+    } else {
+      ToastMessage.showToast("User name or password is empty", false);
+    }
+  }
+
+  void oldlogIn() {
     String passText = _password.text.toString();
     if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
       // Navigator.pushReplacementNamed(context, '/main');
@@ -315,12 +331,15 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_email.text.toString() == 'user' && passText == 'user') {
         Navigator.pushReplacementNamed(context, '/main');
         ToastMessage.showToast("Is Done", true);
+        LoginScreen.typeUser = 'user';
+
       } else if (_email.text.toString() == 'admin' && passText == 'admin') {
         Navigator.pushNamed(context, AdminApp.routeName);
         ToastMessage.showToast("Is Done", true);
       } else if (_email.text.toString() == 'designer' &&
           passText == 'designer') {
         Navigator.pushReplacementNamed(context, MainNav.routeName);
+        LoginScreen.typeUser = 'designer';
         ToastMessage.showToast("Is Done", true);
       } else {
         ToastMessage.showToast("email or password is false", false);

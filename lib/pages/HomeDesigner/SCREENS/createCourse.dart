@@ -1,8 +1,14 @@
 import 'dart:io';
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loggy/loggy.dart';
+import 'package:provider/provider.dart';
+
+import '../../../models/modelsFirebase/my_product.dart';
 
 class CreateCourse extends StatefulWidget {
   static const routeName = '/createCourse';
@@ -14,19 +20,35 @@ class _CreateCourseState extends State<CreateCourse> {
   CroppedFile? _pickedImage;
   late String image_path;
 
-  XFile? _pickedFile;
+  File? _pickedFile;
 
   bool loading = false;
-  final picker = ImagePicker();
-  final _title = TextEditingController();
-  final _description = TextEditingController();
-  final _courseLinke = TextEditingController();
+  var picker = ImagePicker();
+  late TextEditingController _title;
+
+  late TextEditingController _description;
+
+  late TextEditingController _courseLinke;
+
+  late TextEditingController _priceCourse;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    picker = ImagePicker();
+    _title = TextEditingController();
+    _description = TextEditingController();
+    _courseLinke = TextEditingController();
+    _priceCourse = TextEditingController();
+    super.initState();
+  }
 
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _title.dispose();
     _description.dispose();
     _courseLinke.dispose();
+    _priceCourse.dispose();
     super.dispose();
   }
 
@@ -67,6 +89,7 @@ class _CreateCourseState extends State<CreateCourse> {
     if (croppedFile != null) {
       setState(() {
         _pickedImage = croppedFile;
+        _pickedFile = File(_pickedImage!.path);
       });
     }
   }
@@ -136,7 +159,13 @@ class _CreateCourseState extends State<CreateCourse> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('إضافة مساق'),
+          title: Text(
+            'إضافة مساق',
+            style: TextStyle(
+              fontFamily: fontFamilayTajawal,
+              fontSize: 24,
+            ),
+          ),
           backgroundColor: kPrimaryColor,
         ),
         body: SingleChildScrollView(
@@ -150,19 +179,26 @@ class _CreateCourseState extends State<CreateCourse> {
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: TextField(
                     controller: _title,
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 16,
-                      fontFamily: "Besley-Medium",
+                      fontFamily: fontFamilayTajawal,
                       color: kPrimaryColor,
                     ),
                     decoration: InputDecoration(
                       labelText: 'أدخل عنوان المساق',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        fontFamily: fontFamilayTajawal,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
                       fillColor: kPrimaryColor,
                       floatingLabelStyle: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 18,
-                        fontFamily: "Besley-Medium",
+                        fontFamily: fontFamilayTajawal,
                         color: kPrimaryColor,
                       ),
                       focusColor: kPrimaryColor,
@@ -170,7 +206,7 @@ class _CreateCourseState extends State<CreateCourse> {
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
                         color: Colors.black.withOpacity(.5),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -191,17 +227,29 @@ class _CreateCourseState extends State<CreateCourse> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
-                  child: TextFormField(
+                  child: TextField(
                     controller: _description,
                     keyboardType: TextInputType.multiline,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      fontFamily: fontFamilayTajawal,
+                      color: kPrimaryColor,
+                    ),
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'أدخل وصف المساق',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        fontFamily: fontFamilayTajawal,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
                       fillColor: kPrimaryColor,
                       floatingLabelStyle: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 18,
-                        fontFamily: "Besley-Medium",
+                        fontFamily: fontFamilayTajawal,
                         color: kPrimaryColor,
                       ),
                       focusColor: kPrimaryColor,
@@ -209,7 +257,7 @@ class _CreateCourseState extends State<CreateCourse> {
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
                         color: Colors.black.withOpacity(.5),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -234,13 +282,25 @@ class _CreateCourseState extends State<CreateCourse> {
                     controller: _courseLinke,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      fontFamily: fontFamilayTajawal,
+                      color: kPrimaryColor,
+                    ),
                     decoration: InputDecoration(
                       labelText: 'أدخل رابط المساق',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        fontFamily: fontFamilayTajawal,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
                       fillColor: kPrimaryColor,
                       floatingLabelStyle: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 18,
-                        fontFamily: "Besley-Medium",
+                        fontFamily: fontFamilayTajawal,
                         color: kPrimaryColor,
                       ),
                       focusColor: kPrimaryColor,
@@ -248,7 +308,60 @@ class _CreateCourseState extends State<CreateCourse> {
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
+                        color: Colors.black.withOpacity(.5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black38,
+                            // width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: kPrimaryColor,
+
+                            // width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: TextFormField(
+                    controller: _priceCourse,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      fontFamily: fontFamilayTajawal,
+                      color: kPrimaryColor,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'أدخل سعر المساق',
+                      suffixText: 'ريال سعودي',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        fontFamily: fontFamilayTajawal,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      fillColor: kPrimaryColor,
+                      floatingLabelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 18,
+                        fontFamily: fontFamilayTajawal,
+                        color: kPrimaryColor,
+                      ),
+                      focusColor: kPrimaryColor,
+                      border: const OutlineInputBorder(),
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        fontFamily: fontFamilayTajawal,
                         color: Colors.black.withOpacity(.5),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -279,7 +392,7 @@ class _CreateCourseState extends State<CreateCourse> {
                     child: InkWell(
                         onTap: () => {
                               // uploadFromStorage(),
-                          _loadPicker(ImageSource.gallery)
+                              _loadPicker(ImageSource.gallery)
                             },
                         child: Container(
                             width: double.infinity,
@@ -315,10 +428,11 @@ class _CreateCourseState extends State<CreateCourse> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: loading == false
                         ? new RaisedButton(
-                            onPressed: () async => {
-                                  await createCourseReq(),
-                                  Navigator.pop(context)
-                                },
+                            onPressed: () {
+                              addNewProducts();
+                              // await createCourseReq(),
+                              // Navigator.pop(context)
+                            },
                             child: const Text('Create course',
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white)),
@@ -330,5 +444,22 @@ class _CreateCourseState extends State<CreateCourse> {
             ),
           ),
         )));
+  }
+
+  addNewProducts() {
+    String nameOfCourse = _title.text;
+    String description = _description.text;
+    String linkeOfCourses = _courseLinke.text;
+    String price = _priceCourse.text;
+    String myid = FirebaseAuth.instance.currentUser!.uid;
+
+    MyProduct myProduct = MyProduct(
+        owner_id: myid,
+        name: nameOfCourse,
+        description: description,
+        linkOfCourse: linkeOfCourses,
+        price: num.parse(price),
+        pickedImageFile: _pickedFile);
+    Provider.of<AppProvider>(context, listen: false).addProduct(myProduct);
   }
 }

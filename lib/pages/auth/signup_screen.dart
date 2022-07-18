@@ -2,9 +2,14 @@ import 'package:edufly/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:string_validator/string_validator.dart';
+import 'package:loggy/loggy.dart';
 
 import '../../custom_widgets/widgets/user_type_radio.dart';
+import '../../models/modelsFirebase/MyUsres.dart';
+import '../../models/modelsFirebase/freelancer.dart';
+import '../../provider/AppProvider.dart';
 import '../../utile/constants.dart';
 import '../../utile/tost.dart';
 
@@ -108,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     width: SizeConfig.screenWidth * 0.9,
                     color: Colors.white,
                     margin: EdgeInsetsDirectional.only(
-                        start: 25, end: 25, bottom: 25),
+                        start: 20, end: 20, bottom: 25),
                     child: SingleChildScrollView(
                       child: Form(
                         key: formKey,
@@ -448,42 +453,49 @@ class _SignupScreenState extends State<SignupScreen> {
                             SizedBox(
                               height: 10,
                             ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: RaisedButton(
-                                padding: EdgeInsetsDirectional.only(
-                                    bottom: 20, top: 20, start: 20, end: 20),
-                                onPressed: () {
-                                  // signUp();
-                                  if (formKey.currentState.validate()) {
-                                    ToastMessage.showToast("Is Done", true);
+                            Consumer<AppProvider>(
+                              builder: (context, provider, x) {
+                                logDebug('user type before signup :${provider.userType}');
 
-                                    print(
-                                        "Email: ${_email.text}  Password : ${_password.text}");
-                                  } else {
-                                    ToastMessage.showToast(
-                                        "User name or password is empty",
-                                        false);
-                                  }
-                                  print(
-                                      "Email: ${_email.text}  Password : ${_password.text}");
-                                },
-                                color: kPrimaryColor,
-                                textColor: Colors.white70,
-                                child: Text(
-                                  "تسجيل الحساب",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 20,
-                                    fontFamily: "Tajawal",
-                                    color: Colors.white,
+                                return SizedBox(
+                                  width: double.infinity,
+                                  child: RaisedButton(
+                                    padding: EdgeInsetsDirectional.only(
+                                        bottom: 20,
+                                        top: 20,
+                                        start: 20,
+                                        end: 20),
+                                    onPressed: () {
+                                      if (formKey.currentState.validate()) {
+                                        signUp(provider.userType);
+
+                                        print(
+                                            "Email: ${_email.text}  Password : ${_password.text}");
+                                      } else {
+                                        ToastMessage.showToast(
+                                            "Data is empty", false);
+                                      }
+                                      print(
+                                          "Email: ${_email.text}  Password : ${_password.text}");
+                                    },
+                                    color: kPrimaryColor,
+                                    textColor: Colors.white70,
+                                    child: Text(
+                                      "تسجيل الحساب",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20,
+                                        fontFamily: "Tajawal",
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
                                   ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                            ),
+                                );
+                              },
+                            )
                           ],
                         ),
                       ),
@@ -498,46 +510,68 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-// void signUp() {
-//   if (formKey.currentState.validate()) {
-//     ToastMessage.showToast("Is Done", true);
-//     Navigator.pushNamed(context, "/main");
-//   } else {
-//     ToastMessage.showToast("Data is empty", false);
-//   }
-//   if (_email.text.isNotEmpty &&
-//       _password.text.isNotEmpty &&
-//       _firstName.text.isNotEmpty &&
-//       _address.text.isNotEmpty &&
-//       _phone.text.isNotEmpty) {
-//     MyUser myUser = MyUser(
-//       email: _email.text,
-//       password: _password.text,
-//       address: _address.text,
-//       name: _firstName.text,
-//       phoneNumber: _phone.text,
-//       display_picture: null,
-//       favourite_products: null,
-//     );
-//     Provider.of<AppProvider>(context, listen: false).signUp(myUser);
-//     // ToastMessage.showToast("Is Done", true);
-//     // Navigator.pushNamed(context, "/main");
-//   }
-//   // else if ((_email.text.isNotEmpty && _email.text == 'admin@gmail.com') &&
-//   //     (_password.text.isNotEmpty && _password.text == 'admin') &&
-//   //     _firstName.text.isNotEmpty &&
-//   //     _address.text.isNotEmpty &&
-//   //     _phone.text.isNotEmpty) {
-//   //   MyUser myUser = MyUser(
-//   //       email: _email.text,
-//   //       password: _password.text,
-//   //       address: _address.text,
-//   //       name: _firstName.text,
-//   //       phoneNumber: _phone.text,
-//   //   isAdmin: true);
-//   //   Provider.of<AppProvider>(context,listen: false).signUp(myUser);
-//   //
-//   //   // ToastMessage.showToast("Data is empty", false);
-//   // }
-// }
+  void signUp(SingingCharacter? usertype) {
+    // if (formKey.currentState.validate()) {
+    //   ToastMessage.showToast("Is Done", true);
+    //   Navigator.pushNamed(context, "/main");
+    // } else {
+    //   ToastMessage.showToast("Data is empty", false);
+    // }
+    if (_email.text.isNotEmpty &&
+        _password.text.isNotEmpty &&
+        _firstName.text.isNotEmpty &&
+        _phone.text.isNotEmpty) {
+      // SingingCharacter? usertype = Provider.of<AppProvider>(context,listen: false).userType;
+      // SingingCharacter? usertype = context.watch<AppProvider>().userType;
+      logInfo('user type ${usertype.toString()}');
+      bool isFreelancer =
+          usertype == SingingCharacter.freelancer ? true : false;
+      logError('isFreelancer :$isFreelancer');
+      late MyUser myUser;
+      if (isFreelancer) {
+        myUser = Freelancer(
+            email: _email.text,
+            password: _password.text,
+            address: '',
+            name: _firstName.text,
+            phoneNumber: _phone.text,
+            display_picture: null,
+            favourite_products: null,
+            isFreelancer: isFreelancer ? true : false,
+            freelancerCategory:
+                Provider.of<AppProvider>(context,listen: false).freelancerCategory);
+      } else {
+        myUser = MyUser(
+          email: _email.text,
+          password: _password.text,
+          address: '',
+          name: _firstName.text,
+          phoneNumber: _phone.text,
+          display_picture: null,
+          favourite_products: null,
+          isFreelancer: isFreelancer ? true : false,
+        );
+      }
+      Provider.of<AppProvider>(context, listen: false).signUp(myUser);
+
+      // ToastMessage.showToast("Is Done", true);
+      // Navigator.pushNamed(context, "/main");
+    }
+    // else if ((_email.text.isNotEmpty && _email.text == 'admin@gmail.com') &&
+    //     (_password.text.isNotEmpty && _password.text == 'admin') &&
+    //     _firstName.text.isNotEmpty &&
+    //     _address.text.isNotEmpty &&
+    //     _phone.text.isNotEmpty) {
+    //   MyUser myUser = MyUser(
+    //       email: _email.text,
+    //       password: _password.text,
+    //       address: _address.text,
+    //       name: _firstName.text,
+    //       phoneNumber: _phone.text,
+    //   isAdmin: true);
+    //   Provider.of<AppProvider>(context,listen: false).signUp(myUser);
+    //
+    //   // ToastMessage.showToast("Data is empty", false);
+    // }
+  }
 }

@@ -58,7 +58,8 @@ class _MainNavState extends State<MainNav> {
                           icon: const Icon(
                               IconData(0xe8a6, fontFamily: 'MaterialIcons')),
                           tooltip: 'User',
-                          onPressed: () async {
+                          onPressed: ()  {
+                            //async
                             // await Provider.of<UserProvider>(context,
                             //         listen: false)
                             //     .signOut();
@@ -182,11 +183,14 @@ class _MainNavState extends State<MainNav> {
                           Icons.reorder,
                           color: kPrimaryColor,
                         ),
-                        title: Text('طلبياتي السابقة'),
+                        title: Text('أرشيف الطلبات'),
                         trailing: Icon(
                           Icons.arrow_forward_ios,
                           size: 14,
                         ),
+                        onTap: (){
+                          Navigator.pushNamed(context, '/HistoryOrderScreen');
+                        },
                       ),
                       ListTile(
                         leading: Icon(

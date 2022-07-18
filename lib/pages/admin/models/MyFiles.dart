@@ -31,7 +31,7 @@ List demoMyFiles = [
     numOfFiles: 1328,
     svgSrc: Assets.icons.googleDrive,
     totalStorage: "500 زبون",
-    color: Color(0xFFFFA113),
+    color: Color(0xFF9CA5B8),
     percentage: 35,
   ),
   CloudStorageInfo(
@@ -39,7 +39,7 @@ List demoMyFiles = [
     numOfFiles: 1328,
     svgSrc: Assets.icons.oneDrive,
     totalStorage: "1500 ر.س",
-    color: Color(0xFFA4CDFF),
+    color: Color(0xFF222248),
     percentage: 10,
   ),
   CloudStorageInfo(
@@ -47,7 +47,7 @@ List demoMyFiles = [
     numOfFiles: 5328,
     svgSrc: Assets.icons.dropBox,
     totalStorage: "500 ر.س",
-    color: Color(0xFF007EE5),
+    color: Color(0xFF1A13DA),
     percentage: 78,
   ),
 ];

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "74211433556",
+    "project_id": "e-learningedufly",
+    "storage_bucket": "e-learningedufly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74211433556:android:00400608e2a3e89526a1c1",
+        "android_client_info": {
+          "package_name": "com.designStore.edufly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74211433556-e6hmo7gcme085v0i6l2mdcaof3etvd78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj0L2_lrsGdrA23IlaH9NxPnqOoY8GRgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74211433556-e6hmo7gcme085v0i6l2mdcaof3etvd78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74211433556:android:84745b73034f7c3526a1c1",
+        "android_client_info": {
+          "package_name": "com.example.elearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74211433556-e6hmo7gcme085v0i6l2mdcaof3etvd78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj0L2_lrsGdrA23IlaH9NxPnqOoY8GRgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74211433556-e6hmo7gcme085v0i6l2mdcaof3etvd78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

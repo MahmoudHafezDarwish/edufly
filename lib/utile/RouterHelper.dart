@@ -21,6 +21,7 @@ import '../pages/HomeDesigner/SCREENS/userHome.dart';
 import '../pages/HomeDesigner/courseNav.dart';
 import '../pages/HomeDesigner/mainNav.dart';
 import '../pages/auth/login_screen.dart';
+import '../pages/auth/service_provider type.dart';
 import '../pages/auth/signup_screen.dart';
 import '../pages/courses/StageCourses.dart';
 import '../pages/outboarding/outboarding_screen.dart';
@@ -89,6 +90,7 @@ class RouterHelper {
     UserHomeFeed.routeName: (ctx) => CourseNav(),
     EnrolledCourse.routeName: (ctx) => CourseNav(),
     ProfilePage.routeName: (ctx) => ProfilePage(),
+    UserServiceType.routeName: (ctx) => UserServiceType(),
     AdminApp.routeName: (ctx) => AdminApp(),
     MainScreenAdmin.routeName: (ctx) => MainScreenAdmin(),
     DashboardScreenAdmin.routeName: (ctx) => DashboardScreenAdmin()

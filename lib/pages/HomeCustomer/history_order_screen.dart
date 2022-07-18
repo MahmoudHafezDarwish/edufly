@@ -1,3 +1,5 @@
+import 'package:edufly/gen/assets.gen.dart';
+import 'package:edufly/utile/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../custom_widgets/widgets/cart_item_history.dart';
@@ -14,8 +16,14 @@ class _HistoryOrderScreenState extends State<HistoryOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders History'),
+        title: Text(
+          'أرشيف الطلبات',
+          style: TextStyle(
+            fontFamily: fontFamilayTajawal,
 
+            // fontSize:
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -28,27 +36,38 @@ class _HistoryOrderScreenState extends State<HistoryOrderScreen> {
                 left: 30,
                 bottom: 10,
                 child: Text(
-                  '3 Orders',
+                  '3 طلبات',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
-                    fontFamily: 'Besley-Medium',
+                    fontFamily: fontFamilayTajawal,
                   ),
                 ),
               ),
               Container(
                 width: double.infinity,
                 margin: EdgeInsetsDirectional.only(start: 10, end: 10, top: 46),
-                padding: EdgeInsets.only(right: 10,left: 10,bottom: 13,top: 10),
+                padding:
+                    EdgeInsets.only(right: 10, left: 10, bottom: 13, top: 10),
                 child: Column(
                   children: [
-                    CardItemForHistoryCart(image: 'images/bag_black.png',product_name: 'Handbag',),
-                    SizedBox(height: 10,),
-                    CardItemForHistoryCart(image: 'images/big_bag.png',product_name: 'Backpack',),
-                    SizedBox(height: 10,),
                     CardItemForHistoryCart(
-                      image: 'images/bag.png',
-                      product_name: 'Backpack',
+                      image: Assets.images.out1.path,
+                      product_name: 'منهج الصف السادس',
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CardItemForHistoryCart(
+                      image: Assets.images.out2.path,
+                      product_name: 'منهج الصف الخامس',
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CardItemForHistoryCart(
+                      image: Assets.images.out3.path,
+                      product_name: 'منهج الصف الرابع',
                     ),
                     SizedBox(
                       height: 10,

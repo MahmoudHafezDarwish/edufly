@@ -10,10 +10,12 @@ class StorageInfoCard extends StatelessWidget {
     required this.svgSrc,
     required this.amountOfFiles,
     required this.numOfFiles,
+    required this.color
   }) : super(key: key);
 
   final String title, svgSrc, amountOfFiles;
   final int numOfFiles;
+  final Color color ;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class StorageInfoCard extends StatelessWidget {
           SizedBox(
             height: 20,
             width: 20,
-            child: SvgPicture.asset(svgSrc),
+            child: SvgPicture.asset(svgSrc,color:this.color ,),
           ),
           Expanded(
             child: Padding(
@@ -51,7 +53,7 @@ class StorageInfoCard extends StatelessWidget {
                     "$numOfFiles طلب ",
                     style: TextStyle(
                       fontFamily: fontFamilayTajawal,
-                      color: Colors.white70,
+                      color: kPrimaryColor,
                     ),
                   ),
                 ],
@@ -62,6 +64,7 @@ class StorageInfoCard extends StatelessWidget {
             amountOfFiles,
             style: TextStyle(
               fontFamily: fontFamilayTajawal,
+
             ),
           )
         ],

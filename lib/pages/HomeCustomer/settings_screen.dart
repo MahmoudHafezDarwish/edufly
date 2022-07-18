@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/Profile.dart';
+import '../auth/service_provider type.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -77,6 +78,9 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, UserServiceType.routeName);
+              },
               leading: Icon(
                 Icons.book_online_outlined,
                 color: kPrimaryColor,

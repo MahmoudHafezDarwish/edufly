@@ -1,7 +1,9 @@
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-enum SingingCharacter { client, designer }
+enum SingingCharacter { client, freelancer }
 
 class UserTypeRadio extends StatefulWidget {
   const UserTypeRadio({Key? key}) : super(key: key);
@@ -12,11 +14,12 @@ class UserTypeRadio extends StatefulWidget {
 
 class _UserTypeRadioState extends State<UserTypeRadio> {
   SingingCharacter? _character = SingingCharacter.client;
+  String valueCategory = 'Designer';
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
@@ -29,7 +32,7 @@ class _UserTypeRadioState extends State<UserTypeRadio> {
           ),
         ),
         SizedBox(
-          width: 10,
+          width: 5,
         ),
         Container(
           decoration: BoxDecoration(
@@ -52,12 +55,14 @@ class _UserTypeRadioState extends State<UserTypeRadio> {
                 onChanged: (SingingCharacter? value) {
                   setState(() {
                     _character = value;
+                    Provider.of<AppProvider>(context, listen: false).setUserType(_character);
+                    print("user type $_character");
                   });
                 },
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('زبون',
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text('مستخدم',
                     style: TextStyle(
                       fontFamily: fontFamilayTajawal,
                     )),
@@ -81,24 +86,61 @@ class _UserTypeRadioState extends State<UserTypeRadio> {
             ],
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.min,
             children: [
               Radio<SingingCharacter>(
-                value: SingingCharacter.designer,
+                value: SingingCharacter.freelancer,
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
                   setState(() {
                     _character = value;
+                    Provider.of<AppProvider>(context, listen: false).setUserType(_character);
+
+                    print('value of user type :$_character');
+
                   });
                 },
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('مصمم',
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text('عضو',
                     style: TextStyle(
                       fontFamily: fontFamilayTajawal,
                     )),
               ),
+              PopupMenuButton(
+                position: PopupMenuPosition.under,
+                onSelected: (value) {
+                  // your logic
+                  valueCategory = value.toString() ;
+                  print('value of freelancer category :$valueCategory');
+
+                  Provider.of<AppProvider>(context,listen: false).setFreelancerCategory(valueCategory);
+                },
+                itemBuilder: (BuildContext bc) {
+                  return const [
+                    PopupMenuItem(
+                      child: Text("مصمم",
+                          style: TextStyle(
+                              fontFamily: fontFamilayTajawal,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: kPrimaryColor)),
+                      value: 'Designer',
+                    ),
+                    PopupMenuItem(
+                      child: Text("محامي",
+                          style: TextStyle(
+                              fontFamily: fontFamilayTajawal,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: kPrimaryColor)),
+                      value: 'Lawyer',
+                    ),
+                  ];
+                },
+              )
             ],
           ),
         ),

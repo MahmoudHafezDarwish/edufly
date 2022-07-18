@@ -81,14 +81,18 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+
       decoration: InputDecoration(
         hintText: "بحث",
+
         hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
+
             fontFamily: fontFamilayTajawal,
             fontWeight: FontWeight.normal),
         fillColor: kPrimaryDarkColor,
         filled: true,
+
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: const BorderRadius.all(Radius.circular(10)),

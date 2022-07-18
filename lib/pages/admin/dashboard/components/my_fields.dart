@@ -25,6 +25,7 @@ class MyFiles extends StatelessWidget {
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontFamily: fontFamilayTajawal,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),

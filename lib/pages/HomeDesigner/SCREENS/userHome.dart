@@ -53,7 +53,8 @@ class _userHomeFeedState extends State<UserHomeFeed> {
             uid: '',
             createdCourse: [],
             enrolledCourse: []),
-      ),  Course(
+      ),
+      Course(
         id: '#1',
         title: 'التفكير الناقد ثالث متوسط-ثلاثة فصول',
         description:

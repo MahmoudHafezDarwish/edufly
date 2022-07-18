@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:edufly/utile/size_config.dart';
 import 'package:flutter/foundation.dart';
 import '../models/userProfile.dart';
 
@@ -8,6 +9,7 @@ class Course {
   final List<dynamic> enrolledId;
   bool isAdmin, enrolled;
   UserProfile userProfile;
+
 
   Course({
     required this.id,
@@ -21,6 +23,10 @@ class Course {
   });
 
   void set setEnrolled(bool value) {
+    this.enrolled = value;
+  }
+
+  void  n_rolled(bool value,bool d) {
     this.enrolled = value;
   }
 

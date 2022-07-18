@@ -1,7 +1,9 @@
+import 'package:edufly/pages/HomeDesigner/mainNav.dart';
 import 'package:edufly/utile/size_config.dart';
 import 'package:flutter/material.dart';
 
 import '../custom_widgets/widgets/LinearGradientText.dart';
+import '../preferences/shared_pref_controller.dart';
 import '../utile/constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,7 +19,23 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, "/OutBoardingScreen");
+      bool loggedIn = SharedPrefController()
+          .getValueFor<bool>(key: PrefKeys.loggedIn.name) ??
+          false;
+      bool utype = SharedPrefController()
+          .getValueFor<bool>(key: PrefKeys.userIsFreelancer.name) ??
+          false;
+      if(loggedIn&&utype){
+        Navigator.pushReplacementNamed(context, MainNav.routeName);
+
+      }else if (loggedIn&&(!utype)){
+        Navigator.pushReplacementNamed(context, "/main");
+
+      }else{
+        Navigator.pushReplacementNamed(context, "/OutBoardingScreen");
+
+      }
+      // Navigator.pushReplacementNamed(context, "/OutBoardingScreen");
     });
   }
 
@@ -28,7 +46,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-
           children: [
             GradientText(
               ' edufly',

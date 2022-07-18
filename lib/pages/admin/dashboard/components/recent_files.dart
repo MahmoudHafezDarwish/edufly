@@ -25,16 +25,21 @@ class RecentFiles extends StatelessWidget {
             "قبول المصممين",
             // style: Theme.of(context).textTheme.subtitle1,
             style: TextStyle(
-              fontFamily: fontFamilayTajawal,
-            ),
+                fontFamily: fontFamilayTajawal,
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 18),
           ),
           SizedBox(
-            width: double.infinity,
+            width: 400,
             height: 300,
             child: DataTable2(
               columnSpacing: defaultPadding,
-              minWidth: 600,
+
+              minWidth: 400,
+
               columns: [
+
                 DataColumn(
                   label: Text(
                     "اسم المصمم",
@@ -76,15 +81,19 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
   return DataRow(
     cells: [
       DataCell(
+
         Row(
+          // mainAxisSize: MainAxisSize.min,
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SvgPicture.asset(
-              fileInfo.icon!,
-              height: 30,
-              width: 30,
-            ),
+            // SvgPicture.asset(
+            //   fileInfo.icon!,
+            //   height: 30,
+            //   width: 30,
+            // ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+              padding: const EdgeInsets
+                  .symmetric(horizontal: defaultPadding),
               child: Text(fileInfo.title!),
             ),
           ],
@@ -92,17 +101,20 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
       ),
       DataCell(Text(fileInfo.date!)),
       DataCell(Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(fileInfo.size!),
+          Text(
+            fileInfo.size!,
+            style: TextStyle(fontFamily: fontFamilayTajawal),
+          ),
           IconButton(
             onPressed: () {
-
-              fileInfo.isAccept =(! fileInfo.isAccept!);
+              fileInfo.isAccept = (!fileInfo.isAccept!);
             },
             icon: Icon(
-              fileInfo.isAccept! ?Icons.verified :Icons.remove_circle_outline,
-              color:fileInfo.isAccept! ? kPrimaryColor:Colors.grey,
+              fileInfo.isAccept! ? Icons.verified : Icons.remove_circle_outline,
+              color: fileInfo.isAccept! ? kPrimaryColor : Colors.grey,
             ),
           ),
         ],

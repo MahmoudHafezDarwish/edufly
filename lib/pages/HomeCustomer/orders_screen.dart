@@ -129,6 +129,7 @@ class _OrdersSreenState extends State<OrdersSreen> {
               ),
             ),
             SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.only(top: 105.0, bottom: 5),
                 child: Column(

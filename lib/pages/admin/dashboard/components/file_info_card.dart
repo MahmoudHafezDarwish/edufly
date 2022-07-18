@@ -41,12 +41,16 @@ class FileInfoCard extends StatelessWidget {
                   color: info.color,
                 ),
               ),
-              Icon(Icons.more_vert, color: Colors.white54)
+              Icon(Icons.more_vert, color: kPrimaryColor)
             ],
           ),
           Text(
             info.title!,
             maxLines: 1,
+            style: TextStyle(
+              fontFamily: fontFamilayTajawal,
+              fontWeight: FontWeight.bold
+            ),
             overflow: TextOverflow.ellipsis,
           ),
           ProgressLine(
@@ -65,10 +69,16 @@ class FileInfoCard extends StatelessWidget {
               // ),
               Text(
                 info.totalStorage!,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: Colors.white),
+                style: TextStyle(
+                  color: kPrimaryColor,
+                    fontFamily: fontFamilayTajawal,
+                    fontWeight: FontWeight.bold
+
+                ),
+                // style: Theme.of(context)
+                //     .textTheme
+                //     .caption!
+                //     .copyWith(color: kPrimaryColor),
               ),
             ],
           )

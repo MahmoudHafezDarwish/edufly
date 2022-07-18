@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:edufly/pages/auth/login_screen.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController dateOfBirth = TextEditingController(text: "04-19-1992");
+  TextEditingController dateOfBirth = TextEditingController(text: "0591234567");
   TextEditingController bio = TextEditingController(text: " ");
   AppUser user = AppUser(
       name: 'محمود درويش',
@@ -101,6 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
+                                      fontFamily: fontFamilayTajawal,
                                       color: black),
                                 ),
                                 SizedBox(
@@ -115,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
+                                          fontFamily: fontFamilayTajawal,
                                           color: kPrimaryColor),
                                     ),
                                     Icon(
@@ -215,13 +218,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "مجموع الدخل",
+                                    "الطلبات المكتملة",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: 'BesleyBlack',
+                                        fontFamily: fontFamilayTajawal,
                                         fontSize: 14,
                                         color: white),
                                   ),
@@ -229,9 +232,34 @@ class _ProfilePageState extends State<ProfilePage> {
                                     height: 10,
                                   ),
                                   Text(
-                                    "\$2446.90",
+                                    "20",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        fontFamily: fontFamilayTajawal,
+                                        color: white),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "مجموع الدخل",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: fontFamilayTajawal,
+                                        fontSize: 14,
+                                        color: white),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "\$246.90",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: fontFamilayTajawal,
                                         fontSize: 20,
                                         color: white),
                                   ),
@@ -395,87 +423,90 @@ class _ProfilePageState extends State<ProfilePage> {
                               // changes position of shadow
                             ),
                           ]),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 25, bottom: 25),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "قائمتي",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: kPrimaryColor),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            bottom: 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            shape: BoxShape.rectangle),
-                                        child: Icon(
-                                          Icons.check,
-                                          color: kPrimaryColor,
-                                        )),
-                                    Text(
-                                      'علوم رابع ابتدائي الفصل الثاني',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: fontFamilayTajawal,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
+                      child: Visibility(
+                        visible: LoginScreen.typeUser=='user',
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 25, bottom: 25),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "قائمتي",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12,
+                                        color: kPrimaryColor),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsetsDirectional.only(
+                                              bottom: 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              shape: BoxShape.rectangle),
+                                          child: Icon(
+                                            Icons.check,
+                                            color: kPrimaryColor,
+                                          )),
+                                      Text(
+                                        'علوم رابع ابتدائي الفصل الثاني',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: fontFamilayTajawal,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'رابط الكتاب',
-                                            style: TextStyle(
-                                              fontSize: 22,
-                                              fontFamily: fontFamilayTajawal,
-                                              fontWeight: FontWeight.bold,
-                                              color: kPrimaryColor,
+                                      SizedBox(width: 5,),
+                                      InkWell(
+                                        onTap: () {},
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'رابط الكتاب',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: fontFamilayTajawal,
+                                                fontWeight: FontWeight.bold,
+                                                color: kPrimaryColor,
+                                              ),
                                             ),
-                                          ),
-                                          Icon(Icons.library_add_check),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                // Container(
-                                //   height: 30,
-                                //   width: size.width - 80,
-                                //   child: TextField(
-                                //     controller: bio,
-                                //     cursorColor: black,
-                                //     style: TextStyle(
-                                //         fontSize: 17,
-                                //         fontWeight: FontWeight.bold,
-                                //         color: black),
-                                //     decoration: InputDecoration(
-                                //         hintText: "كتبي",
-                                //         contentPadding: EdgeInsets.zero,
-                                //         border: InputBorder.none),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ],
+                                            Icon(Icons.library_add_check),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  // Container(
+                                  //   height: 30,
+                                  //   width: size.width - 80,
+                                  //   child: TextField(
+                                  //     controller: bio,
+                                  //     cursorColor: black,
+                                  //     style: TextStyle(
+                                  //         fontSize: 17,
+                                  //         fontWeight: FontWeight.bold,
+                                  //         color: black),
+                                  //     decoration: InputDecoration(
+                                  //         hintText: "كتبي",
+                                  //         contentPadding: EdgeInsets.zero,
+                                  //         border: InputBorder.none),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

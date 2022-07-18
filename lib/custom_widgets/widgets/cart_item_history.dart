@@ -1,3 +1,6 @@
+import 'package:edufly/utile/constants.dart';
+import 'package:edufly/utile/constants.dart';
+import 'package:edufly/utile/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -64,27 +67,27 @@ class _CardItemForCartState extends State<CardItemForHistoryCart> {
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 22,
-                      fontFamily: "Besley-Regular",
+                      fontFamily: fontFamilayTajawal,
                       color: Colors.black,
                     )),
                 SizedBox(
                   height: 2,
                 ),
-                Text("from boots category",
+                Text("تم بيعه لمحمد",
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
-                      fontFamily: "Besley-Regular",
+                      fontFamily: fontFamilayTajawal,
                       color: Color(0xffA1A1B4),
                     )),
                 SizedBox(
                   height: 10,
                 ),
-                Text("\$120",
+                Text("120 ر.س",
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 16,
-                      fontFamily: "Besley-Regular",
+                      fontFamily: fontFamilayTajawal,
                       color: Colors.black,
                     )),
               ],
