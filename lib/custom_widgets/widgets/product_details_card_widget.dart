@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../models/Product.dart';
+import '../../models/modelsFirebase/Product.dart';
+
 
 class ProductDeailsCard extends StatelessWidget {
   final String order_name;

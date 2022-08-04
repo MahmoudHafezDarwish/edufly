@@ -32,7 +32,7 @@ class AdminCard extends StatelessWidget {
         Navigator.pushNamed(context, CourseNav.routeName,
             arguments: screenArguments);
       },
-      child: new Container(
+      child:  Container(
         width: double.infinity,
         height: 320,
         margin: EdgeInsets.all(borderRadius),

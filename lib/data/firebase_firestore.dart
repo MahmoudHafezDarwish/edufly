@@ -14,6 +14,7 @@ import 'package:edufly/models/modelsFirebase/Product.dart';
 import 'package:edufly/models/modelsFirebase/my_product.dart';
 import 'package:edufly/models/modelsFirebase/Review.dart';
 import 'package:loggy/loggy.dart';
+import 'package:provider/provider.dart';
 
 import '../utile/tost.dart';
 class MyFirebaseFireStore {
@@ -333,7 +334,7 @@ class MyFirebaseFireStore {
     for (final doc in cartItems.docs) {
       num itemsCount = doc.data()[CartItem.ITEM_COUNT_KEY];
       final product = await myFirebaseFireStore.getProductWithID(doc.id);
-      total += (itemsCount * product!.discountPrice!);
+      total += (itemsCount * product!.price!);
     }
     return total;
   }
@@ -631,16 +632,18 @@ class MyFirebaseFireStore {
     }
   }
 
-  Future<Product?> getProductWithID(String productId) async {
+  Future<MyProduct>? getProductWithID(String productId) async {
     final docSnapshot = await _firebaseFirestore
         .collection(PRODUCTS_COLLECTION_NAME)
         .doc(productId)
         .get();
 
     if (docSnapshot.exists) {
-      return Product.fromMap(docSnapshot.data()!, id: docSnapshot.id);
+      return MyProduct.fromMap(docSnapshot.data()!);
+    }else{
+      return MyProduct(owner_id: '');
     }
-    return null;
+    
   }
 
   Future<String> addUsersProduct(Product product) async {
@@ -654,6 +657,25 @@ class MyFirebaseFireStore {
       Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion(
           [productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
     });
+    return docRef.id;
+  }
+
+  Future<String> addDesignerProduct(MyProduct product,String category) async {
+    // String uid = FirebaseAuth.instance.currentUser!.uid;
+    product.userType = category ;
+    final productMap = product.toMap();
+    final productsCollectionReference =
+        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final docRef = await productsCollectionReference.add(product.toMap());
+    if (docRef != null) {
+      ToastMessage.showToast("IS DONE ADD", true);
+    } else {
+      ToastMessage.showToast("IS failed add", true);
+    }
+    // await docRef.update({
+    //   Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion(
+    //       [productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
+    // });
     return docRef.id;
   }
 
@@ -700,6 +722,20 @@ class MyFirebaseFireStore {
         _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final querySnapshot = await productsCollectionReference
         .where(Product.OWNER_KEY, isEqualTo: uid)
+        .get();
+    List usersProducts = <String>[];
+    querySnapshot.docs.forEach((doc) {
+      usersProducts.add(doc.id);
+    });
+    return usersProducts;
+  }
+
+  Future<List> get stageProductsList async {
+    String categoryStage = 'المرحلة الإعدادية';
+    final productsCollectionReference =
+        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final querySnapshot = await productsCollectionReference
+        .where(Product.CATEGORY_KEY, isEqualTo: categoryStage)
         .get();
     List usersProducts = <String>[];
     querySnapshot.docs.forEach((doc) {

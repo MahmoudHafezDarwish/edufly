@@ -1,5 +1,7 @@
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/RouterHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainOrderCard extends StatelessWidget {
   late final String image;
@@ -15,6 +17,7 @@ class MainOrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        Provider.of<AppProvider>(context,listen: false).setSelectedCategory(category);
         RouterHelper.routerHelper.pushToSpecificScreenByNameWithoutPop('/StageCourses');
       },
       child: Container(

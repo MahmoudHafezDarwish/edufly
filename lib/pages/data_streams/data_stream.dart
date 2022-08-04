@@ -7,7 +7,7 @@ abstract class DataStream<T> {
     reload();
   }
 
-  Stream get stream => streamController.stream;
+  Stream? get stream => streamController.stream;
 
   void addData(T data) {
     streamController.sink.add(data);

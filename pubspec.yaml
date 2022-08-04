@@ -40,6 +40,8 @@ dependencies:
   provider:
   percent_indicator:
   shared_preferences: ^2.0.15
+  permission_handler: ^10.0.0
+  flutter_tags:
 
   cached_network_image:
   logger: ^1.1.0

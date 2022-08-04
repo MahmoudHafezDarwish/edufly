@@ -19,7 +19,7 @@ import '../utile/tost.dart';
 
 class AppProvider extends ChangeNotifier {
   AppProvider() {
-    getAllProduct();
+    // getAllProduct();
   }
 
   SingingCharacter? userType;
@@ -30,6 +30,12 @@ class AppProvider extends ChangeNotifier {
   }
 
   String freelancerCategory = 'Designer';
+  String selectedProductCategory = 'المرحلة الإعدادية';
+
+  setSelectedCategory(String selected){
+    selectedProductCategory = selected;
+    notifyListeners();
+  }
 
   setFreelancerCategory(String value) {
     freelancerCategory = value;
@@ -128,7 +134,9 @@ class AppProvider extends ChangeNotifier {
   logout() async {
     this.loggedUser = null;
     await MyAuthFirebase.instance.logout();
+    await SharedPrefController().logout();
     RouterHelper.routerHelper.routingToSpecificWidget(LoginScreen());
+    print('log out');
   }
 
   addProduct(MyProduct product) async {
@@ -140,7 +148,8 @@ class AppProvider extends ChangeNotifier {
     //     price: num.parse(priceController.text),
     //     name: nameController.text);
     product.image_url =image_url;
-    await MyFirebaseFireStore.myFirebaseFireStore.addProduct(product, freelancerCategory);
+    // await MyFirebaseFireStore.myFirebaseFireStore.addProduct(product, freelancerCategory);
+    await MyFirebaseFireStore.myFirebaseFireStore.addDesignerProduct(product, freelancerCategory);
     // getAllProduct();
     Navigator.of(RouterHelper.routerHelper.routerKey.currentState!.context)
         .pop();

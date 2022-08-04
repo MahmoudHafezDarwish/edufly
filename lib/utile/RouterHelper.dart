@@ -24,6 +24,7 @@ import '../pages/auth/login_screen.dart';
 import '../pages/auth/service_provider type.dart';
 import '../pages/auth/signup_screen.dart';
 import '../pages/courses/StageCourses.dart';
+import '../pages/edit_product/edit_product_screen.dart';
 import '../pages/outboarding/outboarding_screen.dart';
 import '../pages/payment/payment_mode.dart';
 import '../pages/payment/payment_successful.dart';
@@ -75,7 +76,7 @@ class RouterHelper {
     '/cart': (context) => CartScreen(),
     '/detailsScreen': (context) => HomeCartScreen(),
     '/StageCourses': (context) => StageCourses(),
-    '/CoursesDetails': (context) => CoursesDetails(),
+    '/CoursesDetails': (context) => CoursesDetails(productId: '',),
     '/PaymentSuccessful': (context) => PaymentSuccessfulScreen(),
     '/PaymentMode': (context) => PaymentMode(),
     '/RatingScreen': (context) => RatingScreen(),
@@ -83,6 +84,7 @@ class RouterHelper {
     '/HistoryOrderScreen': (context) => HistoryOrderScreen(),
     CourseDetail.routeName: (ctx) => CourseDetail(),
     CreateCourse.routeName: (ctx) => CreateCourse(),
+    EditProductScreen.routeName:(ctx) => EditProductScreen(),
     AddPostCourse.routeName: (ctx) => CreateCourse(),
     MainNav.routeName: (ctx) => MainNav(),
     CourseNav.routeName: (ctx) => CourseNav(),

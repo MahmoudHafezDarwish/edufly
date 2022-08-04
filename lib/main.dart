@@ -1,3 +1,4 @@
+import 'package:edufly/pages/edit_product/provider_models/ProductDetails.dart';
 import 'package:edufly/preferences/shared_pref_controller.dart';
 import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/RouterHelper.dart';
@@ -13,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await SharedPrefController().initPref();
+  Provider.debugCheckInvalidValueType = null;
 
   Loggy.initLoggy(
     logPrinter: const PrettyPrinter(
@@ -31,8 +33,11 @@ class ElearningApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppProvider>(
-      create: (context) => AppProvider(),
+    return MultiProvider(
+     providers: [
+            Provider<AppProvider>(create: (context) => AppProvider()),
+            // Provider<ProductDetails>(create: (context) => ProductDetails()),
+     ],
       child: MaterialApp(
         theme: ThemeData.light().copyWith(
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)

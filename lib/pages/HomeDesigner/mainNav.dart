@@ -1,7 +1,10 @@
 import 'package:edufly/pages/HomeCustomer/settings_screen.dart';
 import 'package:edufly/pages/auth/Profile.dart';
+import 'package:edufly/pages/edit_product/edit_product_screen.dart';
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'SCREENS/createCourse.dart';
 import 'SCREENS/enrolledCourse.dart';
@@ -53,29 +56,27 @@ class _MainNavState extends State<MainNav> {
                 title: Text(appBarTitles[pageIndex]),
                 backgroundColor: kPrimaryColor,
                 actions: <Widget>[
-                  pageIndex == 2
-                      ? IconButton(
-                          icon: const Icon(
-                              IconData(0xe8a6, fontFamily: 'MaterialIcons')),
-                          tooltip: 'User',
-                          onPressed: ()  {
-                            //async
-                            // await Provider.of<UserProvider>(context,
-                            //         listen: false)
-                            //     .signOut();
-                            // Provider.of<CoursePostProvider>(context,
-                            //         listen: false)
-                            //     .clearCoursePostProvider();
-                            // Provider.of<CourseProvider>(context, listen: false)
-                            //     .clearCourseProvider();
-                            // Navigator.pushReplacement(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => Auth(),
-                            //     ));
-                          },
-                        )
-                      : Container()
+                  IconButton(
+                    icon: const Icon(Icons.logout, color: Colors.white),
+                    tooltip: 'User',
+                    onPressed: () {
+                      Provider.of<AppProvider>(context, listen: false).logout();
+                      //async
+                      // await Provider.of<UserProvider>(context,
+                      //         listen: false)
+                      //     .signOut();
+                      // Provider.of<CoursePostProvider>(context,
+                      //         listen: false)
+                      //     .clearCoursePostProvider();
+                      // Provider.of<CourseProvider>(context, listen: false)
+                      //     .clearCourseProvider();
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => Auth(),
+                      //     ));
+                    },
+                  )
                 ]),
             body: pages[pageIndex],
             bottomNavigationBar: BottomNavigationBar(
@@ -118,6 +119,7 @@ class _MainNavState extends State<MainNav> {
                 ? FloatingActionButton(
                     onPressed: () {
                       Navigator.pushNamed(context, CreateCourse.routeName);
+                      // Navigator.pushNamed(context, EditProductScreen.routeName);
                     },
                     child: Icon(
                       Icons.add,
@@ -129,136 +131,137 @@ class _MainNavState extends State<MainNav> {
                 : null,
             drawer: Drawer(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Column(
-
-                    children: [
-                      SizedBox(
-                        height: 22,
-                      ),
-                      Container(
-                        width: 135,
-                        height: 135,
-                        child: CircleAvatar(
-                          // child: Image.asset(
-                          //   'images/Bg.png',
-                          //   width: 235,
-                          //   height: 235,
-                          // ),
-
-                          backgroundImage: AssetImage('images/Bg.png'),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 22,
-                      ),
-                      Text('اسم المستخدم',style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xff444657),
-                      ),),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text('username@gmail.com',style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff444657),
-                      ),),
-                      ListTile(
-                        leading: Icon(
-                          Icons.person_outline,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('حسابي'),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                        onTap: (){
-                          Navigator.pushNamed(context, ProfilePage.routeName);
-
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.reorder,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('أرشيف الطلبات'),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/HistoryOrderScreen');
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.book_online_outlined,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('خدمات خاصة اونلاين '),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.star_rate_outlined,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('تقييم المتجر والمنتجات'),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                        onTap: (){
-                          Navigator.pushNamed(context, "/RatingScreen");
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.star_rate_outlined,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('تقديم شكاوي'),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                        onTap: (){
-                          Navigator.pushNamed(context, "/FeedbackScreen");
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.language,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text('تغيير اللغة'),
-                        onTap: () {
-                          showLanguageBottomSheet();
-                        },
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
-                        title: Text('Log OuT'),
-                        onTap: () {
-
-                        },
-                      ),
-                    ],
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 22,
                   ),
-                )
-            ),
+                  Container(
+                    width: 135,
+                    height: 135,
+                    child: CircleAvatar(
+                      // child: Image.asset(
+                      //   'images/Bg.png',
+                      //   width: 235,
+                      //   height: 235,
+                      // ),
+
+                      backgroundImage: AssetImage('images/Bg.png'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Text(
+                    'اسم المستخدم',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xff444657),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'username@gmail.com',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff444657),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person_outline,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('حسابي'),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, ProfilePage.routeName);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.reorder,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('أرشيف الطلبات'),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/HistoryOrderScreen');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.book_online_outlined,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('خدمات خاصة اونلاين '),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.star_rate_outlined,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('تقييم المتجر والمنتجات'),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, "/RatingScreen");
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.star_rate_outlined,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('تقديم شكاوي'),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, "/FeedbackScreen");
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.language,
+                      color: kPrimaryColor,
+                    ),
+                    title: Text('تغيير اللغة'),
+                    onTap: () {
+                      showLanguageBottomSheet();
+                    },
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                    ),
+                    title: Text('Log OuT'),
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            )),
           )
         : CircularProgressIndicator();
   }

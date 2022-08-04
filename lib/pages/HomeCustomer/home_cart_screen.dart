@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 
 import '../../custom_widgets/widgets/async_progress_dialog.dart';
 import '../../custom_widgets/widgets/cart_item_widget.dart';
-import '../../models/Product.dart';
 import '../../models/courseModel.dart';
 import '../../utile/RouterHelper.dart';
 import '../../utile/constants.dart';

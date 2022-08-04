@@ -72,6 +72,7 @@ class MyAuthFirebase {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
+      //verify email
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       print('Excepton : ${e.code} :: Message ${e.message}');
@@ -109,7 +110,7 @@ class MyAuthFirebase {
     _auth.sendPasswordResetEmail(email: email);
   }
 
-  vrifyEmail() {
+  verifyEmail() {
     _auth.currentUser!.sendEmailVerification();
   }
 }

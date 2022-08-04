@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/Product.dart';
+import '../../models/modelsFirebase/Product.dart';
+
 
 
 class CardItemForCart extends StatefulWidget {
@@ -66,7 +67,7 @@ class _CardItemForCartState extends State<CardItemForCart> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.product.title,
+                Text(widget.product.title??'',
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 22,
@@ -76,7 +77,7 @@ class _CardItemForCartState extends State<CardItemForCart> {
                 SizedBox(
                   height: 2,
                 ),
-                Text(widget.product.variant,
+                Text(widget.product.variant??'',
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 14,

@@ -52,6 +52,7 @@ class SharedPrefController {
   Future<void> logout() async {
     _sharedPreferences.remove(PrefKeys.loggedIn.name);
     _sharedPreferences.remove(PrefKeys.email.name);
+    _sharedPreferences.remove(PrefKeys.userIsFreelancer.name);
 
     // _sharedPreferences.setBool(PrefKeys.loggedIn.name, false);
   }

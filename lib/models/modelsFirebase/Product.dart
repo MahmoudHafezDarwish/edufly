@@ -23,7 +23,8 @@ class Product extends Model {
   static const String HIGHLIGHTS_KEY = "highlights";
   static const String DESCRIPTION_KEY = "description";
   static const String SELLER_KEY = "seller";
-  static const String OWNER_KEY = "owner";
+  static const String OWNER_KEY = "owner_id";
+  static const String CATEGORY_KEY = "categoryOfCourses";
   static const String PRODUCT_TYPE_KEY = "product_type";
   static const String SEARCH_TAGS_KEY = "search_tags";
 
@@ -38,11 +39,11 @@ class Product extends Model {
   String? seller;
   bool? favourite;
   String? owner;
-  ProductType? productType;
+  String? productType;
   List<String>? searchTags;
 
   Product(
-    String id, {
+    String? id, {
     this.images,
     this.title,
     this.variant,
@@ -72,8 +73,9 @@ class Product extends Model {
       images: (map[IMAGES_KEY] ?? []).cast<String>(),
       title: map[TITLE_KEY],
       variant: map[VARIANT_KEY],
-      productType:
-          EnumToString.fromString(ProductType.values, map[PRODUCT_TYPE_KEY]),
+      productType:map[PRODUCT_TYPE_KEY],
+      // productType:
+      //     EnumToString.fromString(ProductType.values, map[PRODUCT_TYPE_KEY]),
       discountPrice: map[DISCOUNT_PRICE_KEY],
       originalPrice: map[ORIGINAL_PRICE_KEY],
       rating: map[RATING_KEY],
