@@ -20,7 +20,7 @@ class SharedPrefController {
   }
 
   Future<void> save({required MyUser user}) async {
-    await _sharedPreferences.setBool(PrefKeys.loggedIn.name, true);
+    // await _sharedPreferences.setBool(PrefKeys.loggedIn.name, true);
     await _sharedPreferences.setBool(
         PrefKeys.userIsFreelancer.name, user.isFreelancer);
     await _sharedPreferences.setString(PrefKeys.id.name, user.id!);
@@ -52,7 +52,7 @@ class SharedPrefController {
   Future<void> logout() async {
     _sharedPreferences.remove(PrefKeys.loggedIn.name);
     _sharedPreferences.remove(PrefKeys.email.name);
-    _sharedPreferences.remove(PrefKeys.userIsFreelancer.name);
+    // _sharedPreferences.remove(PrefKeys.userIsFreelancer.name);
 
     // _sharedPreferences.setBool(PrefKeys.loggedIn.name, false);
   }

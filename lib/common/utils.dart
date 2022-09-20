@@ -80,7 +80,7 @@ Widget whenEmptyWishlist(BuildContext context) {
               ],
             ),
           ),
-          FlatButton(
+          ElevatedButton(
               onPressed: () {
                 // Navigator.push(
                 //     context,
@@ -195,7 +195,7 @@ Widget whenEmptyStudying(BuildContext context) {
               ],
             ),
           ),
-          FlatButton(
+          ElevatedButton(
               onPressed: () {
                 // Navigator.push(
                 //     context,

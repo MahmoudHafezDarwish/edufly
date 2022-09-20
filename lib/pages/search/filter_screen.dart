@@ -159,8 +159,7 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
             ),
             Container(
-              child: RaisedButton(
-                color: Colors.red,
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

@@ -1,7 +1,17 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edufly/models/modelsFirebase/MyUsres.dart';
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/firebase_firestore.dart';
+import '../../models/modelsFirebase/OrderedProduct.dart';
+import '../../utile/utils.dart';
 import 'async_progress_dialog.dart';
 
 class PaymentInput extends StatefulWidget {
@@ -45,7 +55,7 @@ class _PaymentInputState extends State<PaymentInput> {
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 20,
-                      fontFamily: "Besley-Medium",
+                      fontFamily: fontFamilayTajawal,
                       color: kPrimaryColor,
                     ),
                     decoration: InputDecoration(
@@ -57,7 +67,7 @@ class _PaymentInputState extends State<PaymentInput> {
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
                         color: Colors.black,
                       ),
                     ),
@@ -74,7 +84,7 @@ class _PaymentInputState extends State<PaymentInput> {
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
                         color: kPrimaryColor,
                       ),
                       decoration: InputDecoration(
@@ -87,7 +97,7 @@ class _PaymentInputState extends State<PaymentInput> {
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 20,
-                          fontFamily: "Besley-Regular",
+                          fontFamily: fontFamilayTajawal,
                           color: Colors.black.withOpacity(.5),
                         ),
                       ),
@@ -105,7 +115,7 @@ class _PaymentInputState extends State<PaymentInput> {
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 20,
-                        fontFamily: "Besley-Regular",
+                        fontFamily: fontFamilayTajawal,
                         color: kPrimaryColor,
                       ),
                       decoration: InputDecoration(
@@ -118,7 +128,7 @@ class _PaymentInputState extends State<PaymentInput> {
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 20,
-                          fontFamily: "Besley-Regular",
+                          fontFamily: fontFamilayTajawal,
                           color: Colors.black.withOpacity(.5),
                         ),
                       ),
@@ -129,27 +139,30 @@ class _PaymentInputState extends State<PaymentInput> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: RaisedButton(
-                      padding: EdgeInsetsDirectional.all(20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsetsDirectional.all(20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        backgroundColor: kPrimaryColor,
+                        textStyle: TextStyle(
+                          color: Colors.white70,
+                        ),
+                      ),
                       onPressed: () async {
-                        // await checkoutButtonCallback();
+                        await checkoutButtonCallback();
                         Navigator.pushNamed(context, "/PaymentSuccessful");
-                        print(
-                            "Email: ${pay_number.text}  Password : ${pay_date.text}");
+                        print("Email: ${pay_number.text}  Password : ${pay_date.text}");
                       },
-                      color: kPrimaryColor,
-                      textColor: Colors.white70,
                       child: Text(
                         " تابع الدفع",
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 20,
-                          fontFamily: "Besley-Regular",
+                          fontFamily: fontFamilayTajawal,
                           color: Colors.white,
                         ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                   ),
@@ -161,79 +174,106 @@ class _PaymentInputState extends State<PaymentInput> {
       ),
     );
   }
-//
-//   Future<void> checkoutButtonCallback() async {
-//     final confirmation = await showConfirmationDialog(
-//       context,
-//       "This is just a Project Testing App so, no actual Payment Interface is available.\nDo you want to proceed for Mock Ordering of Products?",
-//     );
-//     if (confirmation == false) {
-//       return;
-//     }
-//     // final orderFuture = MyFirebaseFireStore.myFirebaseFireStore.emptyCart();
-//     orderFuture.then((orderedProductsUid) async {
-//       if (orderedProductsUid != null) {
-//         print(orderedProductsUid);
-//         final dateTime = DateTime.now();
-//         final formatedDateTime =
-//             "${dateTime.day}-${dateTime.month}-${dateTime.year}";
-//         // List<OrderedProduct> orderedProducts = orderedProductsUid
-//         //     .map((e) => OrderedProduct(null,
-//         //         productUid: e, orderDate: formatedDateTime))
-//         //     .toList();
-//         // bool addedProductsToMyProducts = false;
-//         String snackbarmMessage = '';
-//       //   try {
-//       //     addedProductsToMyProducts = await MyFirebaseFireStore
-//       //         .myFirebaseFireStore
-//       //         .addToMyOrders(orderedProducts);
-//       //     if (addedProductsToMyProducts) {
-//       //       snackbarmMessage = "Products ordered Successfully";
-//       //     } else {
-//       //       throw "Could not order products due to unknown issue";
-//       //     }
-//       //   } on FirebaseException catch (e) {
-//       //     Logger().e(e.toString());
-//       //     snackbarmMessage = e.toString();
-//       //   } catch (e) {
-//       //     Logger().e(e.toString());
-//       //     snackbarmMessage = e.toString();
-//       //   } finally {
-//       //     ScaffoldMessenger.of(context).showSnackBar(
-//       //       SnackBar(
-//       //         content: Text(snackbarmMessage ?? "Something went wrong"),
-//       //       ),
-//       //     );
-//       //   }
-//       // } else {
-//       //   throw "Something went wrong while clearing cart";
-//       // }
-//       // await showDialog(
-//       //   context: context,
-//       //   builder: (context) {
-//       //     return AsyncProgressDialog(
-//       //       orderFuture,
-//       //       message: Text("Placing the Order"),
-//       //     );
-//       //   },
-//       // );
-//     }).catchError((e) {
-//       Logger().e(e.toString());
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(
-//           content: Text("Something went wrong"),
-//         ),
-//       );
-//     });
-//     // await showDialog(
-//     //   context: context,
-//     //   builder: (context) {
-//     //     return AsyncProgressDialog(
-//     //       orderFuture,
-//     //       message: Text("Placing the Order"),
-//     //     );
-//     //   },
-//     // );
-//   }
-// }
+
+  Future<void> checkoutButtonCallback() async {
+    final confirmation = await showConfirmationDialog(
+      context,
+      "إنه مجرد تطبيق لاختبار المشروع ، لذا لا توجد واجهة دفع فعلية متاحة.\n هل تريد متابعة الطلب الوهمي للمنتجات؟",
+    );
+    if (confirmation == false) {
+      return;
+    }
+    final orderFuture = MyFirebaseFireStore.myFirebaseFireStore.emptyCart();
+    orderFuture.then((orderedProductsUid) async {
+      if (orderedProductsUid != null) {
+        print(orderedProductsUid);
+        final dateTime = DateTime.now();
+        final formatedDateTime = "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+        List<OrderedProduct> orderedProducts =
+            orderedProductsUid.map((e) => OrderedProduct('', productUid: e, orderDate: formatedDateTime)).toList();
+        bool addedProductsToMyProducts = false;
+        String snackbarmMessage = '';
+        try {
+          addedProductsToMyProducts = await MyFirebaseFireStore.myFirebaseFireStore.addToMyOrders(orderedProducts);
+          if (addedProductsToMyProducts) {
+            snackbarmMessage = "تم طلب المنتجات بنجاح";
+
+            orderedProducts.forEach((order) async {
+              print('my Order orderedProducts :${order.productUid}+${order.orderDate}');
+              //
+              // final myOrderProduct =
+              //     await MyFirebaseFireStore.myFirebaseFireStore.getOrderedProductFromId(order.productUid!);
+              // print('my Order Product :${myOrderProduct.productUid}+${myOrderProduct.orderDate}');
+              final myProducts = await MyFirebaseFireStore.myFirebaseFireStore.getProductWithID(order.productUid!);
+              print(
+                  'my Order Product :${myProducts!.name ?? ''}+${myProducts!.linkOfCourse} product is enrolled ${myProducts.enrolled ?? false}');
+
+              MyUser user = Provider.of<AppProvider>(context, listen: false).loggedUser!;
+              String message = ' شكرا ${user.name} ' ' لتعاملك معنا نتمنى أن تنال التصاميم إعجابكم';
+              String message1 = ' رابط التصميم  ${myProducts!.linkOfCourse} تصميم  ${myProducts.name}';
+              //
+              await openWhatsapp('${message}}\n ${message1} \n المصدر من تطبيق Design', user.phoneNumber ?? '');
+            });
+          } else {
+            throw "لا يمكن طلب المنتجات بسبب مشكلة غير معروفة";
+          }
+        } on FirebaseException catch (e) {
+          Logger().e(e.toString());
+          snackbarmMessage = e.toString();
+        } catch (e) {
+          Logger().e(e.toString());
+          snackbarmMessage = e.toString();
+        } finally {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(snackbarmMessage ?? "Something went wrong"),
+            ),
+          );
+        }
+      } else {
+        throw "Something went wrong while clearing cart";
+      }
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AsyncProgressDialog(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+            onError: () {},
+            progress: CircularProgressIndicator(),
+            orderFuture,
+            message: Text("Placing the Order"),
+          );
+        },
+      );
+    }).catchError((e) {
+      Logger().e(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Something went wrong"),
+        ),
+      );
+    });
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AsyncProgressDialog(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+          onError: () {},
+          progress: CircularProgressIndicator(),
+          orderFuture,
+          message: Text("Placing the Order"),
+        );
+      },
+    );
+  }
+
+  openWhatsapp(String message, String phoneNumber) async {
+    var whatsapp = "$phoneNumber";
+    var whatsappUrl = "whatsapp://send?phone=${whatsapp}+&text=${Uri.encodeComponent(message)}";
+    try {
+      await launch(whatsappUrl);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

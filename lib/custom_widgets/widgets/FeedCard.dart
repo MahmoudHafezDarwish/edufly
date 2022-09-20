@@ -128,16 +128,11 @@ class FeedCard extends StatelessWidget {
                         )
                       : Container(
                           width: double.infinity,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            color: Theme.of(context).primaryColor,
-                            splashColor: Theme.of(context).accentColor,
+                          child: ElevatedButton(
                             child: const Text(
                               'Resume your course',
                               style: TextStyle(color: Colors.white),
                             ),
-                            textColor: Colors.blue,
                             onPressed: () {
                               Navigator.pushNamed(context, CourseNav.routeName,
                                   arguments: screenArguments);

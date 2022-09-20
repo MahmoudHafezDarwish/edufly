@@ -1,21 +1,22 @@
-
+import 'package:edufly/models/modelsFirebase/OrderedProduct.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import '../../data/firebase_firestore.dart';
 import '../../pages/data_streams/data_stream.dart';
 import '../../utile/size_config.dart';
 import '../widgets/product_card_widget.dart';
 import '../widgets/section_tile.dart';
 import 'nothingtoshow_container.dart';
 
-
-class ProductsSection extends StatelessWidget {
+class ProductsOrderSection extends StatelessWidget {
   final String sectionTitle;
   final DataStream productsStreamController;
   final String emptyListMessage;
   final Function onProductCardTapped;
-  const ProductsSection({
+
+  const ProductsOrderSection({
     Key? key,
     required this.sectionTitle,
     required this.productsStreamController,
@@ -60,9 +61,12 @@ class ProductsSection extends StatelessWidget {
                 secondaryMessage: emptyListMessage,
               ),
             );
+          }else {
+            print('list of id products ${snapshot.data}');
+            var listOfOrderedId = snapshot.data!;
+            return buildProductGrid(listOfOrderedId);
           }
-          print('list of id products ${snapshot.data}');
-          return buildProductGrid(snapshot.data!);
+
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -103,4 +107,20 @@ class ProductsSection extends StatelessWidget {
       },
     );
   }
+  
+  
+  // Future<List<String>> getProductsID (List<String> listOfOrderedId) async{
+  //   List<String> productsId = [];
+  //   for (var order in listOfOrderedId) {
+  //     OrderedProduct orderedProduct =
+  //     await MyFirebaseFireStore.myFirebaseFireStore.getOrderedProductFromId(order);
+  //     print('my Order orderedProducts :${orderedProduct.productUid}+${orderedProduct.orderDate}');
+  //     productsId.add(orderedProduct.productUid!);
+  //     print('list of history products in for each${productsId.toString()}');
+  //
+  //     // final myProducts = await MyFirebaseFireStore.myFirebaseFireStore.getProductWithID(orderedProduct.productUid!);
+  //   }
+  //   print('list of history products ${productsId.toString()}');
+  //   return productsId;
+  // }
 }

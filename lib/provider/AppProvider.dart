@@ -1,3 +1,4 @@
+import 'package:edufly/models/modelsFirebase/consulting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,6 +50,8 @@ class AppProvider extends ChangeNotifier {
   List<MyProduct> allProduct = [];
   String category = 'Hand bag';
 
+
+
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -72,18 +75,18 @@ class AppProvider extends ChangeNotifier {
           .creatAccount(myUser.email!, myUser.password!);
       myUser.id = userId;
       await MyFirebaseFireStore.myFirebaseFireStore.createUserInFs(myUser);
-      this.loggedUser = myUser;
-      if (this.loggedUser != null) {
-        await SharedPrefController().save(user: this.loggedUser!);
-        logInfo('is save logged user');
-      }
-      if (!myUser.isFreelancer) {
-        RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
-      } else {
-        RouterHelper.routerHelper
-            .pushToSpecificScreenByNameWithPop(MainNav.routeName);
-      }
-      ToastMessage.showToast("Is Done signUp", true);
+      // this.loggedUser = myUser;
+      // if (this.loggedUser != null) {
+      //   await SharedPrefController().save(user: this.loggedUser!);
+      //   logInfo('is save logged user${loggedUser!.isFreelancer}');
+      // }
+      // if (!myUser.isFreelancer) {
+      //   RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
+      // } else {
+      //   RouterHelper.routerHelper
+      //       .pushToSpecificScreenByNameWithPop(MainNav.routeName);
+      // }
+      // ToastMessage.showToast("Is Done signUp", true);
     } on Exception catch (e) {
       ToastMessage.showToast("Is Exception", false);
       print(
@@ -91,13 +94,13 @@ class AppProvider extends ChangeNotifier {
     }
   }
 
-  login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     try {
       UserCredential? userCredential =
           await MyAuthFirebase.instance.sigIn(email, password);
       await getUserFromFirebase();
       if (userCredential != null) {
-        ToastMessage.showToast("Is Done", true);
+        ToastMessage.showToast("تم تسجيل الدخول", true);
         if (this.loggedUser!.isFreelancer) {
           RouterHelper.routerHelper
               .pushToSpecificScreenByNameWithPop(MainNav.routeName);
@@ -108,12 +111,18 @@ class AppProvider extends ChangeNotifier {
           await SharedPrefController().save(user: this.loggedUser!);
           logInfo('is save logged user');
         }
+        return true;
+      }else{
+        ToastMessage.showToast("يجب التحقق من الإيميل", false);
+
       }
     } on Exception catch (e) {
       print(
           'Excepton toString : ${e.toString()} :: runtimeType ${e.runtimeType}');
-      ToastMessage.showToast("Is Exception", false);
+      ToastMessage.showToast("هناك مشكلة ما", false);
     }
+    return false;
+
   }
 
   bool get isFreelancer {
@@ -127,7 +136,7 @@ class AppProvider extends ChangeNotifier {
   getUserFromFirebase() async {
     String userid = FirebaseAuth.instance.currentUser!.uid;
     this.loggedUser = await MyFirebaseFireStore.myFirebaseFireStore
-        .getUserFromFs(isFreelancer, userid);
+        .getUserFromFs( userid);
     notifyListeners();
   }
 
@@ -154,9 +163,12 @@ class AppProvider extends ChangeNotifier {
     Navigator.of(RouterHelper.routerHelper.routerKey.currentState!.context)
         .pop();
   }
+  Future<String> addConsulting(Consulting consulting)async{
+    return await MyFirebaseFireStore.myFirebaseFireStore.addConsulting(consulting);
+  }
 
-  addToCart(MyProduct product) async {
-    await MyFirebaseFireStore.myFirebaseFireStore.addProductToCart(product.id!);
+  Future<bool> addToCart(String productId) async {
+    return await MyFirebaseFireStore.myFirebaseFireStore.addProductToCart(productId!);
   }
 
   // editProduct(String productId) async {

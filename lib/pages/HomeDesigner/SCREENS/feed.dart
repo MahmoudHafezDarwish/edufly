@@ -1,5 +1,9 @@
+import 'package:edufly/custom_widgets/product/enrolled_user_section.dart';
 import 'package:edufly/models/course.dart';
 import 'package:edufly/models/userProfile.dart';
+import 'package:edufly/pages/courses/CoursesDetail.dart';
+import 'package:edufly/pages/data_streams/enrolled_products_stream.dart';
+import 'package:edufly/pages/data_streams/enrolled_users_stream.dart';
 import 'package:flutter/material.dart';
 import '../../../custom_widgets/widgets/FeedCard.dart';
 import 'createCourse.dart';
@@ -14,103 +18,54 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> {
   @override
   @override
-  bool _isLoading = false;
+  late EnrolledUsersStream enrolledUseresStream ;
 
   void initState() {
     super.initState();
-    print('init called');
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _fetchCourse();
-    });
+    enrolledUseresStream = EnrolledUsersStream();
+    enrolledUseresStream.init();
   }
 
   void dispose() {
     super.dispose();
-  }
+    enrolledUseresStream.dispose();
 
-  //
-  // _fetchCourse() async {
-  //   try {
-  //     if (!mounted) {
-  //       print('not mounted');
-  //       return;
-  //     }
-  //     final course = Provider.of<CourseProvider>(context, listen: false);
-  //     final requestMade = course.requestMade;
-  //     if (requestMade == false) {
-  //       setState(() {
-  //         _isLoading = true;
-  //       });
-  //       await Provider.of<CourseProvider>(context, listen: false).fetchCourse();
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  }
 
   @override
   double borderRadius = 10, padding = 10;
 
   Widget build(BuildContext context) {
-    // final course = Provider.of<CourseProvider>(context);
-    // final courseFeed = course.feedCourse;
-    final courseFeed = [
-      Course(
-          id: '#1',
-          title: 'التفكير الناقد ثالث متوسط-ثلاثة فصول',
-          description:
-              'جميع دروس منهج التفكير الناقد - الفصل الأول - وعددها 7 دروس \nبوربوينت مميز وعصري خاص لكل درس بالمنهج.',
-          coverPhoto:
-              'https://cdn.salla.sa/Dzmd/cPVSyOSnH9Ue1RUivI4wKc8a9g2WaWCH0tGC5ZZE.png',
-          enrolled: true,
-          isAdmin: true,
-          enrolledId: [],
-          userProfile: UserProfile(
-              name: 'mahmoud',
-              parentId: '',
-              profile_picture: '',
-              gmail: 'mm@gmail.com',
-              uid: '',
-              createdCourse: [],
-              enrolledCourse: []),
+    return Container(
+      color: Colors.white,
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        margin: EdgeInsetsDirectional.only(start: 16, end: 16, top: 39),
+        color: Colors.transparent,
+        child: UsersSection(
+          sectionTitle: " المستخدمين أصحاب الطلبات :",
+          productsStreamController: enrolledUseresStream,
+          emptyListMessage: "لا يوجد لديك طلبات بعد !!",
+          onProductCardTapped: onProductCardTapped,
+        ),
       ),
-      Course(
-          id: '#1',
-          title: 'التفكير الناقد ثالث متوسط-ثلاثة فصول',
-          description:
-              'جميع دروس منهج التفكير الناقد - الفصل الأول - وعددها 7 دروس \nبوربوينت مميز وعصري خاص لكل درس بالمنهج.',
-          coverPhoto:
-              'https://cdn.salla.sa/Dzmd/cPVSyOSnH9Ue1RUivI4wKc8a9g2WaWCH0tGC5ZZE.png',
-          enrolled: true,
-          isAdmin: true,
-          enrolledId: [],
-          userProfile: UserProfile(
-              name: 'mahmoud',
-              parentId: '',
-              profile_picture: '',
-              gmail: 'mm@gmail.com',
-              uid: '',
-              createdCourse: [],
-              enrolledCourse: []),
+    );
+
+  }
+
+  Future<void> refreshPage() {
+    enrolledUseresStream.reload();
+    return Future<void>.value();
+  }
+  void onProductCardTapped(String productId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CoursesDetails(productId: productId) ,
       ),
-    ];
-    return _isLoading == false
-        ? Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.white,
-            child: ListView.builder(
-                itemCount: courseFeed.length,
-                itemBuilder: (BuildContext context, i) {
-                  return (FeedCard(
-                    courseFeed[i],
-                  ));
-                }),
-          )
-        : Center(child: CircularProgressIndicator());
-    ;
+    ).then((_) async {
+      await refreshPage();
+    });
   }
 }

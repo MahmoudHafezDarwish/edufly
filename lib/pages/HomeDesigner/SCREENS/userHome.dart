@@ -43,56 +43,7 @@ class _userHomeFeedState extends State<UserHomeFeed> {
       return Container(
         color: Colors.white,
         child: Stack(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            // Column(
-            //   children: [
-            //     Container(
-            //       width: 130,
-            //       height: 5,
-            //       color: Colors.blue.withOpacity(0.5),
-            //     ),
-            //     SizedBox(
-            //       height: 10,
-            //     ),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Container(
-            //           margin: EdgeInsets.all(5),
-            //           width: 7,
-            //           height: 7,
-            //           decoration: BoxDecoration(
-            //             color: Colors.grey,
-            //             shape: BoxShape.circle,
-            //           ),
-            //         ),
-            //         Container(
-            //           margin: EdgeInsets.all(5),
-            //           width: 7,
-            //           height: 7,
-            //           decoration: BoxDecoration(
-            //             color: Colors.black,
-            //             shape: BoxShape.circle,
-            //           ),
-            //         ),
-            //         Container(
-            //           margin: EdgeInsets.all(5),
-            //           width: 7,
-            //           height: 7,
-            //           decoration: BoxDecoration(
-            //             color: Colors.grey,
-            //             shape: BoxShape.circle,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     SizedBox(
-            //       height: 15,
-            //     ),
-            //   ],
-            // ),
             Container(
               width: double.infinity,
               height: double.infinity,
@@ -104,7 +55,6 @@ class _userHomeFeedState extends State<UserHomeFeed> {
                 emptyListMessage: "لا يوجد لديك تصاميم بعد !!",
                 onProductCardTapped: onProductCardTapped,
               ),
-
             ),
           ],
         ),

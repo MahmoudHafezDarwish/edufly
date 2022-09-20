@@ -25,13 +25,13 @@ Future<String> choseImageFromLocalFiles(
       return AlertDialog(
         title: Text("Chose image source"),
         actions: [
-          FlatButton(
+          ElevatedButton(
             child: Text("Camera"),
             onPressed: () {
               Navigator.pop(context, ImageSource.camera);
             },
           ),
-          FlatButton(
+          ElevatedButton(
             child: Text("Gallery"),
             onPressed: () {
               Navigator.pop(context, ImageSource.gallery);

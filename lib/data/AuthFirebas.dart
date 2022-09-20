@@ -53,7 +53,7 @@ class MyAuthFirebase {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      return userCredential;
+      return userCredential ;
     } on FirebaseAuthException catch (e) {
       if (_context != null) ToastMessage.showToast(e.message ?? "", false);
 
@@ -72,8 +72,13 @@ class MyAuthFirebase {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
+      await userCredential.user!.sendEmailVerification();
+      bool isVerified = userCredential.user!.emailVerified;
+      print('is email Verified $isVerified');
+      // await logout();
       //verify email
-      return userCredential.user?.uid;
+
+      return userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       print('Excepton : ${e.code} :: Message ${e.message}');
       if (_context != null) {

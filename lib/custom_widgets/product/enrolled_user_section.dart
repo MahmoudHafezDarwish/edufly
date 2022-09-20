@@ -7,15 +7,16 @@ import '../../pages/data_streams/data_stream.dart';
 import '../../utile/size_config.dart';
 import '../widgets/product_card_widget.dart';
 import '../widgets/section_tile.dart';
+import 'enrolled_user_card_widget.dart';
 import 'nothingtoshow_container.dart';
 
 
-class ProductsSection extends StatelessWidget {
+class UsersSection extends StatelessWidget {
   final String sectionTitle;
   final DataStream productsStreamController;
   final String emptyListMessage;
   final Function onProductCardTapped;
-  const ProductsSection({
+  const UsersSection({
     Key? key,
     required this.sectionTitle,
     required this.productsStreamController,
@@ -35,6 +36,7 @@ class ProductsSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SectionTile(
             title: sectionTitle,
@@ -61,7 +63,7 @@ class ProductsSection extends StatelessWidget {
               ),
             );
           }
-          print('list of id products ${snapshot.data}');
+          print('list of users : ${snapshot.data}');
           return buildProductGrid(snapshot.data!);
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -84,17 +86,18 @@ class ProductsSection extends StatelessWidget {
 
   Widget buildProductGrid(List<String> productsId) {
     return GridView.builder(
+
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         childAspectRatio: 1,
-        crossAxisSpacing: 4,
+        crossAxisSpacing: 1,
         mainAxisSpacing: 1,
       ),
       itemCount: productsId.length,
       itemBuilder: (context, index) {
-        return ProductCard(
+        return UserEnrolledCard(
           productId: productsId[index],
           press: () {
             onProductCardTapped.call(productsId[index]);

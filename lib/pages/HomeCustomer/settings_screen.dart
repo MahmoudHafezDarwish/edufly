@@ -1,7 +1,10 @@
 import 'package:edufly/utile/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/modelsFirebase/MyUsres.dart';
+import '../../provider/AppProvider.dart';
 import '../auth/Profile.dart';
 import '../auth/service_provider type.dart';
 
@@ -15,6 +18,8 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
+    MyUser myUser = Provider.of<AppProvider>(context, listen: false).loggedUser!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -40,14 +45,14 @@ class _SettingScreenState extends State<SettingScreen> {
             SizedBox(
               height: 22,
             ),
-            Text('اسم المستخدم',style: TextStyle(
+            Text(myUser.name??'اسم المستخدم',style: TextStyle(
               fontSize: 20,
               color: Color(0xff444657),
             ),),
             SizedBox(
               height: 5,
             ),
-            Text('username@gmail.com',style: TextStyle(
+            Text(myUser.email??'username@gmail.com',style: TextStyle(
               fontSize: 16,
               color: Color(0xff444657),
             ),),
@@ -76,6 +81,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 Icons.arrow_forward_ios,
                 size: 14,
               ),
+              onTap: (){
+                Navigator.pushNamed(context, '/HistoryOrderScreen');
+              },
             ),
             ListTile(
               onTap: (){
@@ -110,7 +118,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 Icons.star_rate_outlined,
                 color: kPrimaryColor,
               ),
-              title: Text('تقديم شكاوي'),
+              title: const Text('استشارات قانونية'),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 size: 14,
@@ -154,17 +162,19 @@ class _SettingScreenState extends State<SettingScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Colors.white70,
-            title: Text("Are you sure?"),
+            backgroundColor: Colors.white,
+            title: Text("هل أنت متأكد تريد تسجيل خروج ؟"),
             elevation: 5,
             titleTextStyle: TextStyle(
-              color: Colors.blue,
+              color: Colors.black,
               fontSize: 18,
+              fontFamily: fontFamilayTajawal
             ),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Provider.of<AppProvider>(context, listen: false).logout();
                 },
                 style: TextButton.styleFrom(
                   primary: Colors.white70,
@@ -172,7 +182,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   backgroundColor: Colors.green,
                   side: BorderSide(width: 2, color: Colors.green),
                 ),
-                child: Text("Yes"),
+                child: Text("نعم"),
               ),
               TextButton(
                 onPressed: () {
@@ -184,7 +194,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   backgroundColor: Colors.red,
                   side: BorderSide(width: 2, color: Colors.red),
                 ),
-                child: Text("No"),
+                child: Text("لا"),
               ),
               // InkWell(
               //   child:Text("Yes",style: TextStyle(

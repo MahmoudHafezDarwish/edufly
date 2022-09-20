@@ -2,6 +2,7 @@ import 'package:edufly/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:loggy/loggy.dart';
@@ -22,7 +23,9 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   late TextEditingController _email;
-  late TextEditingController _phone;
+
+  // late TextEditingController _phone;
+  String phoneNumber = '';
   late TextEditingController _firstName;
 
   // late TextEditingController _address;
@@ -40,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
     _email = TextEditingController();
     _password = TextEditingController();
     // _ideNumber = TextEditingController();
-    _phone = TextEditingController();
+    // _phone = TextEditingController();
     _firstName = TextEditingController();
     // _address = TextEditingController();
     isPassword = true;
@@ -54,7 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
     _email.dispose();
     _password.dispose();
-    _phone.dispose();
+    // _phone.dispose();
     _firstName.dispose();
     // _address.dispose();
     // _ideNumber.dispose();
@@ -112,8 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Container(
                     width: SizeConfig.screenWidth * 0.9,
                     color: Colors.white,
-                    margin: EdgeInsetsDirectional.only(
-                        start: 20, end: 20, bottom: 25),
+                    margin: EdgeInsetsDirectional.only(start: 20, end: 20, bottom: 25),
                     child: SingleChildScrollView(
                       child: Form(
                         key: formKey,
@@ -201,7 +203,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             //     fontWeight: FontWeight.normal,
                             //     fontSize: 20,
                             //     fontFamily: "Besley-Medium",
-                            //     color: kPrimaryColor,
+                            //     color: kPrimaryColor,p
                             //   ),
                             //   validator: (value) {
                             //     if (value!.isEmpty) {
@@ -228,6 +230,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             //   height: 10,
                             // ),
                             TextFormField(
+                              textDirection: TextDirection.ltr,
                               keyboardType: TextInputType.emailAddress,
                               controller: _email,
                               style: TextStyle(
@@ -243,8 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   bool valid = isEmail(value);
                                   valid
                                       ? ToastMessage.showToast("isEmail", valid)
-                                      : ToastMessage.showToast(
-                                          "is Not Email", valid);
+                                      : ToastMessage.showToast("is Not Email", valid);
                                   return null;
                                 }
                               },
@@ -265,48 +267,47 @@ class _SignupScreenState extends State<SignupScreen> {
                             SizedBox(
                               height: 10,
                             ),
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                              controller: _phone,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 20,
-                                fontFamily: fontFamilayTajawal,
-                                color: kPrimaryColor,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Phone number must not be null';
-                                } else {
-                                  bool valid = isNumeric(value);
-                                  valid
-                                      ? ToastMessage.showToast("isPhone", valid)
-                                      : ToastMessage.showToast(
-                                          "is Not Email", valid);
 
-                                  return null;
-                                }
-                              },
-                              decoration: InputDecoration(
-                                hintText: "رقم الهاتف",
-                                prefixIcon: Icon(
-                                  Icons.phone,
-                                  color: kPrimaryColor,
-                                ),
-                                hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 20,
-                                  fontFamily: fontFamilayTajawal,
-                                  color: Colors.black.withOpacity(.5),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            // TextFormField(
+                            //   keyboardType: TextInputType.phone,
+                            //   controller: _phone,
+                            //   style: TextStyle(
+                            //     fontWeight: FontWeight.normal,
+                            //     fontSize: 20,
+                            //     fontFamily: fontFamilayTajawal,
+                            //     color: kPrimaryColor,
+                            //   ),
+                            //   validator: (value) {
+                            //     if (value!.isEmpty) {
+                            //       return 'Phone number must not be null';
+                            //     } else {
+                            //       bool valid = isNumeric(value);
+                            //       valid
+                            //           ? ToastMessage.showToast("isPhone", valid)
+                            //           : ToastMessage.showToast(
+                            //               "is Not Email", valid);
+                            //
+                            //       return null;
+                            //     }
+                            //   },
+                            //   decoration: InputDecoration(
+                            //     hintText: "رقم الهاتف",
+                            //     prefixIcon: Icon(
+                            //       Icons.phone,
+                            //       color: kPrimaryColor,
+                            //     ),
+                            //     hintStyle: TextStyle(
+                            //       fontWeight: FontWeight.w400,
+                            //       fontSize: 20,
+                            //       fontFamily: fontFamilayTajawal,
+                            //       color: Colors.black.withOpacity(.5),
+                            //     ),
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 45,
                               child: TextFormField(
+                                textDirection: TextDirection.ltr,
                                 keyboardType: TextInputType.text,
                                 textAlignVertical: TextAlignVertical.center,
                                 controller: _password,
@@ -325,8 +326,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   }
                                 },
                                 decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsetsDirectional.only(start: 10),
+                                  contentPadding: EdgeInsetsDirectional.only(start: 10),
                                   hintText: "كلمة السر",
                                   prefixIcon: Icon(
                                     Icons.lock,
@@ -334,9 +334,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      isPassword
-                                          ? Icons.remove_red_eye
-                                          : Icons.visibility_off,
+                                      isPassword ? Icons.remove_red_eye : Icons.visibility_off,
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -354,6 +352,49 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             ),
                             SizedBox(
+                              height: 10,
+                            ),
+                            IntlPhoneField(
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20,
+                                fontFamily: fontFamilayTajawal,
+                                color: kPrimaryColor,
+                              ),
+                              initialCountryCode: 'PS',
+                              //default contry code, NP for Nepal
+
+                              decoration: InputDecoration(
+                                hintTextDirection: TextDirection.rtl,
+                                hintText: "رقم الهاتف",
+
+                                prefixIcon: Icon(
+                                  Icons.phone,
+                                  color: kPrimaryColor,
+                                ),
+                                hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                  fontFamily: fontFamilayTajawal,
+                                  color: Colors.black.withOpacity(.5),
+                                ),
+
+                                // border: OutlineInputBorder(
+                                //   borderSide: BorderSide(),
+                                // ),
+                              ),
+                              onChanged: (phone) {
+                                print(phone.completeNumber);
+                                setState(() {
+                                  phoneNumber = '${phone.completeNumber}';
+                                });
+                              },
+                              onCountryChanged: (country) {
+                                print('Country changed to: ' + country.name);
+                              },
+                            ),
+
+                            SizedBox(
                               height: 20,
                             ),
                             UserTypeRadio(),
@@ -367,17 +408,17 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Stack(
                                 children: [
                                   Positioned(
+                                    left: -15,
+                                    width: MediaQuery.of(context).size.width - 3 * mainMargin,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           child: Checkbox(
                                             value: verfyConditions,
                                             onChanged: (value) {
                                               setState(() {
-                                                verfyConditions =
-                                                    !verfyConditions;
+                                                verfyConditions = !verfyConditions;
                                               });
                                             },
                                             activeColor: kPrimaryColor,
@@ -389,52 +430,39 @@ class _SignupScreenState extends State<SignupScreen> {
                                             children: [
                                               TextSpan(
                                                 text: 'I agree to the ',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor
-                                                        .withOpacity(0.6),
-                                                    fontSize: 16),
+                                                style: TextStyle(color: kPrimaryColor.withOpacity(0.6), fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: 'Terms & Conditions',
                                                 style: TextStyle(
                                                     color: kPrimaryColor,
-                                                    decoration: TextDecoration
-                                                        .underline,
+                                                    decoration: TextDecoration.underline,
                                                     fontSize: 16),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        // single tapped
-                                                      },
+                                                recognizer: TapGestureRecognizer()
+                                                  ..onTap = () {
+                                                    // single tapped
+                                                  },
                                               ),
                                               TextSpan(
                                                 text: ' and ',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor
-                                                        .withOpacity(0.6),
-                                                    fontSize: 16),
+                                                style: TextStyle(color: kPrimaryColor.withOpacity(0.6), fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: 'Privacy Policy ',
                                                 style: TextStyle(
                                                     color: kPrimaryColor,
-                                                    decoration: TextDecoration
-                                                        .underline,
+                                                    decoration: TextDecoration.underline,
                                                     fontSize: 16),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        // long pressed
-                                                      },
+                                                recognizer: TapGestureRecognizer()
+                                                  ..onTap = () {
+                                                    // long pressed
+                                                  },
                                               ),
                                             ],
                                           ),
                                         )),
                                       ],
                                     ),
-                                    left: -15,
-                                    width: MediaQuery.of(context).size.width -
-                                        3 * mainMargin,
                                   ),
                                 ],
                               ),
@@ -459,27 +487,25 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                 return SizedBox(
                                   width: double.infinity,
-                                  child: RaisedButton(
-                                    padding: EdgeInsetsDirectional.only(
-                                        bottom: 20,
-                                        top: 20,
-                                        start: 20,
-                                        end: 20),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsetsDirectional.only(bottom: 20, top: 20, start: 20, end: 20),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      backgroundColor: kPrimaryColor,
+                                      textStyle: TextStyle(color: Colors.white70),
+                                    ),
                                     onPressed: () {
                                       if (formKey.currentState.validate()) {
                                         signUp(provider.userType);
 
-                                        print(
-                                            "Email: ${_email.text}  Password : ${_password.text}");
+                                        print("Email: ${_email.text}  Password : ${_password.text}");
                                       } else {
-                                        ToastMessage.showToast(
-                                            "Data is empty", false);
+                                        ToastMessage.showToast("Data is empty", false);
                                       }
-                                      print(
-                                          "Email: ${_email.text}  Password : ${_password.text}");
+                                      print("Email: ${_email.text}  Password : ${_password.text}");
                                     },
-                                    color: kPrimaryColor,
-                                    textColor: Colors.white70,
                                     child: Text(
                                       "تسجيل الحساب",
                                       style: TextStyle(
@@ -488,9 +514,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                         fontFamily: "Tajawal",
                                         color: Colors.white,
                                       ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
                                     ),
                                   ),
                                 );
@@ -517,15 +540,11 @@ class _SignupScreenState extends State<SignupScreen> {
     // } else {
     //   ToastMessage.showToast("Data is empty", false);
     // }
-    if (_email.text.isNotEmpty &&
-        _password.text.isNotEmpty &&
-        _firstName.text.isNotEmpty &&
-        _phone.text.isNotEmpty) {
+    if (_email.text.isNotEmpty && _password.text.isNotEmpty && _firstName.text.isNotEmpty && phoneNumber.isNotEmpty) {
       // SingingCharacter? usertype = Provider.of<AppProvider>(context,listen: false).userType;
       // SingingCharacter? usertype = context.watch<AppProvider>().userType;
       logInfo('user type ${usertype.toString()}');
-      bool isFreelancer =
-          usertype == SingingCharacter.freelancer ? true : false;
+      bool isFreelancer = usertype == SingingCharacter.freelancer ? true : false;
       logError('isFreelancer :$isFreelancer');
       late MyUser myUser;
       if (isFreelancer) {
@@ -534,19 +553,18 @@ class _SignupScreenState extends State<SignupScreen> {
             password: _password.text,
             address: '',
             name: _firstName.text,
-            phoneNumber: _phone.text,
+            phoneNumber: phoneNumber,
             display_picture: null,
             favourite_products: null,
             isFreelancer: isFreelancer ? true : false,
-            freelancerCategory:
-                Provider.of<AppProvider>(context,listen: false).freelancerCategory);
+            freelancerCategory: Provider.of<AppProvider>(context, listen: false).freelancerCategory);
       } else {
         myUser = MyUser(
           email: _email.text,
           password: _password.text,
           address: '',
           name: _firstName.text,
-          phoneNumber: _phone.text,
+          phoneNumber: phoneNumber,
           display_picture: null,
           favourite_products: null,
           isFreelancer: isFreelancer ? true : false,

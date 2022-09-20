@@ -1,7 +1,5 @@
-
 import 'package:edufly/models/course.dart';
 import 'package:flutter/material.dart';
-
 
 class CourseDetail extends StatelessWidget {
   static const routeName = '/courseDetail';
@@ -25,9 +23,7 @@ class CourseDetail extends StatelessWidget {
                   width: double.infinity,
                   height: 300,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(course.coverPhoto),
-                          fit: BoxFit.cover)))),
+                      image: DecorationImage(image: NetworkImage(course.coverPhoto), fit: BoxFit.cover)))),
           Container(
             padding: EdgeInsets.all(20),
             child: Column(
@@ -54,28 +50,29 @@ class CourseDetail extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       'Description',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                     )),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       course.description,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
                     )),
                 Container(
                     width: double.infinity,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      color: Theme.of(context).primaryColor,
-                      splashColor: Theme.of(context).accentColor,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                          color: Colors.blue,
+                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Theme.of(context).accentColor,
+                      ),
                       child: const Text(
                         'Enroll',
                         style: TextStyle(color: Colors.white),
                       ),
-                      textColor: Colors.blue,
                       onPressed: () {
                         // Provider.of<CourseProvider>(context, listen: false)
                         //     .enrollUser(course);

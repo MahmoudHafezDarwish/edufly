@@ -51,86 +51,85 @@ class _OrdersSreenState extends State<OrdersSreen> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: SingleChildScrollView(
-        child: Stack(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              alignment: Alignment.topCenter,
-              width: double.infinity,
-              height: 322,
-              color: Color(0xff3A58F5),
-              // margin: EdgeInsetsDirectional.only(start: 5, end: 10, top: 5),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12, top: 45.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(start: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'مرحبا بك,',
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Color(0xffffffff),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
+      child: ListView(
+        children: [
+          Stack(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                width: double.infinity,
+                height: 322,
+                color: Color(0xff3A58F5),
+                // margin: EdgeInsetsDirectional.only(start: 5, end: 10, top: 5),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 45.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(start: 8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'مرحبا بك,',
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Color(0xffffffff),
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'تطبيق الكتب الإلكترونية',
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Color(0xffffffff),
-                              fontSize: 19,
-                              fontWeight: FontWeight.w700,
+                            Text(
+                              'تطبيق الكتب الإلكترونية',
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Color(0xffffffff),
+                                fontSize: 19,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Spacer(),
-                    Image.asset(
-                      color: Colors.white,
-                      fit: BoxFit.fill,
-                      height: 38.6,
-                      width: 38.6,
-                      'images/study.png',
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: CircleAvatar(
-                          backgroundColor: kPrimaryExtraLightColor,
-                          child: Icon(
-                            color: kPrimaryColor,
-                            Icons.notifications,
-                            size: 35,
-                          )),
-                    ),
+                      Spacer(),
+                      Image.asset(
+                        color: Colors.white,
+                        fit: BoxFit.fill,
+                        height: 38.6,
+                        width: 38.6,
+                        'images/study.png',
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: CircleAvatar(
+                            backgroundColor: kPrimaryExtraLightColor,
+                            child: Icon(
+                              color: kPrimaryColor,
+                              Icons.notifications,
+                              size: 35,
+                            )),
+                      ),
 
-                    SizedBox(
-                      width: 7,
-                    )
-                    // Categories(),
-                    // SizedBox(height: 15,),
-                  ],
+                      SizedBox(
+                        width: 7,
+                      )
+                      // Categories(),
+                      // SizedBox(height: 15,),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
-              child: Padding(
+              Padding(
                 padding: const EdgeInsets.only(top: 105.0, bottom: 5),
                 child: Column(
                   children: [
@@ -162,21 +161,10 @@ class _OrdersSreenState extends State<OrdersSreen> {
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
+                              const BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                         ),
-                        // title: Text(
-                        //   'بحث عن كتاب',
-                        //   maxLines: 1,
-                        //   textAlign: TextAlign.start,
-                        //   overflow: TextOverflow.ellipsis,
-                        //   style: TextStyle(
-                        //     color: kTextColor2,
-                        //     fontSize: 19,
-                        //     fontWeight: FontWeight.normal,
-                        //   ),
-                        // ),
                         trailing: Image(
                           image: AssetImage('images/filtter.png'),
                         ),
@@ -199,8 +187,7 @@ class _OrdersSreenState extends State<OrdersSreen> {
                       ),
                       elevation: 5,
                       color: Colors.white,
-                      margin:
-                          EdgeInsetsDirectional.only(start: 8, end: 8, top: 10),
+                      margin: EdgeInsetsDirectional.only(start: 8, end: 8, top: 10),
                       child: Container(
                         height: 210,
                         child: Padding(
@@ -265,59 +252,68 @@ class _OrdersSreenState extends State<OrdersSreen> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsetsDirectional.only(top: 11),
-                      padding: EdgeInsetsDirectional.only(bottom: 10),
-                      width: 361,
-                      height: SizeConfig.screenHeight * 0.5,
-                      color: Colors.white,
-                      child: GridView(
-                        scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.only(right: 5, left: 5, bottom: 15),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                        children: [
-                          MainOrderCard(
-                            image: 'images/cat1.png',
-                            category: 'كتب جامعية',
-                            backgroudItem: Color(0XFFFFF3C7),
-                          ),
-                          MainOrderCard(
-                            image: 'images/cat2.png',
-                            category: 'المرحلة الثانوية',
-                            backgroudItem: Color(0XFFFFE3F6),
-                          ),
-                          MainOrderCard(
-                            image: 'images/cat3.png',
-                            category: 'المرحلة الإعدادية',
-                            backgroudItem: Color(0XFFC6FAFF),
-                          ),
-                          MainOrderCard(
-                            image: 'images/cat4.png',
-                            category: 'المرحلة الابتدائية',
-                            backgroudItem: Color(0XFFCEE0FF),
-                          ),
-                          MainOrderCard(
-                            image: 'images/out1.png',
-                            category: 'المكتبات',
-                            backgroudItem: Color(0XFFCEE0FF),
-                          ),
-                          MainOrderCard(
-                            image: 'images/out2.png',
-                            category: 'التصميم',
-                            backgroudItem: Color(0XFFFFE3F6),
-                          ),
-                        ],
-                      ),
-                    ),
+
                   ],
                 ),
               ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsetsDirectional.only(top: 11),
+            padding: const EdgeInsetsDirectional.only(bottom: 10),
+            width: SizeConfig.screenWidth * 0.8,
+
+            color: Colors.white,
+            child: GridView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+
+              padding:
+                  const EdgeInsets.only(right: 5, left: 5, bottom: 15),
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10),
+              children: [
+
+
+                MainOrderCard(
+                  image: 'images/cat1.png',
+                  category: 'كتب جامعية',
+                  backgroudItem: Color(0XFFFFF3C7),
+                ),
+                MainOrderCard(
+                  image: 'images/cat2.png',
+                  category: 'المرحلة الثانوية',
+                  backgroudItem: Color(0XFFFFE3F6),
+                ),
+                MainOrderCard(
+                  image: 'images/cat3.png',
+                  category: 'المرحلة الإعدادية',
+                  backgroudItem: Color(0XFFC6FAFF),
+                ),
+                MainOrderCard(
+                  image: 'images/cat4.png',
+                  category: 'المرحلة الابتدائية',
+                  backgroudItem: Color(0XFFCEE0FF),
+                ),
+                MainOrderCard(
+                  image: 'images/out1.png',
+                  category: 'رياض الأطفال',
+                  backgroudItem: Color(0XFFCEE0FF),
+                ),
+                MainOrderCard(
+                  image: 'images/out2.png',
+                  category: 'التصميم',
+                  backgroudItem: Color(0XFFFFE3F6),
+                ),
+
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
+
       ),
     );
   }

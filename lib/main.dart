@@ -3,6 +3,7 @@ import 'package:edufly/preferences/shared_pref_controller.dart';
 import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/RouterHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loggy/loggy.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,29 +35,34 @@ class ElearningApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-     providers: [
-            Provider<AppProvider>(create: (context) => AppProvider()),
-            // Provider<ProductDetails>(create: (context) => ProductDetails()),
-     ],
-      child: MaterialApp(
-        theme: ThemeData.light().copyWith(
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-              .apply(bodyColor: Colors.black),
-        ),
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en'),
-          const Locale('ar'),
-        ],
-        locale: const Locale('ar'),
-        debugShowCheckedModeBanner: false,
-        navigatorKey: RouterHelper.routerHelper.routerKey,
-        initialRoute: '/splash',
-        routes: RouterHelper.routerHelper.map,
-      ),
+      providers: [
+        Provider<AppProvider>(create: (context) => AppProvider()),
+        // Provider<ProductDetails>(create: (context) => ProductDetails()),
+      ],
+      child: ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              theme: ThemeData.light().copyWith(
+                textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(bodyColor: Colors.black),
+              ),
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en'),
+                const Locale('ar'),
+              ],
+              locale: const Locale('ar'),
+              debugShowCheckedModeBanner: false,
+              navigatorKey: RouterHelper.routerHelper.routerKey,
+              initialRoute: '/splash',
+              routes: RouterHelper.routerHelper.map,
+            );
+          }),
     );
   }
 }

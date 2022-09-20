@@ -1,5 +1,10 @@
+import 'package:edufly/models/modelsFirebase/consulting.dart';
+import 'package:edufly/utile/tost.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/AppProvider.dart';
 import '../../theme/theme.dart';
 import '../../utile/constants.dart';
 
@@ -9,9 +14,18 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
+  late TextEditingController textEditingController;
+
   @override
   void initState() {
     super.initState();
+    textEditingController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    textEditingController.dispose();
   }
 
   @override
@@ -28,34 +42,24 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top,
-                        left: 16,
-                        right: 16),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 16, right: 16),
                     child: Image.asset('images/feedbackImage.png'),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      'تساعدنا ملاحظاتك في تحسين التطبيق',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                          fontFamily: 'BesleyBlack'
-
-                      ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'تفضل اطلب استشارتك القانونية يوجد لدينا أفضل المحاميين و المستشاريين',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'BesleyBlack'),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 16),
                     child: const Text(
                       'امنح أفضل وقت لهذه اللحظة',
-
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'BesleyBlack'
-                      ),
+                      style: TextStyle(fontSize: 16, fontFamily: 'BesleyBlack'),
                     ),
                   ),
                   _buildComposer(),
@@ -67,20 +71,21 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         height: 40,
                         decoration: BoxDecoration(
                           color: kPrimaryColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                           boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(0.6),
-                                offset: const Offset(4, 4),
-                                blurRadius: 8.0),
+                            BoxShadow(color: Colors.grey.withOpacity(0.6), offset: const Offset(4, 4), blurRadius: 8.0),
                           ],
                         ),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {
-                              FocusScope.of(context).requestFocus(FocusNode());
+                            onTap: () async {
+                              String id = await addConsulting();
+                              if (id != null) {
+                                ToastMessage.showToast("IS DONE ADD", true);
+                              } else {
+                                ToastMessage.showToast("IS failed add", true);
+                              }
                             },
                             child: Center(
                               child: Padding(
@@ -116,10 +121,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           color: nearlyWhite,
           borderRadius: BorderRadius.circular(8),
           boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.8),
-                offset: const Offset(4, 4),
-                blurRadius: 8),
+            BoxShadow(color: Colors.grey.withOpacity(0.8), offset: const Offset(4, 4), blurRadius: 8),
           ],
         ),
         child: ClipRRect(
@@ -129,29 +131,35 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             constraints: const BoxConstraints(minHeight: 80, maxHeight: 160),
             color: nearlyWhite,
             child: SingleChildScrollView(
-              padding:
-                  const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
               child: TextField(
+                controller: textEditingController,
                 maxLines: null,
                 onChanged: (String txt) {},
                 style: TextStyle(
-                  fontFamily:  "Besley-Regular",
+                  fontFamily: "Besley-Regular",
                   fontSize: 16,
                   color: dark_grey,
                 ),
                 cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'أدخل ملاحظاتك...',
-                hintStyle: TextStyle(
-                  fontFamily:  "Besley-Regular",
-
-                )),
+                    hintText: 'أدخل استشارتك القانونية...',
+                    hintStyle: TextStyle(
+                      fontFamily: "Besley-Regular",
+                    )),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  addConsulting() async {
+    String textConsulting = textEditingController.text;
+    String myid = FirebaseAuth.instance.currentUser!.uid;
+    Consulting consulting = Consulting(textConsulting, myid);
+    return await Provider.of<AppProvider>(context, listen: false).addConsulting(consulting);
   }
 }

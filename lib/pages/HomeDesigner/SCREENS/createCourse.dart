@@ -44,6 +44,7 @@ class _CreateCourseState extends State<CreateCourse> {
     'المرحلة الثانوية',
     'المرحلة الإعدادية',
     'رياض الأطفال',
+    'التصميم'
   ];
 
   @override
@@ -308,8 +309,7 @@ class _CreateCourseState extends State<CreateCourse> {
                       DropdownButton(
                         alignment: Alignment.bottomLeft,
                         value: productTypeValue,
-                        items: productTypeValuesList
-                            .map<DropdownMenuItem<String>>((String value) {
+                        items: productTypeValuesList.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -612,19 +612,19 @@ class _CreateCourseState extends State<CreateCourse> {
                     height: 50,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: loading == false
-                        ? RaisedButton(
+                        ? TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: kPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                            ),
                             onPressed: () {
                               addNewProducts();
                               // await createCourseReq(),
                               // Navigator.pop(context)
                             },
-                            color: kPrimaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: const Text('Create course',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white)))
+                            child: const Text('Create course', style: TextStyle(fontSize: 20, color: Colors.white)))
                         : const CircularProgressIndicator()),
               ],
             ),
@@ -650,157 +650,159 @@ class _CreateCourseState extends State<CreateCourse> {
         price: num.parse(price),
         categoryOfCourses: productTypeValue,
         numberOfCourse: noOfCourse,
+        enrolled: false,
+        enrolledUser: [],
         highlightCourse: highlightCourse,
         pickedImageFile: _pickedFile);
     Provider.of<AppProvider>(context, listen: false).addProduct(myProduct);
   }
 
-  // Widget buildSellerField() {
-  //   return TextFormField(
-  //     controller: sellerFieldController,
-  //     keyboardType: TextInputType.name,
-  //     style: TextStyle(
-  //       fontWeight: FontWeight.normal,
-  //       fontSize: 16,
-  //       fontFamily: fontFamilayTajawal,
-  //       color: kPrimaryColor,
-  //     ),
-  //     decoration: InputDecoration(
-  //       hintText: "مثل : محمد محمود",
-  //       labelText: "البائع",
-  //       labelStyle: TextStyle(
-  //         fontWeight: FontWeight.normal,
-  //         fontSize: 16,
-  //         fontFamily: fontFamilayTajawal,
-  //         color: Colors.black.withOpacity(0.5),
-  //       ),
-  //       fillColor: kPrimaryColor,
-  //       floatingLabelStyle: TextStyle(
-  //         fontWeight: FontWeight.normal,
-  //         fontSize: 18,
-  //         fontFamily: fontFamilayTajawal,
-  //         color: kPrimaryColor,
-  //       ),
-  //       focusColor: kPrimaryColor,
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //     ),
-  //     validator: (_) {
-  //       if (sellerFieldController.text.isEmpty) {
-  //         return FIELD_REQUIRED_MSG;
-  //       }
-  //       return null;
-  //     },
-  //     autovalidateMode: AutovalidateMode.onUserInteraction,
-  //   );
-  // }
-  //
-  // Widget buildDescriptionField() {
-  //   return TextFormField(
-  //     controller: desciptionFieldController,
-  //     keyboardType: TextInputType.multiline,
-  //     style: TextStyle(
-  //       fontWeight: FontWeight.normal,
-  //       fontSize: 16,
-  //       fontFamily: fontFamilayTajawal,
-  //       color: kPrimaryColor,
-  //     ),
-  //     decoration: InputDecoration(
-  //       hintText: "بوربوينت مميز وبشرح سلس ومبسط لكل درس بالمنهج.",
-  //       labelText: "وصف المحتوى",
-  //       labelStyle: TextStyle(
-  //         fontWeight: FontWeight.normal,
-  //         fontSize: 16,
-  //         fontFamily: fontFamilayTajawal,
-  //         color: Colors.black.withOpacity(0.5),
-  //       ),
-  //       fillColor: kPrimaryColor,
-  //       floatingLabelStyle: TextStyle(
-  //         fontWeight: FontWeight.normal,
-  //         fontSize: 18,
-  //         fontFamily: fontFamilayTajawal,
-  //         color: kPrimaryColor,
-  //       ),
-  //       focusColor: kPrimaryColor,
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //     ),
-  //     validator: (_) {
-  //       if (desciptionFieldController.text.isEmpty) {
-  //         return FIELD_REQUIRED_MSG;
-  //       }
-  //       return null;
-  //     },
-  //     autovalidateMode: AutovalidateMode.onUserInteraction,
-  //     maxLines: null,
-  //   );
-  // }
-  //
-  // Widget buildHighlightsField() {
-  //   return TextFormField(
-  //     controller: highlightsFieldController,
-  //     keyboardType: TextInputType.multiline,
-  //     style: TextStyle(
-  //       fontWeight: FontWeight.normal,
-  //       fontSize: 16,
-  //       fontFamily: fontFamilayTajawal,
-  //       color: kPrimaryColor,
-  //     ),
-  //     decoration: InputDecoration(
-  //       hintText:
-  //           "مثل: جميع دروس المنهج وعددها 7 دروس بحسب نظام الثلاثة فصول..الخ",
-  //       labelText: "مميزات",
-  //       labelStyle: TextStyle(
-  //           fontWeight: FontWeight.normal,
-  //           fontSize: 16,
-  //           fontFamily: fontFamilayTajawal,
-  //           color: Colors.black.withOpacity(0.5),
-  //           overflow: TextOverflow.fade),
-  //       fillColor: kPrimaryColor,
-  //       floatingLabelStyle: TextStyle(
-  //         fontWeight: FontWeight.normal,
-  //         fontSize: 18,
-  //         fontFamily: fontFamilayTajawal,
-  //         color: kPrimaryColor,
-  //       ),
-  //       focusColor: kPrimaryColor,
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //     ),
-  //     validator: (_) {
-  //       if (highlightsFieldController.text.isEmpty) {
-  //         return FIELD_REQUIRED_MSG;
-  //       }
-  //       return null;
-  //     },
-  //     autovalidateMode: AutovalidateMode.onUserInteraction,
-  //     maxLines: null,
-  //   );
-  // }
-  //
-  // Widget buildDescribeProductTile(BuildContext context) {
-  //   return Form(
-  //     key: _describeProductFormKey,
-  //     child: ExpansionTile(
-  //       maintainState: true,
-  //       title: Text(
-  //         "وصف المنتج",
-  //         style: TextStyle(
-  //           color: Colors.black,
-  //           fontWeight: FontWeight.bold,
-  //           fontSize: 20,
-  //           fontFamily: fontFamilayTajawal,
-  //         ),
-  //       ),
-  //       leading: Icon(
-  //         Icons.description,
-  //       ),
-  //       childrenPadding: EdgeInsets.symmetric(
-  //           vertical: getProportionateScreenHeight(20), horizontal: 10),
-  //       children: [
-  //         buildHighlightsField(),
-  //         SizedBox(height: getProportionateScreenHeight(20)),
-  //         buildDescriptionField(),
-  //         SizedBox(height: getProportionateScreenHeight(20)),
-  //       ],
-  //     ),
-  //   );
-  // }
+// Widget buildSellerField() {
+//   return TextFormField(
+//     controller: sellerFieldController,
+//     keyboardType: TextInputType.name,
+//     style: TextStyle(
+//       fontWeight: FontWeight.normal,
+//       fontSize: 16,
+//       fontFamily: fontFamilayTajawal,
+//       color: kPrimaryColor,
+//     ),
+//     decoration: InputDecoration(
+//       hintText: "مثل : محمد محمود",
+//       labelText: "البائع",
+//       labelStyle: TextStyle(
+//         fontWeight: FontWeight.normal,
+//         fontSize: 16,
+//         fontFamily: fontFamilayTajawal,
+//         color: Colors.black.withOpacity(0.5),
+//       ),
+//       fillColor: kPrimaryColor,
+//       floatingLabelStyle: TextStyle(
+//         fontWeight: FontWeight.normal,
+//         fontSize: 18,
+//         fontFamily: fontFamilayTajawal,
+//         color: kPrimaryColor,
+//       ),
+//       focusColor: kPrimaryColor,
+//       floatingLabelBehavior: FloatingLabelBehavior.always,
+//     ),
+//     validator: (_) {
+//       if (sellerFieldController.text.isEmpty) {
+//         return FIELD_REQUIRED_MSG;
+//       }
+//       return null;
+//     },
+//     autovalidateMode: AutovalidateMode.onUserInteraction,
+//   );
+// }
+//
+// Widget buildDescriptionField() {
+//   return TextFormField(
+//     controller: desciptionFieldController,
+//     keyboardType: TextInputType.multiline,
+//     style: TextStyle(
+//       fontWeight: FontWeight.normal,
+//       fontSize: 16,
+//       fontFamily: fontFamilayTajawal,
+//       color: kPrimaryColor,
+//     ),
+//     decoration: InputDecoration(
+//       hintText: "بوربوينت مميز وبشرح سلس ومبسط لكل درس بالمنهج.",
+//       labelText: "وصف المحتوى",
+//       labelStyle: TextStyle(
+//         fontWeight: FontWeight.normal,
+//         fontSize: 16,
+//         fontFamily: fontFamilayTajawal,
+//         color: Colors.black.withOpacity(0.5),
+//       ),
+//       fillColor: kPrimaryColor,
+//       floatingLabelStyle: TextStyle(
+//         fontWeight: FontWeight.normal,
+//         fontSize: 18,
+//         fontFamily: fontFamilayTajawal,
+//         color: kPrimaryColor,
+//       ),
+//       focusColor: kPrimaryColor,
+//       floatingLabelBehavior: FloatingLabelBehavior.always,
+//     ),
+//     validator: (_) {
+//       if (desciptionFieldController.text.isEmpty) {
+//         return FIELD_REQUIRED_MSG;
+//       }
+//       return null;
+//     },
+//     autovalidateMode: AutovalidateMode.onUserInteraction,
+//     maxLines: null,
+//   );
+// }
+//
+// Widget buildHighlightsField() {
+//   return TextFormField(
+//     controller: highlightsFieldController,
+//     keyboardType: TextInputType.multiline,
+//     style: TextStyle(
+//       fontWeight: FontWeight.normal,
+//       fontSize: 16,
+//       fontFamily: fontFamilayTajawal,
+//       color: kPrimaryColor,
+//     ),
+//     decoration: InputDecoration(
+//       hintText:
+//           "مثل: جميع دروس المنهج وعددها 7 دروس بحسب نظام الثلاثة فصول..الخ",
+//       labelText: "مميزات",
+//       labelStyle: TextStyle(
+//           fontWeight: FontWeight.normal,
+//           fontSize: 16,
+//           fontFamily: fontFamilayTajawal,
+//           color: Colors.black.withOpacity(0.5),
+//           overflow: TextOverflow.fade),
+//       fillColor: kPrimaryColor,
+//       floatingLabelStyle: TextStyle(
+//         fontWeight: FontWeight.normal,
+//         fontSize: 18,
+//         fontFamily: fontFamilayTajawal,
+//         color: kPrimaryColor,
+//       ),
+//       focusColor: kPrimaryColor,
+//       floatingLabelBehavior: FloatingLabelBehavior.always,
+//     ),
+//     validator: (_) {
+//       if (highlightsFieldController.text.isEmpty) {
+//         return FIELD_REQUIRED_MSG;
+//       }
+//       return null;
+//     },
+//     autovalidateMode: AutovalidateMode.onUserInteraction,
+//     maxLines: null,
+//   );
+// }
+//
+// Widget buildDescribeProductTile(BuildContext context) {
+//   return Form(
+//     key: _describeProductFormKey,
+//     child: ExpansionTile(
+//       maintainState: true,
+//       title: Text(
+//         "وصف المنتج",
+//         style: TextStyle(
+//           color: Colors.black,
+//           fontWeight: FontWeight.bold,
+//           fontSize: 20,
+//           fontFamily: fontFamilayTajawal,
+//         ),
+//       ),
+//       leading: Icon(
+//         Icons.description,
+//       ),
+//       childrenPadding: EdgeInsets.symmetric(
+//           vertical: getProportionateScreenHeight(20), horizontal: 10),
+//       children: [
+//         buildHighlightsField(),
+//         SizedBox(height: getProportionateScreenHeight(20)),
+//         buildDescriptionField(),
+//         SizedBox(height: getProportionateScreenHeight(20)),
+//       ],
+//     ),
+//   );
+// }
 }

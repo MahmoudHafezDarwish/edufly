@@ -85,7 +85,7 @@ class _AddPostCourseState extends State<AddPostCourse> {
             title: Text('Error'),
             content: Text('Title and description are mandatory'),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text('Okay'),
                 onPressed: () {
                   Navigator.of(ctx).pop();
@@ -183,16 +183,20 @@ class _AddPostCourseState extends State<AddPostCourse> {
                 height: 50,
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: loading == false
-                    ? RaisedButton(
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(15.0)),
+                        ),
                         onPressed: () {
                           addPost();
                         },
                         child: const Text('Add post',
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white)),
-                        color: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(15.0)))
+
+                )
                     : CircularProgressIndicator(),
               ),
             ],

@@ -41,9 +41,9 @@ class _OutboardingScreenState extends State<OutboardingScreen> {
             controller: pageController,
             children: [
               OutBoardingContentScreen(
-                title: "مرحبًا بكم في متجر الكتب الإلكترونية Edufly",
+                title: "مرحبًا بكم في متجر الكتب الإلكترونية Design",
                 subTitle:
-                    "استكشف الكتب الإلكترونية التعليمية في تطبيق Edufly",
+                    "استكشف الكتب الإلكترونية التعليمية في تطبيق Design",
                 // image: 'images/out1.png',
                 image: Assets.images.out1.path,
               ),
@@ -55,7 +55,7 @@ class _OutboardingScreenState extends State<OutboardingScreen> {
                 image: Assets.images.out2.path,
               ),
               OutBoardingContentScreen(
-                title: "يقدم لك متجر الكتب الإلكترونية edufly\n ملايين الكتب الإلكترونية",
+                title: "يقدم لك متجر الكتب الإلكترونية Design\n ملايين الكتب الإلكترونية",
                 subTitle:
                     "ملايين العناوين عبر تصنيفات مثل كتب رياض الأطفال",
                 // image: 'images/out3.png',

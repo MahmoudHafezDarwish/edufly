@@ -10,6 +10,8 @@ class MyProduct {
   String owner_id='' ;
   String? numberOfCourse = '';
   String? categoryOfCourses = '';
+  bool isFavoruite = false ,enrolled =false;
+  List? enrolledUser = [];
   MyProduct({
     required this.owner_id,
     this.id,
@@ -21,7 +23,9 @@ class MyProduct {
     this.highlightCourse,
     this.categoryOfCourses,
     this.numberOfCourse,
-    this.userType
+    this.userType,
+    this.enrolled = false,
+    this.enrolledUser ,
   });
 
 
@@ -37,6 +41,9 @@ class MyProduct {
     map['highlightCourse'] = highlightCourse;
     map['owner_id'] = owner_id;
     map['userType'] = userType;
+    map['favourite_products'] = isFavoruite;
+    map['enrolled'] = enrolled;
+    map['enrolledUser'] = enrolledUser;
     return map;
   }
 
@@ -49,7 +56,11 @@ class MyProduct {
     owner_id = map['owner_id'];
     numberOfCourse = map['numberOfCourse'];
     highlightCourse = map['highlightCourse'];
+    linkOfCourse = map['linkOfCourse'];
     categoryOfCourses = map['categoryOfCourses'];
     userType = map['userType'];
+    isFavoruite = map['favourite_products'];
+    enrolled = map['enrolled']??false;
+    enrolledUser = map['enrolledUser']??[];
   }
 }

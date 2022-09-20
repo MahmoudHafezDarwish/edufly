@@ -1,15 +1,22 @@
+import 'package:edufly/get/stage_category_contrller.dart';
+import 'package:edufly/pages/courses/CoursesDetail.dart';
+import 'package:edufly/pages/data_streams/stage_products_stream.dart';
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/RouterHelper.dart';
 import 'package:edufly/utile/constants.dart';
 import 'package:edufly/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:provider/provider.dart';
 
+import '../../custom_widgets/product/products_section.dart';
 import '../../models/courseModel.dart';
 import '../../models/quad_clipper.dart';
 import '../../theme/color/light_color.dart';
 import '../../theme/theme.dart';
 
-class StageCourses extends StatelessWidget {
+class StageCourses extends StatefulWidget {
   const StageCourses({Key? key}) : super(key: key);
 
   static Widget circularContainer(double height, Color color,
@@ -25,92 +32,16 @@ class StageCourses extends StatelessWidget {
     );
   }
 
-  Widget _categoryRow(BuildContext context, String title) {
-    return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 20),
-      // height: 68,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: LightColor.extraDarkPurple,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: 30,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  SizedBox(width: 20),
-                  chip("العلوم", kPrimaryColor, height: 5),
-                  SizedBox(width: 10),
-                  chip("الدراسات الاجتماعية", LightColor.seeBlue, height: 5),
-                  SizedBox(width: 10),
-                  chip("المهارات التقنية", LightColor.orange, height: 5),
-                  SizedBox(width: 10),
-                  chip("اللغة العربية", LightColor.lightBlue, height: 5),
-                  SizedBox(width: 10),
-                  chip("اللغة الانجليزية", LightColor.yellow, height: 5),
-                ],
-              )),
-          SizedBox(height: 10)
-        ],
-      ),
-    );
-  }
-
-  Widget _courseList(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            courceInfo(context, CourseList.list[0],
-                decorationContainerA(Colors.redAccent, -110, -85),
-                background: LightColor.seeBlue),
-            Divider(
-              thickness: 1,
-              endIndent: 20,
-              indent: 20,
-            ),
-            courceInfo(context, CourseList.list[1], _decorationContainerB(),
-                background: LightColor.darkOrange),
-            Divider(
-              thickness: 1,
-              endIndent: 20,
-              indent: 20,
-            ),
-            courceInfo(context, CourseList.list[2], _decorationContainerC(),
-                background: LightColor.lightOrange2),
-          ],
-        ),
-      ),
-    );
-  }
-
   static Widget itemList(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        RouterHelper.routerHelper
-            .pushToSpecificScreenByNameWithoutPop('/CoursesDetails');
+        RouterHelper.routerHelper.pushToSpecificScreenByNameWithoutPop('/CoursesDetails');
       },
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            courceInfo(context, CourseList.list[index],
-                decorationContainerA(Colors.redAccent, -110, -85),
+            courceInfo(context, CourseList.list[index], decorationContainerA(Colors.redAccent, -110, -85),
                 background: LightColor.seeBlue),
             Divider(
               thickness: 1,
@@ -123,16 +54,7 @@ class StageCourses extends StatelessWidget {
     );
   }
 
-  Widget _courseListView(BuildContext context) {
-    return ListView.builder(
-        itemCount: CourseList.list.length,
-        itemBuilder: (context, index) {
-          return itemList(context, index);
-        });
-  }
-
-  static Widget card(BuildContext context,
-      {Color primaryColor = Colors.redAccent, Widget? backWidget}) {
+  static Widget card(BuildContext context, {Color primaryColor = Colors.redAccent, Widget? backWidget}) {
     return Container(
       height: 190,
       width: MediaQuery.of(context).size.width * .34,
@@ -140,10 +62,7 @@ class StageCourses extends StatelessWidget {
       decoration: BoxDecoration(
           color: primaryColor,
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                offset: Offset(0, 5), blurRadius: 10, color: Color(0x12000000))
-          ]),
+          boxShadow: <BoxShadow>[BoxShadow(offset: Offset(0, 5), blurRadius: 10, color: Color(0x12000000))]),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: backWidget,
@@ -151,9 +70,7 @@ class StageCourses extends StatelessWidget {
     );
   }
 
-  static Widget courceInfo(
-      BuildContext context, CourseModel model, Widget decoration,
-      {Color? background}) {
+  static Widget courceInfo(BuildContext context, CourseModel model, Widget decoration, {Color? background}) {
     return Container(
         height: 180,
         width: MediaQuery.of(context).size.width - 20,
@@ -161,8 +78,7 @@ class StageCourses extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: card(context,
-                  primaryColor: background!, backWidget: decoration),
+              child: card(context, primaryColor: background!, backWidget: decoration),
             ),
             Expanded(
                 child: Column(
@@ -175,10 +91,7 @@ class StageCourses extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(model.name,
-                            style: TextStyle(
-                                color: LightColor.purple,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
+                            style: TextStyle(color: LightColor.purple, fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                       CircleAvatar(
                         radius: 3,
@@ -198,28 +111,25 @@ class StageCourses extends StatelessWidget {
                           model.isFavoruit = !model.isFavoruit;
                         },
                         icon: Icon(
-                          model.isFavoruit
-                              ? Icons.favorite
-                              : Icons.favorite_outline_outlined,
+                          model.isFavoruit ? Icons.favorite : Icons.favorite_outline_outlined,
                           color: model.isFavoruit ? Colors.red : Colors.grey,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Text(model.university,
+                Text(model.subCategory,
                     style: AppTheme.h6Style.copyWith(
                       fontSize: 12,
                       color: LightColor.grey,
                     )),
                 SizedBox(height: 10),
                 Text(model.description,
-                    style: AppTheme.h6Style.copyWith(
-                        fontSize: 12, color: LightColor.extraDarkPurple)),
+                    style: AppTheme.h6Style.copyWith(fontSize: 12, color: LightColor.extraDarkPurple)),
                 SizedBox(height: 15),
                 Row(
                   children: <Widget>[
-                    chip(model.tag1, kPrimaryColor, height: 5),
+                    chip(model.price, kPrimaryColor, height: 5),
                     SizedBox(
                       width: 5,
                     ),
@@ -233,30 +143,21 @@ class StageCourses extends StatelessWidget {
                           padding: EdgeInsetsDirectional.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: model.addToCart
-                                ? kPrimaryExtraLightColor
-                                : kPrimaryColor,
+                            color: model.addToCart ? kPrimaryExtraLightColor : kPrimaryColor,
                           ),
                           child: Row(
                             children: [
                               Icon(
-                                model.addToCart
-                                    ? Icons.highlight_remove_rounded
-                                    : Icons.shopping_cart,
-                                color: model.addToCart
-                                    ? Colors.black
-                                    : Colors.white,
+                                model.addToCart ? Icons.highlight_remove_rounded : Icons.shopping_cart,
+                                color: model.addToCart ? Colors.black : Colors.white,
                               ),
                               Text(
                                 model.addToCart ? ' حذف من السلة' : 'إضافة للسلة',
                                 style: TextStyle(
-                                  color: model.addToCart
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: fontFamilayTajawal
-                                ),
+                                    color: model.addToCart ? Colors.black : Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: fontFamilayTajawal),
                               )
                             ],
                           ),
@@ -274,8 +175,7 @@ class StageCourses extends StatelessWidget {
         ));
   }
 
-  static Widget chip(String text, Color textColor,
-      {double height = 0, bool isPrimaryCard = false}) {
+  static Widget chip(String text, Color textColor, {double height = 0, bool isPrimaryCard = false}) {
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: height),
@@ -285,14 +185,12 @@ class StageCourses extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(
-            color: isPrimaryCard ? Colors.white : textColor, fontSize: 12),
+        style: TextStyle(color: isPrimaryCard ? Colors.white : textColor, fontSize: 12),
       ),
     );
   }
 
-  static Widget decorationContainerA(
-      Color primaryColor, double top, double left) {
+  static Widget decorationContainerA(Color primaryColor, double top, double left) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -307,8 +205,7 @@ class StageCourses extends StatelessWidget {
         Positioned(
           top: -30,
           right: -10,
-          child: circularContainer(80, Colors.transparent,
-              borderColor: Colors.white),
+          child: circularContainer(80, Colors.transparent, borderColor: Colors.white),
         ),
         Positioned(
           top: 110,
@@ -316,12 +213,106 @@ class StageCourses extends StatelessWidget {
           child: CircleAvatar(
             radius: 60,
             backgroundColor: LightColor.darkseeBlue,
-            child:
-                CircleAvatar(radius: 40, backgroundColor: LightColor.seeBlue),
+            child: CircleAvatar(radius: 40, backgroundColor: LightColor.seeBlue),
           ),
         ),
       ],
     );
+  }
+
+  static Positioned smallContainer(Color primaryColor, double top, double left, {double radius = 10}) {
+    return Positioned(
+        top: top,
+        left: left,
+        child: CircleAvatar(
+          radius: radius,
+          backgroundColor: primaryColor.withAlpha(255),
+        ));
+  }
+
+  @override
+  State<StageCourses> createState() => _StageCoursesState();
+}
+
+class _StageCoursesState extends State<StageCourses> {
+  Widget _categoryRow(BuildContext context, String title) {
+    return Container(
+      // margin: EdgeInsets.symmetric(horizontal: 20),
+      // height: 68,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              title,
+              style: TextStyle(color: LightColor.extraDarkPurple, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  SizedBox(width: 20),
+                  StageCourses.chip("العلوم", kPrimaryColor, height: 5),
+                  SizedBox(width: 10),
+                  StageCourses.chip("الدراسات الاجتماعية", LightColor.seeBlue, height: 5),
+                  SizedBox(width: 10),
+                  StageCourses.chip("المهارات التقنية", LightColor.orange, height: 5),
+                  SizedBox(width: 10),
+                  StageCourses.chip("اللغة العربية", LightColor.lightBlue, height: 5),
+                  SizedBox(width: 10),
+                  StageCourses.chip("اللغة الانجليزية", LightColor.yellow, height: 5),
+                ],
+              )),
+          SizedBox(height: 10)
+        ],
+      ),
+    );
+  }
+
+  Widget _courseList(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            StageCourses.courceInfo(
+                context, CourseList.list[0], StageCourses.decorationContainerA(Colors.redAccent, -110, -85),
+                background: LightColor.seeBlue),
+            Divider(
+              thickness: 1,
+              endIndent: 20,
+              indent: 20,
+            ),
+            StageCourses.courceInfo(context, CourseList.list[1], _decorationContainerB(),
+                background: LightColor.darkOrange),
+            Divider(
+              thickness: 1,
+              endIndent: 20,
+              indent: 20,
+            ),
+            StageCourses.courceInfo(context, CourseList.list[2], _decorationContainerC(),
+                background: LightColor.lightOrange2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _courseListView(BuildContext context) {
+    return ListView.builder(
+        itemCount: CourseList.list.length,
+        itemBuilder: (context, index) {
+          return StageCourses.itemList(context, index);
+        });
   }
 
   Widget _decorationContainerB() {
@@ -333,20 +324,14 @@ class StageCourses extends StatelessWidget {
           child: CircleAvatar(
             radius: 70,
             backgroundColor: LightColor.lightOrange2,
-            child: CircleAvatar(
-                radius: 30, backgroundColor: LightColor.darkOrange),
+            child: CircleAvatar(radius: 30, backgroundColor: LightColor.darkOrange),
           ),
         ),
-        Positioned(
-            bottom: -35,
-            right: -40,
-            child:
-                CircleAvatar(backgroundColor: LightColor.yellow, radius: 40)),
+        Positioned(bottom: -35, right: -40, child: CircleAvatar(backgroundColor: LightColor.yellow, radius: 40)),
         Positioned(
           top: 50,
           left: -40,
-          child: circularContainer(70, Colors.transparent,
-              borderColor: Colors.white),
+          child: StageCourses.circularContainer(70, Colors.transparent, borderColor: Colors.white),
         ),
       ],
     );
@@ -366,11 +351,9 @@ class StageCourses extends StatelessWidget {
         Positioned(
             bottom: -30,
             right: -25,
-            child: ClipRect(
-                clipper: QuadClipper(),
-                child: CircleAvatar(
-                    backgroundColor: LightColor.yellow, radius: 40))),
-        smallContainer(
+            child:
+                ClipRect(clipper: QuadClipper(), child: CircleAvatar(backgroundColor: LightColor.yellow, radius: 40))),
+        StageCourses.smallContainer(
           Colors.yellow,
           35,
           70,
@@ -379,45 +362,64 @@ class StageCourses extends StatelessWidget {
     );
   }
 
-  static Positioned smallContainer(Color primaryColor, double top, double left,
-      {double radius = 10}) {
-    return Positioned(
-        top: top,
-        left: left,
-        child: CircleAvatar(
-          radius: radius,
-          backgroundColor: primaryColor.withAlpha(255),
-        ));
+  late final StageProductsStream stageProductsStream = StageProductsStream();
+  final StageController ctrl = Get.find();
+
+  @override
+  void initState() {
+    stageProductsStream.stageCategory = ctrl.stage;
+    stageProductsStream.init();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    stageProductsStream.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // String stageCourse = Provider.of<AppProvider>(context).selectedProductCategory;
+    // final sc = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       body: Container(
         padding: EdgeInsetsDirectional.only(top: 10),
-        // child: Column(
-        //   children: <Widget>[
-        //     SizedBox(height: 20),
-        //     _categoryRow(context, "المرحلة الابتدائية"),
-        //     _courseList(context),
-        //   ],
-        // ),
         child: Stack(
           children: [
+            Positioned(top: 40, left: 0, right: 0, child: _categoryRow(context, ctrl.stage)),
             Positioned(
-                top: 20,
-                left: 0,
-                right: 0,
-                child: _categoryRow(context, "المرحلة الابتدائية")),
-            Positioned(
-                top: 90,
-                left: 0,
-                right: 0,
-                height: SizeConfig.screenHeight * 0.9,
-                child: _courseListView(context)),
+              top: 120,
+              left: 0,
+              right: 0,
+              height: SizeConfig.screenHeight * 0.9,
+              child: ProductsSection(
+                sectionTitle: "منهج ${ctrl.stage}:",
+                productsStreamController: stageProductsStream,
+                emptyListMessage: "لا يوجد تصاميم بعد !!",
+                onProductCardTapped: onProductCardTapped,
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> refreshPage() {
+    stageProductsStream.reload();
+    return Future<void>.value();
+  }
+
+  void onProductCardTapped(String productId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CoursesDetails(productId: productId),
+      ),
+    ).then((_) async {
+      await refreshPage();
+    });
   }
 }

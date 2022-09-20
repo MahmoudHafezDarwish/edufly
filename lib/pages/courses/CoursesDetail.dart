@@ -1,9 +1,12 @@
 import 'package:edufly/custom_widgets/widgets/dotted_text.dart';
+import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/constants.dart';
+import 'package:edufly/utile/tost.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import '../../custom_widgets/widgets/imag_slider.dart';
 import '../../data/firebase_firestore.dart';
@@ -13,21 +16,29 @@ import '../../theme/color/light_color.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../theme/theme.dart';
+import '../HomeCustomer/bottom_home_navigation.dart';
 
-class CoursesDetails extends StatelessWidget {
-  CoursesDetails(
-      {Key? key,
-      required this.productId,
-      this.order_name,
-      this.order_price,
-      this.add_to_cart,
-      this.image})
+class CoursesDetails extends StatefulWidget {
+  CoursesDetails({Key? key, required this.productId, this.order_name, this.order_price, this.add_to_cart, this.image})
       : super(key: key);
   final String? order_name;
   final String? order_price;
   final bool? add_to_cart;
   final String? image;
   final String productId;
+
+  @override
+  State<CoursesDetails> createState() => _CoursesDetailsState();
+}
+
+class _CoursesDetailsState extends State<CoursesDetails> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  bool? isFav;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +49,7 @@ class CoursesDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FutureBuilder<MyProduct>(
-              future: MyFirebaseFireStore.myFirebaseFireStore
-                  .getProductWithID(productId),
+              future: MyFirebaseFireStore.myFirebaseFireStore.getProductWithID(widget.productId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final MyProduct product = snapshot.data!;
@@ -59,7 +69,9 @@ class CoursesDetails extends StatelessWidget {
                                   SizedBox(
                                     height: 50,
                                   ),
-                                  ImagSlider(imagegList: [product.image_url??''],)
+                                  ImagSlider(
+                                    imagegList: [product.image_url ?? ''],
+                                  )
                                 ],
                               ),
                             ),
@@ -70,7 +82,7 @@ class CoursesDetails extends StatelessWidget {
                         height: 15,
                       ),
                       Text(
-                        product.name??'اسم المساق',
+                        product.name ?? 'اسم المساق',
                         style: TextStyle(
                           fontSize: 22,
                           fontFamily: fontFamilayTajawal,
@@ -95,16 +107,15 @@ class CoursesDetails extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-
                             Text(
                               '${product.numberOfCourse} درس',
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 22,
-                                  fontFamily: fontFamilayTajawal,
-                                  fontWeight: FontWeight.normal,
-                                  decorationStyle: TextDecorationStyle.solid,
-                                  ),
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontFamily: fontFamilayTajawal,
+                                fontWeight: FontWeight.normal,
+                                decorationStyle: TextDecorationStyle.solid,
+                              ),
                             ),
                             SizedBox(
                               width: 10,
@@ -134,11 +145,23 @@ class CoursesDetails extends StatelessWidget {
                           ),
                           Spacer(),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              setState(() {
+                                if (isFav ?? false) {
+                                  isFav = false;
+                                } else {
+                                  isFav = true;
+                                }
+                                print('isFav after :$isFav');
+                              });
+                              bool switchFav = await MyFirebaseFireStore.myFirebaseFireStore
+                                  .switchProductFavouriteStatus(widget.productId, isFav ?? false);
+                              print('switchFav :$switchFav');
+                            },
                             icon: Icon(
                               size: 35,
                               Icons.favorite,
-                              color: Colors.red,
+                              color: isFav ?? false ? Colors.red : Colors.grey,
                             ),
                           ),
                           SizedBox(
@@ -157,7 +180,6 @@ class CoursesDetails extends StatelessWidget {
                       SizedBox(
                         height: 5,
                       ),
-
                       DottedText(
                         '${product.description}',
                         style: TextStyle(
@@ -196,7 +218,6 @@ class CoursesDetails extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Center(
@@ -217,18 +238,32 @@ class CoursesDetails extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.shopping_cart,
-                                    color: Colors.white,
-                                  ),
-                                  Text(
-                                    'إضافة للسلة',
-                                    style: TextStyle(color: Colors.white, fontSize: 16),
-                                  )
-                                ],
+                              child: GestureDetector(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      'إضافة للسلة',
+                                      style: TextStyle(color: Colors.white, fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                                onTap: () async {
+                                  bool isAddTOCart = await Provider.of<AppProvider>(context, listen: false)
+                                      .addToCart(widget.productId);
+                                  ToastMessage.showToast(isAddTOCart?'تم إضافة المنتج للسلة بنجاح':'هناك خطأ', isAddTOCart);
+                                  print('isAddTOCart!$isAddTOCart');
+                                  if(isAddTOCart){
+                                    Navigator.pop(context);
+                                  }
+
+
+
+                                },
                               ),
                             ),
                           ),
@@ -602,6 +637,4 @@ class CoursesDetails extends StatelessWidget {
       ),
     );
   }
-
-
 }

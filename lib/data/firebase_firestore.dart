@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edufly/models/modelsFirebase/consulting.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,7 +17,9 @@ import 'package:edufly/models/modelsFirebase/Review.dart';
 import 'package:loggy/loggy.dart';
 import 'package:provider/provider.dart';
 
+import '../preferences/shared_pref_controller.dart';
 import '../utile/tost.dart';
+
 class MyFirebaseFireStore {
   MyFirebaseFireStore._();
 
@@ -35,18 +38,14 @@ class MyFirebaseFireStore {
   static const String PHONE_KEY = 'phoneNumber';
   static const String DP_KEY = "display_picture";
   static const String FAV_PRODUCTS_KEY = "favourite_products";
+  static const String ENROLED_USER_PRODUCTS_KEY = "enrolledUser";
 
   //collection references
-  static final CollectionReference users =
-      _myFirebaseFireStore._firebaseFirestore.collection("MyUser");
-  static final CollectionReference categories =
-      _myFirebaseFireStore._firebaseFirestore.collection("categories");
-  static final CollectionReference whatsNew =
-      _myFirebaseFireStore._firebaseFirestore.collection("whatsNew");
-  static final CollectionReference banners =
-      _myFirebaseFireStore._firebaseFirestore.collection("banners");
-  static final CollectionReference trending =
-      _myFirebaseFireStore._firebaseFirestore.collection("trending");
+  static final CollectionReference users = _myFirebaseFireStore._firebaseFirestore.collection("MyUser");
+  static final CollectionReference categories = _myFirebaseFireStore._firebaseFirestore.collection("categories");
+  static final CollectionReference whatsNew = _myFirebaseFireStore._firebaseFirestore.collection("whatsNew");
+  static final CollectionReference banners = _myFirebaseFireStore._firebaseFirestore.collection("banners");
+  static final CollectionReference trending = _myFirebaseFireStore._firebaseFirestore.collection("trending");
 
   static MyFirebaseFireStore get myFirebaseFireStore {
     return _myFirebaseFireStore;
@@ -110,12 +109,14 @@ class MyFirebaseFireStore {
 
   // 2-create User In Firebase.
   createUserInFs(MyUser myUser) async {
-    if(myUser.isFreelancer){
-      _firebaseFirestore.collection(Freelancer_USERS_COLLECTION_NAME).doc(myUser.id).set(myUser.toMap());
-    }else{
-      _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(myUser.id).set(myUser.toMap());
+    _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(myUser.id).set(myUser.toMap());
 
-    }
+    // if(myUser.isFreelancer){
+    //   _firebaseFirestore.collection(Freelancer_USERS_COLLECTION_NAME).doc(myUser.id).set(myUser.toMap());
+    // }else{
+    //   _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(myUser.id).set(myUser.toMap());
+    //
+    // }
   }
 
   /// 3-delete Current User Data
@@ -123,12 +124,10 @@ class MyFirebaseFireStore {
   Future<void> deleteCurrentUserData() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    final docRef =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final docRef = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     final cartCollectionRef = docRef.collection(CART_COLLECTION_NAME);
     final addressCollectionRef = docRef.collection(ADDRESSES_COLLECTION_NAME);
-    final ordersCollectionRef =
-        docRef.collection(ORDERED_PRODUCTS_COLLECTION_NAME);
+    final ordersCollectionRef = docRef.collection(ORDERED_PRODUCTS_COLLECTION_NAME);
 
     final cartDocs = await cartCollectionRef.get();
     for (final cartDoc in cartDocs.docs) {
@@ -150,8 +149,7 @@ class MyFirebaseFireStore {
 
   Future<bool> isProductFavourite(String productId) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     final userDocData = (await userDocSnapshot.get()).data();
     final favList = userDocData![FAV_PRODUCTS_KEY]?.cast<String>();
     if (favList.contains(productId)) {
@@ -165,8 +163,7 @@ class MyFirebaseFireStore {
 
   Future<List> get usersFavouriteProductsList async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     final userDocData = (await userDocSnapshot.get()).data();
     final favList = userDocData![FAV_PRODUCTS_KEY];
     return favList;
@@ -174,12 +171,9 @@ class MyFirebaseFireStore {
 
   /// 6- switch Product Favourite Status
 
-  Future<bool> switchProductFavouriteStatus(
-      String productId, bool newState) async {
+  Future<bool> switchProductFavouriteStatus(String productId, bool newState) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
-
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     if (newState == true) {
       userDocSnapshot.update({
         FAV_PRODUCTS_KEY: FieldValue.arrayUnion([productId])
@@ -196,11 +190,8 @@ class MyFirebaseFireStore {
 
   Future<List<String>> get addressesList async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final snapshot = await _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(ADDRESSES_COLLECTION_NAME)
-        .get();
+    final snapshot =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(ADDRESSES_COLLECTION_NAME).get();
     final addresses = <String>[];
     snapshot.docs.forEach((doc) {
       addresses.add(doc.id);
@@ -227,10 +218,8 @@ class MyFirebaseFireStore {
 
   Future<bool> addAddressForCurrentUser(Address address) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final addressesCollectionReference = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(ADDRESSES_COLLECTION_NAME);
+    final addressesCollectionReference =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(ADDRESSES_COLLECTION_NAME);
     await addressesCollectionReference.add(address.toMap());
     return true;
   }
@@ -239,11 +228,8 @@ class MyFirebaseFireStore {
 
   Future<bool> deleteAddressForCurrentUser(String id) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final addressDocReference = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(ADDRESSES_COLLECTION_NAME)
-        .doc(id);
+    final addressDocReference =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(ADDRESSES_COLLECTION_NAME).doc(id);
     await addressDocReference.delete();
     return true;
   }
@@ -265,10 +251,8 @@ class MyFirebaseFireStore {
 
   Future<CartItem> getCartItemFromId(String id) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartCollectionRef = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME);
+    final cartCollectionRef =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME);
     final docRef = cartCollectionRef.doc(id);
     final docSnapshot = await docRef.get();
     final cartItem = CartItem.fromMap(docSnapshot.data()!, id: docSnapshot.id);
@@ -279,10 +263,8 @@ class MyFirebaseFireStore {
 
   Future<bool> addProductToCart(String productId) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartCollectionRef = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME);
+    final cartCollectionRef =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME);
     final docRef = cartCollectionRef.doc(productId);
     final docSnapshot = await docRef.get();
     bool alreadyPresent = docSnapshot.exists;
@@ -298,10 +280,8 @@ class MyFirebaseFireStore {
 
   Future<bool> removeProductFromCart(String cartItemID) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartCollectionReference = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME);
+    final cartCollectionReference =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME);
     await cartCollectionReference.doc(cartItemID).delete();
     return true;
   }
@@ -310,11 +290,8 @@ class MyFirebaseFireStore {
 
   Future<List> emptyCart() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartItems = await _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME)
-        .get();
+    final cartItems =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME).get();
     List orderedProductsUid = <String>[];
     for (final doc in cartItems.docs) {
       orderedProductsUid.add(doc.id);
@@ -322,14 +299,12 @@ class MyFirebaseFireStore {
     }
     return orderedProductsUid;
   }
-/// cartTotal
+
+  /// cartTotal
   Future<num> get cartTotal async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartItems = await _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME)
-        .get();
+    final cartItems =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME).get();
     num total = 0.0;
     for (final doc in cartItems.docs) {
       num itemsCount = doc.data()[CartItem.ITEM_COUNT_KEY];
@@ -343,10 +318,8 @@ class MyFirebaseFireStore {
 
   Future<bool> increaseCartItemCount(String cartItemID) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartCollectionRef = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME);
+    final cartCollectionRef =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME);
     final docRef = cartCollectionRef.doc(cartItemID);
     docRef.update({CartItem.ITEM_COUNT_KEY: FieldValue.increment(1)});
     return true;
@@ -356,10 +329,8 @@ class MyFirebaseFireStore {
 
   Future<bool> decreaseCartItemCount(String cartItemID) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final cartCollectionRef = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME);
+    final cartCollectionRef =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME);
     final docRef = cartCollectionRef.doc(cartItemID);
     final docSnapshot = await docRef.get();
     int currentCount = docSnapshot.data()![CartItem.ITEM_COUNT_KEY];
@@ -375,11 +346,8 @@ class MyFirebaseFireStore {
 
   Future<List> get allCartItemsList async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final querySnapshot = await _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(CART_COLLECTION_NAME)
-        .get();
+    final querySnapshot =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(CART_COLLECTION_NAME).get();
     List itemsId = <String>[];
     for (final item in querySnapshot.docs) {
       itemsId.add(item.id);
@@ -399,20 +367,35 @@ class MyFirebaseFireStore {
     for (final doc in orderedProductsSnapshot.docs) {
       orderedProductsId.add(doc.id);
     }
-    return orderedProductsId;
+    List<String> productsId = [];
+    for (var order in orderedProductsId) {
+      OrderedProduct orderedProduct = await getOrderedProductFromId(order);
+      print('my Order orderedProducts :${orderedProduct.productUid}+${orderedProduct.orderDate}');
+      productsId.add(orderedProduct.productUid!);
+      print('list of history products in for each${productsId.toString()}');
+
+      // final myProducts = await MyFirebaseFireStore.myFirebaseFireStore.getProductWithID(orderedProduct.productUid!);
+    }
+    print('list of history products ${productsId.toString()}');
+    return productsId;
   }
 
 //20 - add To My Orders
 
   Future<bool> addToMyOrders(List<OrderedProduct> orders) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final orderedProductsCollectionRef = _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .collection(ORDERED_PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final orderedProductsCollectionRef =
+        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).collection(ORDERED_PRODUCTS_COLLECTION_NAME);
     for (final order in orders) {
       await orderedProductsCollectionRef.add(order.toMap());
+
+      await productsCollectionReference.doc(order.productUid).update({
+        'enrolled': true,
+        ENROLED_USER_PRODUCTS_KEY: FieldValue.arrayUnion([uid])
+      });
     }
+
     return true;
   }
 
@@ -426,6 +409,9 @@ class MyFirebaseFireStore {
         .collection(ORDERED_PRODUCTS_COLLECTION_NAME)
         .doc(id)
         .get();
+    final data = doc.data();
+    print('getOrderedProductFromId$data');
+    // final orderedProduct =  OrderedProduct.fromMap(doc.data()!);
     final orderedProduct = OrderedProduct.fromMap(doc.data()!, id: doc.id);
     return orderedProduct;
   }
@@ -434,28 +420,32 @@ class MyFirebaseFireStore {
 
   Stream<DocumentSnapshot> get currentUserDataStream {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    return _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .get()
-        .asStream();
+    return _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).get().asStream();
   }
 
+  Future<MyUser> getUserFromFs(String id) async {
+    bool utype = SharedPrefController().getValueFor<bool>(key: PrefKeys.userIsFreelancer.name) ?? false;
 
-  Future<MyUser> getUserFromFs(bool isFreelancer,String id) async {
+    print('utype:::$utype');
+    // if(utype){
+    //   userCollctionName = Freelancer_USERS_COLLECTION_NAME;
+    // }else{
+    //   userCollctionName = USERS_COLLECTION_NAME;
+    // }
     String userCollctionName = USERS_COLLECTION_NAME;
-    logDebug('isFreelancer :',isFreelancer);
 
-    if(isFreelancer){
-      userCollctionName = Freelancer_USERS_COLLECTION_NAME;
-    }else{
-      userCollctionName = USERS_COLLECTION_NAME;
-    }
-    logDebug('userCollctionName :',userCollctionName);
-    DocumentSnapshot<Map<String, dynamic>> document = await _firebaseFirestore
-        .collection(userCollctionName)
-        .doc(id)
-        .get();
+    logDebug('userCollctionName :', USERS_COLLECTION_NAME);
+    DocumentSnapshot<Map<String, dynamic>> document =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(id).get();
+    Map<String, dynamic> userData = document.data()!;
+    userData['id'] = document.id;
+    MyUser myUser = MyUser.fromMap(userData);
+    return myUser;
+  }
+
+  Future<MyUser> getMyUserFromFs(String id) async {
+    DocumentSnapshot<Map<String, dynamic>> document =
+        await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(id).get();
     Map<String, dynamic> userData = document.data()!;
     userData['id'] = document.id;
     MyUser myUser = MyUser.fromMap(userData);
@@ -466,8 +456,7 @@ class MyFirebaseFireStore {
 
   Future<bool> updatePhoneForCurrentUser(String phone) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     await userDocSnapshot.update({PHONE_KEY: phone});
     return true;
   }
@@ -481,8 +470,7 @@ class MyFirebaseFireStore {
 
   Future<bool> uploadDisplayPictureForCurrentUser(String url) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     await userDocSnapshot.update(
       {DP_KEY: url},
     );
@@ -493,8 +481,7 @@ class MyFirebaseFireStore {
 
   Future<bool> removeDisplayPictureForCurrentUser() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot =
-        _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
+    final userDocSnapshot = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     await userDocSnapshot.update(
       {
         DP_KEY: FieldValue.delete(),
@@ -507,10 +494,7 @@ class MyFirebaseFireStore {
 
   Future<String> get displayPictureForCurrentUser async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final userDocSnapshot = await _firebaseFirestore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(uid)
-        .get();
+    final userDocSnapshot = await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).get();
     return userDocSnapshot.data()![DP_KEY];
   }
 
@@ -522,10 +506,10 @@ class MyFirebaseFireStore {
   ///  Start database helper for PRODUCTS
   /// */
   static const String PRODUCTS_COLLECTION_NAME = "products";
+  static const String Consulting_COLLECTION_NAME = "consulting";
   static const String REVIEWS_COLLECTOIN_NAME = "reviews";
 
-  Future<List> searchInProducts(String query,
-      {required ProductType productType}) async {
+  Future<List> searchInProducts(String query, {required ProductType productType}) async {
     Query queryRef;
     if (productType == null) {
       queryRef = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
@@ -538,15 +522,13 @@ class MyFirebaseFireStore {
     }
 
     Set productsId = Set<String>();
-    final querySearchInTags = await queryRef
-        .where(Product.SEARCH_TAGS_KEY, arrayContains: query)
-        .get();
+    final querySearchInTags = await queryRef.where(Product.SEARCH_TAGS_KEY, arrayContains: query).get();
     for (final doc in querySearchInTags.docs) {
       productsId.add(doc.id);
     }
     final queryRefDocs = await queryRef.get();
     for (final doc in queryRefDocs.docs) {
-      final product = Product.fromMap(doc.data()as Map<String,dynamic>, id: doc.id);
+      final product = Product.fromMap(doc.data() as Map<String, dynamic>, id: doc.id);
       if (product.title.toString().toLowerCase().contains(query) ||
           product.description.toString().toLowerCase().contains(query) ||
           product.highlights.toString().toLowerCase().contains(query) ||
@@ -559,54 +541,43 @@ class MyFirebaseFireStore {
   }
 
   Future<bool> addProductReview(String productId, Review review) async {
-    final reviewesCollectionRef = _firebaseFirestore
-        .collection(PRODUCTS_COLLECTION_NAME)
-        .doc(productId)
-        .collection(REVIEWS_COLLECTOIN_NAME);
+    final reviewesCollectionRef =
+        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId).collection(REVIEWS_COLLECTOIN_NAME);
     final reviewDoc = reviewesCollectionRef.doc(review.reviewerUid);
     if ((await reviewDoc.get()).exists == false) {
       reviewDoc.set(review.toMap());
       return await addUsersRatingForProduct(
         productId,
-        review.rating!, oldRating: 0,
+        review.rating!,
+        oldRating: 0,
       );
     } else {
       int oldRating = 0;
       oldRating = (await reviewDoc.get()).data()![Product.RATING_KEY];
       reviewDoc.update(review.toUpdateMap());
-      return await addUsersRatingForProduct(productId, review.rating!,
-          oldRating: oldRating);
+      return await addUsersRatingForProduct(productId, review.rating!, oldRating: oldRating);
     }
   }
 
-  Future<bool> addUsersRatingForProduct(String productId, int rating,
-      {required int oldRating}) async {
-    final productDocRef =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId);
-    final ratingsCount =
-        (await productDocRef.collection(REVIEWS_COLLECTOIN_NAME).get())
-            .docs
-            .length;
+  Future<bool> addUsersRatingForProduct(String productId, int rating, {required int oldRating}) async {
+    final productDocRef = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId);
+    final ratingsCount = (await productDocRef.collection(REVIEWS_COLLECTOIN_NAME).get()).docs.length;
     final productDoc = await productDocRef.get();
     final prevRating = productDoc.data()![Review.RATING_KEY];
     double newRating;
     if (oldRating == null) {
       newRating = (prevRating * (ratingsCount - 1) + rating) / ratingsCount;
     } else {
-      newRating =
-          (prevRating * (ratingsCount) + rating - oldRating) / ratingsCount;
+      newRating = (prevRating * (ratingsCount) + rating - oldRating) / ratingsCount;
     }
     final newRatingRounded = double.parse(newRating.toStringAsFixed(1));
     await productDocRef.update({Product.RATING_KEY: newRatingRounded});
     return true;
   }
 
-  Future<Review?> getProductReviewWithID(
-      String productId, String reviewId) async {
-    final reviewesCollectionRef = _firebaseFirestore
-        .collection(PRODUCTS_COLLECTION_NAME)
-        .doc(productId)
-        .collection(REVIEWS_COLLECTOIN_NAME);
+  Future<Review?> getProductReviewWithID(String productId, String reviewId) async {
+    final reviewesCollectionRef =
+        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId).collection(REVIEWS_COLLECTOIN_NAME);
     final reviewDoc = await reviewesCollectionRef.doc(reviewId).get();
     if (reviewDoc.exists) {
       return Review.fromMap(reviewDoc.data()!, id: reviewDoc.id);
@@ -614,8 +585,7 @@ class MyFirebaseFireStore {
     return null;
   }
 
-  Stream<List<Review>> getAllReviewsStreamForProductId(
-      String productId) async* {
+  Stream<List<Review>> getAllReviewsStreamForProductId(String productId) async* {
     final reviewesQuerySnapshot = _firebaseFirestore
         .collection(PRODUCTS_COLLECTION_NAME)
         .doc(productId)
@@ -633,80 +603,69 @@ class MyFirebaseFireStore {
   }
 
   Future<MyProduct>? getProductWithID(String productId) async {
-    final docSnapshot = await _firebaseFirestore
-        .collection(PRODUCTS_COLLECTION_NAME)
-        .doc(productId)
-        .get();
-
+    final docSnapshot = await _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId).get();
+    print('doc :${docSnapshot.data().toString()}');
     if (docSnapshot.exists) {
-      return MyProduct.fromMap(docSnapshot.data()!);
-    }else{
+      MyProduct product = MyProduct.fromMap(docSnapshot.data()!);
+      return product;
+    } else {
       return MyProduct(owner_id: '');
     }
-    
   }
 
   Future<String> addUsersProduct(Product product) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     final productMap = product.toMap();
     product.owner = uid;
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final docRef = await productsCollectionReference.add(product.toMap());
     await docRef.update({
-      Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion(
-          [productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
+      Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion([productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
     });
     return docRef.id;
   }
 
-  Future<String> addDesignerProduct(MyProduct product,String category) async {
-    // String uid = FirebaseAuth.instance.currentUser!.uid;
-    product.userType = category ;
-    final productMap = product.toMap();
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+  Future<String> addDesignerProduct(MyProduct product, String category) async {
+    product.userType = category;
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final docRef = await productsCollectionReference.add(product.toMap());
     if (docRef != null) {
       ToastMessage.showToast("IS DONE ADD", true);
     } else {
       ToastMessage.showToast("IS failed add", true);
     }
-    // await docRef.update({
-    //   Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion(
-    //       [productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
-    // });
+
+    return docRef.id;
+  }
+  Future<String> addConsulting(Consulting consulting)async{
+    final consultingCollectionReference = _firebaseFirestore.collection(Consulting_COLLECTION_NAME);
+    final docRef = await consultingCollectionReference.add(consulting.toMap());
     return docRef.id;
   }
 
   Future<bool> deleteUserProduct(String productId) async {
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     await productsCollectionReference.doc(productId).delete();
     return true;
   }
 
   Future<String> updateUsersProduct(Product product) async {
     final productMap = product.toUpdateMap();
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final docRef = productsCollectionReference.doc(product.id);
     await docRef.update(productMap);
     if (product.productType != null) {
       await docRef.update({
-        Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion(
-            [productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
+        Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion([productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
       });
     }
     return docRef.id;
   }
 
   Future<List> getCategoryProductsList(ProductType productType) async {
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final queryResult = await productsCollectionReference
-        .where(Product.PRODUCT_TYPE_KEY,
-            isEqualTo: EnumToString.convertToString(productType))
+        .where(Product.PRODUCT_TYPE_KEY, isEqualTo: EnumToString.convertToString(productType))
         .get();
     List productsId = <String>[];
     for (final product in queryResult.docs) {
@@ -718,10 +677,27 @@ class MyFirebaseFireStore {
 
   Future<List> get usersProductsList async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final querySnapshot = await productsCollectionReference.where(Product.OWNER_KEY, isEqualTo: uid).get();
+    List usersProducts = <String>[];
+    querySnapshot.docs.forEach((doc) {
+      usersProducts.add(doc.id);
+    });
+    return usersProducts;
+  }
+
+  Future<List> get enrolledProductsList async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final querySnapshot = await productsCollectionReference
-        .where(Product.OWNER_KEY, isEqualTo: uid)
+        .where(
+          Product.OWNER_KEY,
+          isEqualTo: uid,
+        )
+        .where(
+          "enrolled",
+          isEqualTo: true,
+        )
         .get();
     List usersProducts = <String>[];
     querySnapshot.docs.forEach((doc) {
@@ -730,13 +706,48 @@ class MyFirebaseFireStore {
     return usersProducts;
   }
 
-  Future<List> get stageProductsList async {
-    String categoryStage = 'المرحلة الإعدادية';
-    final productsCollectionReference =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+  Future<List> get enrolledUserList async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final querySnapshot = await productsCollectionReference
-        .where(Product.CATEGORY_KEY, isEqualTo: categoryStage)
+        .where(
+          Product.OWNER_KEY,
+          isEqualTo: uid,
+        )
+        .where(
+          "enrolled",
+          isEqualTo: true,
+        )
         .get();
+    List usersProducts = <String>[];
+    querySnapshot.docs.forEach((doc) async {
+      MyProduct? myProduct = await getProductWithID(doc.id);
+      if (myProduct != null) {
+        usersProducts = myProduct.enrolledUser!;
+      }
+    });
+    return usersProducts;
+  }
+
+  Future<List<MyUser>>? getEnrolledUser(List usersId) async {
+    print('=======================');
+    print('users enrolled Id${usersId.length}');
+    List<MyUser> listUser = [];
+    for (var userID in usersId)  {
+      print(' enrolled userId ${userID}');
+      MyUser user = await getMyUserFromFs(userID);
+      listUser.add(user);
+      print('list User length :${listUser.length}');
+    }
+    print('listUser${listUser.length}');
+    print('=======================');
+    return listUser;
+  }
+
+  Future<List> getStageProductsList(String categoryStage) async {
+    // String categoryStage = 'المرحلة الإعدادية';
+    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
+    final querySnapshot = await productsCollectionReference.where(Product.CATEGORY_KEY, isEqualTo: categoryStage).get();
     List usersProducts = <String>[];
     querySnapshot.docs.forEach((doc) {
       usersProducts.add(doc.id);
@@ -745,8 +756,7 @@ class MyFirebaseFireStore {
   }
 
   Future<List> get allProductsList async {
-    final products =
-        await _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).get();
+    final products = await _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).get();
     List productsId = <String>[];
     for (final product in products.docs) {
       final id = product.id;
@@ -755,11 +765,9 @@ class MyFirebaseFireStore {
     return productsId;
   }
 
-  Future<bool> updateProductsImages(
-      String productId, List<String> imgUrl) async {
+  Future<bool> updateProductsImages(String productId, List<String> imgUrl) async {
     final Product updateProduct = Product('', images: imgUrl);
-    final docRef =
-        _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId);
+    final docRef = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId);
     await docRef.update(updateProduct.toUpdateMap());
     return true;
   }
@@ -776,14 +784,10 @@ class MyFirebaseFireStore {
   Future<bool> addProduct(MyProduct product, String category) async {
     try {
       String myid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentReference documentCategory = await _firebaseFirestore
-          .collection('categories')
-          .add({'category': category});
+      DocumentReference documentCategory =
+          await _firebaseFirestore.collection('categories').add({'category': category});
       product.id = myid;
-      final result = await categories
-          .doc(category)
-          .collection('Product')
-          .add(product.toMap());
+      final result = await categories.doc(category).collection('Product').add(product.toMap());
       if (result != null) {
         ToastMessage.showToast("IS DONE ADD", true);
         return true;
@@ -792,7 +796,6 @@ class MyFirebaseFireStore {
 
         return false;
       }
-
     } on FirebaseException catch (e) {
       print("FirebaseException :::$e");
       ToastMessage.showToast("FirebaseException", false);
@@ -813,28 +816,19 @@ class MyFirebaseFireStore {
 
   Future<void> deleteProduct(MyProduct product, String category) async {
     // await _firebaseFirestore.collection("Product").doc(product.id).delete();
-    final QuerySnapshot docReference =
-        await categories.where('category', isEqualTo: category).get();
+    final QuerySnapshot docReference = await categories.where('category', isEqualTo: category).get();
     print('doc reference length : ${docReference.docs.length}');
 
-    final result = await categories
-        .doc(docReference.docs[0]['id'])
-        .collection('Product')
-        .doc(product.id)
-        .delete();
+    final result = await categories.doc(docReference.docs[0]['id']).collection('Product').doc(product.id).delete();
     return result;
   }
 
   Future<void> editProduct(MyProduct product, String category) async {
-    final QuerySnapshot docReference =
-        await categories.where('category', isEqualTo: category).get();
+    final QuerySnapshot docReference = await categories.where('category', isEqualTo: category).get();
     print('doc reference length : ${docReference.docs.length}');
 
-    final result = await categories
-        .doc(docReference.docs[0]['id'])
-        .collection('Product')
-        .doc(product.id)
-        .update(product.toMap());
+    final result =
+        await categories.doc(docReference.docs[0]['id']).collection('Product').doc(product.id).update(product.toMap());
 
     // await _firebaseFirestore
     //     .collection("Product")
@@ -853,8 +847,7 @@ class MyFirebaseFireStore {
   }
 
   Future<List<MyProduct>> getAllProducts() async {
-    QuerySnapshot<Map<String, dynamic>> allProductsSnapshot =
-        await _firebaseFirestore.collection('Product').get();
+    QuerySnapshot<Map<String, dynamic>> allProductsSnapshot = await _firebaseFirestore.collection('Product').get();
     List<MyProduct> allProducts = allProductsSnapshot.docs.map((e) {
       Map documentMap = e.data();
       documentMap['id'] = e.id;
@@ -891,18 +884,15 @@ class MyFirebaseFireStore {
   Future<List<MyProduct>> getOwnerProducts(String category) async {
     String myid = FirebaseAuth.instance.currentUser!.uid;
 
-    List<MyProduct> allProducts=[];
-    allProducts = await categories
-        .where('category', isEqualTo: category)
-        .get()
-        .then((value) {
+    List<MyProduct> allProducts = [];
+    allProducts = await categories.where('category', isEqualTo: category).get().then((value) {
       value.docs.forEach((queryDocumentSnapshot) {
         print('doc queryDocumentSnap  : ${queryDocumentSnapshot.data()}');
         DocumentReference? documentReference = queryDocumentSnapshot.data() as DocumentReference;
         print('doc documentReference  : ${documentReference.get().toString()}');
         print(
             'doc documentReference.collection  : ${documentReference.collection('category').doc().collection('Product').doc().get().toString()}');
-        documentReference.collection('Product').where('owner_id',isEqualTo:myid).get().then((querySnapshot) {
+        documentReference.collection('Product').where('owner_id', isEqualTo: myid).get().then((querySnapshot) {
           print('doc querySnapshot  : ${querySnapshot.docs.toString()}');
 
           return allProducts = querySnapshot.docs.map((e) {

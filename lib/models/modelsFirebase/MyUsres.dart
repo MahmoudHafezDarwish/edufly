@@ -5,8 +5,8 @@ class MyUser {
       phoneNumber,
       email,
       password,
-      display_picture,
-      favourite_products;
+      display_picture;
+  List<dynamic>? favourite_products;
   bool isAdmin = false, isFreelancer = false;
 
   MyUser(

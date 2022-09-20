@@ -1,12 +1,16 @@
+import 'package:edufly/get/stage_category_contrller.dart';
+import 'package:edufly/pages/courses/StageCourses.dart';
 import 'package:edufly/provider/AppProvider.dart';
 import 'package:edufly/utile/RouterHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:provider/provider.dart';
 
 class MainOrderCard extends StatelessWidget {
-  late final String image;
-  late final String category;
+  late String image;
+  late String category;
   late Color backgroudItem = Color(0xffCEE0FF);
+  final controller = Get.put(StageController());
 
   MainOrderCard(
       {required this.image,
@@ -16,9 +20,19 @@ class MainOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Provider.of<AppProvider>(context,listen: false).setSelectedCategory(category);
-        RouterHelper.routerHelper.pushToSpecificScreenByNameWithoutPop('/StageCourses');
+      onTap: () {
+        controller.setStage(category);
+        // Provider.of<AppProvider>(context,listen: false).setSelectedCategory(category);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StageCourses(),
+            settings: RouteSettings(
+              arguments: category,
+            ),),
+        );
+        // RouterHelper.routerHelper
+        //     .pushToSpecificScreenByNameWithoutPop('/StageCourses');
       },
       child: Container(
         width: 260,

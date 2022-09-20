@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GradientText(
-              ' edufly',
+              ' Design',
               gradient: kPrimaryGradientColor,
               style: const TextStyle(
                   fontFamily: 'BesleyBlack',

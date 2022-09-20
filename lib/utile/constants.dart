@@ -93,7 +93,7 @@ class AppTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: black),
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white,fontFamily:fontFamilayTajawal),
     );
   }
 }

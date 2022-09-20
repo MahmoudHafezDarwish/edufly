@@ -1,81 +1,72 @@
+import 'package:edufly/custom_widgets/product/products_section.dart';
+import 'package:edufly/pages/courses/CoursesDetail.dart';
+import 'package:edufly/pages/data_streams/enrolled_products_stream.dart';
 import 'package:flutter/material.dart';
 import '../../../custom_widgets/widgets/FeedCard.dart';
 import '../../../models/course.dart';
 import '../../../models/userProfile.dart';
 import 'createCourse.dart';
 
-
 class EnrolledCourse extends StatefulWidget {
   @override
   static const routeName = '/EnrolledCourse';
+
   _enrolledCourseState createState() => _enrolledCourseState();
 }
 
 class _enrolledCourseState extends State<EnrolledCourse> {
+  late EnrolledProductsStream enrolledProductsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    enrolledProductsStream = EnrolledProductsStream();
+    enrolledProductsStream.init();
+  }
+
   @override
   void dispose() {
     super.dispose();
+    enrolledProductsStream.dispose();
   }
 
   double borderRadius = 10, padding = 10;
+
   Widget build(BuildContext context) {
-    // final course = Provider.of<CourseProvider>(context);
-    final courseFeed = [  Course(
-      id: '#1',
-      title: 'التفكير الناقد ثالث متوسط-ثلاثة فصول',
-      description:
-      'جميع دروس منهج التفكير الناقد - الفصل الأول - وعددها 7 دروس \nبوربوينت مميز وعصري خاص لكل درس بالمنهج.',
-      coverPhoto:
-      'https://cdn.salla.sa/Dzmd/cPVSyOSnH9Ue1RUivI4wKc8a9g2WaWCH0tGC5ZZE.png',
-      enrolled: true,
-      isAdmin: true,
-      enrolledId: [],
-      userProfile: UserProfile(
-          name: 'mahmoud',
-          parentId: '',
-          profile_picture: '',
-          gmail: 'mm@gmail.com',
-          uid: '',
-          createdCourse: [],
-          enrolledCourse: []),
-    ),  Course(
-      id: '#1',
-      title: 'التفكير الناقد ثالث متوسط-ثلاثة فصول',
-      description:
-      'جميع دروس منهج التفكير الناقد - الفصل الأول - وعددها 7 دروس \nبوربوينت مميز وعصري خاص لكل درس بالمنهج.',
-      coverPhoto:
-      'https://cdn.salla.sa/Dzmd/cPVSyOSnH9Ue1RUivI4wKc8a9g2WaWCH0tGC5ZZE.png',
-      enrolled: true,
-      isAdmin: true,
-      enrolledId: [],
-      userProfile: UserProfile(
-          name: 'mahmoud',
-          parentId: '',
-          profile_picture: '',
-          gmail: 'mm@gmail.com',
-          uid: '',
-          createdCourse: [],
-          enrolledCourse: []),
-    ),];
-    return courseFeed.length != 0
-        ? Container(
-            height: double.infinity,
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Container(
             width: double.infinity,
-            color: Colors.white,
-            child: ListView.builder(
-                itemCount: courseFeed.length,
-                itemBuilder: (BuildContext context, i) {
-                  return (FeedCard(
-                    courseFeed[i],
-                  ));
-                }),
-          )
-        : Center(
-            child: Text(
-              "لا يوجد بيانات",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            height: double.infinity,
+            margin: EdgeInsetsDirectional.only(start: 16, end: 16, top: 39),
+            color: Colors.transparent,
+            child: ProductsSection(
+              sectionTitle: " طلبات المسجلة :",
+              productsStreamController: enrolledProductsStream,
+              emptyListMessage: "لا يوجد لديك تصاميم بعد !!",
+              onProductCardTapped: onProductCardTapped,
             ),
-          );
-    ;
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> refreshPage() {
+    enrolledProductsStream.reload();
+    return Future<void>.value();
+  }
+
+  void onProductCardTapped(String productId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CoursesDetails(productId: productId),
+      ),
+    ).then((_) async {
+      await refreshPage();
+    });
   }
 }

@@ -12,8 +12,7 @@ import '../admin/admin_app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-  static  String typeUser = 'user' ;
-
+  static String typeUser = 'user';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -24,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _password;
   var formKey;
   late bool isPassword;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -70,8 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     margin: EdgeInsetsDirectional.only(
                       top: 80,
                     ),
-                    child: Text(
-                      "تسجيل دخول",
+                    child: const Text(
+                      'تسجيل دخول',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: fontFamilayTajawal,
@@ -106,8 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              textDirection:TextDirection.ltr,
-
+                              textDirection: TextDirection.ltr,
                               keyboardType: TextInputType.emailAddress,
                               controller: _email,
                               style: TextStyle(
@@ -162,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                               height: 45,
                               child: TextFormField(
-                                textDirection:TextDirection.ltr,
+                                textDirection: TextDirection.ltr,
                                 keyboardType: TextInputType.visiblePassword,
                                 textAlignVertical: TextAlignVertical.center,
                                 controller: _password,
@@ -184,15 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                 },
                                 decoration: InputDecoration(
-
-                                  contentPadding:
-                                      EdgeInsetsDirectional.only(start: 10),
+                                  contentPadding: EdgeInsetsDirectional.only(start: 10),
                                   hintText: "كلمة السر",
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      isPassword
-                                          ? Icons.remove_red_eye
-                                          : Icons.visibility_off,
+                                      isPassword ? Icons.remove_red_eye : Icons.visibility_off,
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -234,19 +229,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: RaisedButton(
-                                padding: EdgeInsetsDirectional.all(20),
-                                onPressed: () {
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsetsDirectional.all(20),
+                                  backgroundColor: kPrimaryColor,
+                                  textStyle: const TextStyle(
+                                    color: Colors.white70,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                onPressed: () async {
                                   if (formKey.currentState.validate()) {
-                                    print(
-                                        "Email: ${_email.text}  Password : ${_password.text}");
+                                    print("Email: ${_email.text}  Password : ${_password.text}");
                                   }
-                                  logIn();
+                                  bool isLogin = await logIn();
+                                  setState(() {
+                                    if (isLogin) {
+                                      isLoading = false;
+                                    } else {
+                                      isLoading = true;
+                                    }
+                                  });
                                 },
-                                color: kPrimaryColor,
-                                textColor: Colors.white70,
                                 child: Text(
-                                  "تسجيل دخول",
+                                  isLoading ? 'جاري التحميل' : 'تسجيل دخول',
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 20,
@@ -254,10 +262,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
                               ),
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             Align(
                               alignment: Alignment.center,
@@ -273,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: Colors.black.withOpacity(0.5),
                                     ),
                                   ),
-                                  FlatButton(
+                                  TextButton(
                                     onPressed: () {
                                       Navigator.pushNamed(context, '/signup');
                                     },
@@ -284,12 +292,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 16,
                                         fontFamily: fontFamilayTajawal,
                                         color: kPrimaryColor,
-                                          // decoration: TextDecoration
-                                          //     .underline,
+                                        // decoration: TextDecoration
+                                        //     .underline,
                                         decorationStyle: TextDecorationStyle.solid,
                                         decorationThickness: 5,
                                         decorationColor: Colors.black,
-
                                       ),
                                     ),
                                   ),
@@ -310,15 +317,16 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void logIn() {
+  Future<bool> logIn() async {
     if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
+      isLoading = true;
       //Navigator.pushReplacementNamed(context, '/main');
       // Navigator.pushReplacementNamed(context, '/main');
-      Provider.of<AppProvider>(context, listen: false)
-          .login(_email.text, _password.text);
+      return await Provider.of<AppProvider>(context, listen: false).login(_email.text, _password.text);
       // ToastMessage.showToast("Is Done", true);
     } else {
       ToastMessage.showToast("User name or password is empty", false);
+      return false;
     }
   }
 
@@ -332,12 +340,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacementNamed(context, '/main');
         ToastMessage.showToast("Is Done", true);
         LoginScreen.typeUser = 'user';
-
       } else if (_email.text.toString() == 'admin' && passText == 'admin') {
         Navigator.pushNamed(context, AdminApp.routeName);
         ToastMessage.showToast("Is Done", true);
-      } else if (_email.text.toString() == 'designer' &&
-          passText == 'designer') {
+      } else if (_email.text.toString() == 'designer' && passText == 'designer') {
         Navigator.pushReplacementNamed(context, MainNav.routeName);
         LoginScreen.typeUser = 'designer';
         ToastMessage.showToast("Is Done", true);

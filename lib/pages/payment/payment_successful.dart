@@ -9,7 +9,6 @@ class PaymentSuccessfulScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Text('إنهاء الدفع'),
@@ -40,11 +39,11 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                   fontFamily: "Besley-Regular",
                   color: Colors.black,
                 ),
-              ),Text(
+              ),
+              Text(
                 "لقد أرسلنا لك  العمل والإيصال عبر البريد الإلكتروني.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
                   fontFamily: "Besley-Regular",
@@ -56,13 +55,17 @@ class PaymentSuccessfulScreen extends StatelessWidget {
               ),
               SizedBox(
                 width: double.infinity,
-                child: RaisedButton(
-                  padding: EdgeInsetsDirectional.all(20),
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, "/RatingScreen");
                   },
-                  color: kPrimaryColor,
-                  textColor: Colors.white70,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    textStyle: TextStyle(color: Colors.white70),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   child: Text(
                     "إنهاء!",
                     style: TextStyle(
@@ -71,9 +74,6 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                       fontFamily: "Besley-Regular",
                       color: Colors.white,
                     ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
               ),

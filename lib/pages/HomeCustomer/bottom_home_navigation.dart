@@ -24,7 +24,7 @@ class _HomeScreenBottomState extends State<HomeScreenBottom> {
   _HomeScreenBottomState(this.indexN);
 
   // List<Widget> _screens = [HomeScreen(), ProfileScreen()];
-  List<Screen> _screens = [
+  final List<Screen> _screens = [
     Screen(OrdersSreen(), 'Home'),
     Screen(FavouriteScreen(), 'Favourite'),
     Screen(HomeCartScreen(), 'Cart'),
