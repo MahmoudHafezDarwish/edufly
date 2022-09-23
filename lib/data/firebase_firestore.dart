@@ -1,23 +1,18 @@
 import 'dart:io';
-import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edufly/models/modelsFirebase/consulting.dart';
+import 'package:Design/models/modelsFirebase/Address.dart';
+import 'package:Design/models/modelsFirebase/CartItem.dart';
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
+import 'package:Design/models/modelsFirebase/OrderedProduct.dart';
+import 'package:Design/models/modelsFirebase/Product.dart';
+import 'package:Design/models/modelsFirebase/Review.dart';
+import 'package:Design/models/modelsFirebase/consulting.dart';
+import 'package:Design/models/modelsFirebase/my_product.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 
-import 'package:edufly/models/modelsFirebase/Address.dart';
-import 'package:edufly/models/modelsFirebase/OrderedProduct.dart';
-import 'package:edufly/models/modelsFirebase/CartItem.dart';
-import 'package:edufly/models/modelsFirebase/MyUsres.dart';
-import 'package:edufly/models/modelsFirebase/Product.dart';
-import 'package:edufly/models/modelsFirebase/my_product.dart';
-import 'package:edufly/models/modelsFirebase/Review.dart';
-import 'package:loggy/loggy.dart';
-import 'package:provider/provider.dart';
-
-import '../preferences/shared_pref_controller.dart';
 import '../utile/tost.dart';
 
 class MyFirebaseFireStore {
@@ -30,7 +25,6 @@ class MyFirebaseFireStore {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
   static const String USERS_COLLECTION_NAME = "MyUser";
-  static const String Freelancer_USERS_COLLECTION_NAME = "Freelancer";
   static const String ADDRESSES_COLLECTION_NAME = "addresses";
   static const String CART_COLLECTION_NAME = "cart";
   static const String ORDERED_PRODUCTS_COLLECTION_NAME = "ordered_products";
@@ -43,9 +37,7 @@ class MyFirebaseFireStore {
   //collection references
   static final CollectionReference users = _myFirebaseFireStore._firebaseFirestore.collection("MyUser");
   static final CollectionReference categories = _myFirebaseFireStore._firebaseFirestore.collection("categories");
-  static final CollectionReference whatsNew = _myFirebaseFireStore._firebaseFirestore.collection("whatsNew");
-  static final CollectionReference banners = _myFirebaseFireStore._firebaseFirestore.collection("banners");
-  static final CollectionReference trending = _myFirebaseFireStore._firebaseFirestore.collection("trending");
+
 
   static MyFirebaseFireStore get myFirebaseFireStore {
     return _myFirebaseFireStore;
@@ -126,16 +118,11 @@ class MyFirebaseFireStore {
 
     final docRef = _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid);
     final cartCollectionRef = docRef.collection(CART_COLLECTION_NAME);
-    final addressCollectionRef = docRef.collection(ADDRESSES_COLLECTION_NAME);
     final ordersCollectionRef = docRef.collection(ORDERED_PRODUCTS_COLLECTION_NAME);
 
     final cartDocs = await cartCollectionRef.get();
     for (final cartDoc in cartDocs.docs) {
       await cartCollectionRef.doc(cartDoc.id).delete();
-    }
-    final addressesDocs = await addressCollectionRef.get();
-    for (final addressDoc in addressesDocs.docs) {
-      await addressCollectionRef.doc(addressDoc.id).delete();
     }
     final ordersDoc = await ordersCollectionRef.get();
     for (final orderDoc in ordersDoc.docs) {
@@ -410,8 +397,6 @@ class MyFirebaseFireStore {
         .doc(id)
         .get();
     final data = doc.data();
-    print('getOrderedProductFromId$data');
-    // final orderedProduct =  OrderedProduct.fromMap(doc.data()!);
     final orderedProduct = OrderedProduct.fromMap(doc.data()!, id: doc.id);
     return orderedProduct;
   }
@@ -423,24 +408,15 @@ class MyFirebaseFireStore {
     return _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(uid).get().asStream();
   }
 
-  Future<MyUser> getUserFromFs(String id) async {
-    bool utype = SharedPrefController().getValueFor<bool>(key: PrefKeys.userIsFreelancer.name) ?? false;
-
-    print('utype:::$utype');
-    // if(utype){
-    //   userCollctionName = Freelancer_USERS_COLLECTION_NAME;
-    // }else{
-    //   userCollctionName = USERS_COLLECTION_NAME;
-    // }
-    String userCollctionName = USERS_COLLECTION_NAME;
-
-    logDebug('userCollctionName :', USERS_COLLECTION_NAME);
+  Future<MyUser?> getUserFromFs(String id) async {
     DocumentSnapshot<Map<String, dynamic>> document =
         await _firebaseFirestore.collection(USERS_COLLECTION_NAME).doc(id).get();
-    Map<String, dynamic> userData = document.data()!;
-    userData['id'] = document.id;
-    MyUser myUser = MyUser.fromMap(userData);
-    return myUser;
+    if (document.data() != null) {
+      Map<String, dynamic> userData = document.data()!;
+      userData['id'] = document.id;
+      MyUser myUser = MyUser.fromMap(userData);
+      return myUser;
+    }
   }
 
   Future<MyUser> getMyUserFromFs(String id) async {
@@ -604,7 +580,6 @@ class MyFirebaseFireStore {
 
   Future<MyProduct>? getProductWithID(String productId) async {
     final docSnapshot = await _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId).get();
-    print('doc :${docSnapshot.data().toString()}');
     if (docSnapshot.exists) {
       MyProduct product = MyProduct.fromMap(docSnapshot.data()!);
       return product;
@@ -637,7 +612,8 @@ class MyFirebaseFireStore {
 
     return docRef.id;
   }
-  Future<String> addConsulting(Consulting consulting)async{
+
+  Future<String> addConsulting(Consulting consulting) async {
     final consultingCollectionReference = _firebaseFirestore.collection(Consulting_COLLECTION_NAME);
     final docRef = await consultingCollectionReference.add(consulting.toMap());
     return docRef.id;
@@ -647,19 +623,6 @@ class MyFirebaseFireStore {
     final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     await productsCollectionReference.doc(productId).delete();
     return true;
-  }
-
-  Future<String> updateUsersProduct(Product product) async {
-    final productMap = product.toUpdateMap();
-    final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
-    final docRef = productsCollectionReference.doc(product.id);
-    await docRef.update(productMap);
-    if (product.productType != null) {
-      await docRef.update({
-        Product.SEARCH_TAGS_KEY: FieldValue.arrayUnion([productMap[Product.PRODUCT_TYPE_KEY].toString().toLowerCase()])
-      });
-    }
-    return docRef.id;
   }
 
   Future<List> getCategoryProductsList(ProductType productType) async {
@@ -730,22 +693,15 @@ class MyFirebaseFireStore {
   }
 
   Future<List<MyUser>>? getEnrolledUser(List usersId) async {
-    print('=======================');
-    print('users enrolled Id${usersId.length}');
     List<MyUser> listUser = [];
-    for (var userID in usersId)  {
-      print(' enrolled userId ${userID}');
+    for (var userID in usersId) {
       MyUser user = await getMyUserFromFs(userID);
       listUser.add(user);
-      print('list User length :${listUser.length}');
     }
-    print('listUser${listUser.length}');
-    print('=======================');
     return listUser;
   }
 
   Future<List> getStageProductsList(String categoryStage) async {
-    // String categoryStage = 'المرحلة الإعدادية';
     final productsCollectionReference = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME);
     final querySnapshot = await productsCollectionReference.where(Product.CATEGORY_KEY, isEqualTo: categoryStage).get();
     List usersProducts = <String>[];
@@ -765,75 +721,21 @@ class MyFirebaseFireStore {
     return productsId;
   }
 
-  Future<bool> updateProductsImages(String productId, List<String> imgUrl) async {
-    final Product updateProduct = Product('', images: imgUrl);
-    final docRef = _firebaseFirestore.collection(PRODUCTS_COLLECTION_NAME).doc(productId);
-    await docRef.update(updateProduct.toUpdateMap());
-    return true;
-  }
-
-  String getPathForProductImage(String id, int index) {
-    String path = "products/images/$id";
-    return path + "_$index";
-  }
-
   /// @
   ///  End database helper for PRODUCTS
   /// */
 
-  Future<bool> addProduct(MyProduct product, String category) async {
-    try {
-      String myid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentReference documentCategory =
-          await _firebaseFirestore.collection('categories').add({'category': category});
-      product.id = myid;
-      final result = await categories.doc(category).collection('Product').add(product.toMap());
-      if (result != null) {
-        ToastMessage.showToast("IS DONE ADD", true);
-        return true;
-      } else {
-        ToastMessage.showToast("IS failed add", true);
-
-        return false;
-      }
-    } on FirebaseException catch (e) {
-      print("FirebaseException :::$e");
-      ToastMessage.showToast("FirebaseException", false);
-    } catch (e) {
-      print("FirebaseException :::$e");
-    }
-    return false;
-  }
-
-  Future<MyProduct> getOneProduct(String id) async {
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await _firebaseFirestore.collection("Product").doc(id).get();
-    Map<String, dynamic> productMap = documentSnapshot.data()!;
-    productMap['id'] = documentSnapshot.id;
-    MyProduct product = MyProduct.fromMap(productMap);
-    return product;
-  }
-
   Future<void> deleteProduct(MyProduct product, String category) async {
     // await _firebaseFirestore.collection("Product").doc(product.id).delete();
     final QuerySnapshot docReference = await categories.where('category', isEqualTo: category).get();
-    print('doc reference length : ${docReference.docs.length}');
-
     final result = await categories.doc(docReference.docs[0]['id']).collection('Product').doc(product.id).delete();
     return result;
   }
 
   Future<void> editProduct(MyProduct product, String category) async {
     final QuerySnapshot docReference = await categories.where('category', isEqualTo: category).get();
-    print('doc reference length : ${docReference.docs.length}');
-
     final result =
         await categories.doc(docReference.docs[0]['id']).collection('Product').doc(product.id).update(product.toMap());
-
-    // await _firebaseFirestore
-    //     .collection("Product")
-    //     .doc(product.id)
-    //     .update(product.toMap());
     return result;
   }
 
@@ -846,55 +748,14 @@ class MyFirebaseFireStore {
     return imageUrl;
   }
 
-  Future<List<MyProduct>> getAllProducts() async {
-    QuerySnapshot<Map<String, dynamic>> allProductsSnapshot = await _firebaseFirestore.collection('Product').get();
-    List<MyProduct> allProducts = allProductsSnapshot.docs.map((e) {
-      Map documentMap = e.data();
-      documentMap['id'] = e.id;
-      MyProduct product = MyProduct.fromMap(documentMap);
-      return product;
-    }).toList();
-    return allProducts;
-  }
-
-  //
-  // // add Product To Cart
-  // addProductToCart(MyProduct product) async {
-  //   String myid = FirebaseAuth.instance.currentUser.uid;
-  //   _firebaseFirestore
-  //       .collection('MyUser')
-  //       .doc(myid)
-  //       .collection('cart')
-  //       .add(product.toMap());
-  // }
-
-  //add to cart
-  Future<void> addToCart(String uid, Map<String, dynamic> productMap) async {
-    await users.doc(uid).collection('cart').add(productMap);
-  }
-
-  //get from cart
-  Future<List<QueryDocumentSnapshot>> getFromCart(String uid) async {
-    final result = await users.doc(uid).collection('cart').get();
-    print('${result.docs.length}');
-    return result.docs;
-  }
-
   //get product list by category
   Future<List<MyProduct>> getOwnerProducts(String category) async {
     String myid = FirebaseAuth.instance.currentUser!.uid;
-
     List<MyProduct> allProducts = [];
     allProducts = await categories.where('category', isEqualTo: category).get().then((value) {
       value.docs.forEach((queryDocumentSnapshot) {
-        print('doc queryDocumentSnap  : ${queryDocumentSnapshot.data()}');
         DocumentReference? documentReference = queryDocumentSnapshot.data() as DocumentReference;
-        print('doc documentReference  : ${documentReference.get().toString()}');
-        print(
-            'doc documentReference.collection  : ${documentReference.collection('category').doc().collection('Product').doc().get().toString()}');
         documentReference.collection('Product').where('owner_id', isEqualTo: myid).get().then((querySnapshot) {
-          print('doc querySnapshot  : ${querySnapshot.docs.toString()}');
-
           return allProducts = querySnapshot.docs.map((e) {
             Map documentMap = e.data();
             documentMap['id'] = e.id;
@@ -902,57 +763,9 @@ class MyFirebaseFireStore {
             return product;
           }).toList();
         });
-        // return allProducts;
       });
       return allProducts;
     });
-    // print('doc reference length : ${docReference.docs.length}');
-    // List<QueryDocumentSnapshot> query = docReference.docs;
-    //
-    // query.map((element) {
-    //   QuerySnapshot<Map<String, dynamic>> allProductsSnapshot = element.data();
-    //   print(
-    //       'doc allProductsSnapshot length : ${allProductsSnapshot.docs.length}');
-    //   print(
-    //       'doc allProductsSnapshot data : ${allProductsSnapshot.docs.toString()}');
-    //
-    //   allProducts = allProductsSnapshot.docs.map((e) {
-    //     Map documentMap = e.get('hand bag');
-    //     documentMap['id'] = e.id;
-    //     Product product = Product.fromMap(documentMap);
-    //     return product;
-    //   }).toList();
-    // });
     return allProducts;
-  }
-
-  //checkout
-  Future<void> checkout() async {
-    final uid = await FirebaseAuth.instance.currentUser!.uid;
-    final cartCollection = await users.doc(uid).collection('cart').get();
-    // await cartCollection.docs.forEach((doc) async {
-    //   await _firebaseFirestore.runTransaction((Transaction transaction) async {
-    //     await transaction.delete(doc.reference);
-    //   });
-    // });
-  }
-
-  //get whatsnew
-  Future<List<QueryDocumentSnapshot>> getWhatsNew() async {
-    final result = await whatsNew.get();
-    return result.docs;
-  }
-
-  // get trending
-  Future<List<QueryDocumentSnapshot>> getTrending() async {
-    final result = await trending.get();
-    return result.docs;
-  }
-
-  //get banner image
-  Future<List<DocumentSnapshot>> getBannerImage() async {
-    final uid = await FirebaseAuth.instance.currentUser!.uid;
-    final results = await banners.get();
-    return results.docs;
   }
 }

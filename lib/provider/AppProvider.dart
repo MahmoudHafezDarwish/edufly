@@ -1,11 +1,10 @@
-import 'package:edufly/models/modelsFirebase/consulting.dart';
+import 'dart:io';
+
+import 'package:Design/models/modelsFirebase/consulting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loggy/loggy.dart';
-
-import 'dart:developer';
-import 'dart:io';
 
 import '../custom_widgets/widgets/user_type_radio.dart';
 import '../data/AuthFirebas.dart';
@@ -33,7 +32,7 @@ class AppProvider extends ChangeNotifier {
   String freelancerCategory = 'Designer';
   String selectedProductCategory = 'المرحلة الإعدادية';
 
-  setSelectedCategory(String selected){
+  setSelectedCategory(String selected) {
     selectedProductCategory = selected;
     notifyListeners();
   }
@@ -50,16 +49,13 @@ class AppProvider extends ChangeNotifier {
   List<MyProduct> allProduct = [];
   String category = 'Hand bag';
 
-
-
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
   getAllProduct() async {
     // await MyFirebaseFireStore.myFirebaseFireStore.getAllProducts();
-    this.allProduct =
-        await MyFirebaseFireStore.myFirebaseFireStore.getOwnerProducts(this.freelancerCategory);
+    this.allProduct = await MyFirebaseFireStore.myFirebaseFireStore.getOwnerProducts(this.freelancerCategory);
     notifyListeners();
   }
 
@@ -71,73 +67,78 @@ class AppProvider extends ChangeNotifier {
 
   signUp(MyUser myUser) async {
     try {
-      String? userId = await MyAuthFirebase.instance
-          .creatAccount(myUser.email!, myUser.password!);
+      String? userId = await MyAuthFirebase.instance.creatAccount(myUser.email!, myUser.password!);
       myUser.id = userId;
       await MyFirebaseFireStore.myFirebaseFireStore.createUserInFs(myUser);
-      // this.loggedUser = myUser;
+      this.loggedUser = myUser;
       // if (this.loggedUser != null) {
       //   await SharedPrefController().save(user: this.loggedUser!);
       //   logInfo('is save logged user${loggedUser!.isFreelancer}');
       // }
-      // if (!myUser.isFreelancer) {
-      //   RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
-      // } else {
-      //   RouterHelper.routerHelper
-      //       .pushToSpecificScreenByNameWithPop(MainNav.routeName);
-      // }
-      // ToastMessage.showToast("Is Done signUp", true);
+      if (!myUser.isFreelancer) {
+        RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
+      } else {
+        RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop(MainNav.routeName);
+      }
+      ToastMessage.showToast("تم تسجيل الحساب", true);
     } on Exception catch (e) {
       ToastMessage.showToast("Is Exception", false);
-      print(
-          'Excepton toString : ${e.toString()} :: runtimeType ${e.runtimeType}');
+      print('Excepton toString : ${e.toString()} :: runtimeType ${e.runtimeType}');
     }
   }
 
   Future<bool> login(String email, String password) async {
     try {
-      UserCredential? userCredential =
-          await MyAuthFirebase.instance.sigIn(email, password);
-      await getUserFromFirebase();
-      if (userCredential != null) {
-        ToastMessage.showToast("تم تسجيل الدخول", true);
-        if (this.loggedUser!.isFreelancer) {
-          RouterHelper.routerHelper
-              .pushToSpecificScreenByNameWithPop(MainNav.routeName);
+      UserCredential? userCredential = await MyAuthFirebase.instance.sigIn(email, password);
+      MyUser? myUser = await getUserFromFirebase();
+      if (myUser != null) {
+        if (userCredential != null) {
+          ToastMessage.showToast("تم تسجيل الدخول", true);
+          if (this.loggedUser!.isFreelancer) {
+            RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop(MainNav.routeName);
+          } else {
+            RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
+          }
+          if (this.loggedUser != null) {
+            await SharedPrefController().save(user: this.loggedUser!);
+            logInfo('is save logged user');
+          }
+          return true;
         } else {
-          RouterHelper.routerHelper.pushToSpecificScreenByNameWithPop('/main');
+          ToastMessage.showToast("يجب التحقق من الإيميل", false);
         }
-        if (this.loggedUser != null) {
-          await SharedPrefController().save(user: this.loggedUser!);
-          logInfo('is save logged user');
-        }
-        return true;
-      }else{
-        ToastMessage.showToast("يجب التحقق من الإيميل", false);
-
+      } else {
+        ToastMessage.showToast('ليس لديك حساب في التطبيق', false);
       }
     } on Exception catch (e) {
-      print(
-          'Excepton toString : ${e.toString()} :: runtimeType ${e.runtimeType}');
+      print('Excepton toString : ${e.toString()} :: runtimeType ${e.runtimeType}');
       ToastMessage.showToast("هناك مشكلة ما", false);
     }
     return false;
-
   }
 
   bool get isFreelancer {
     logInfo('${this.loggedUser?.isFreelancer}');
-    bool utype = SharedPrefController()
-            .getValueFor<bool>(key: PrefKeys.userIsFreelancer.name) ??
-        false;
+    bool utype = SharedPrefController().getValueFor<bool>(key: PrefKeys.userIsFreelancer.name) ?? false;
     return utype;
   }
 
-  getUserFromFirebase() async {
+  Future<MyUser?> getUserFromFirebase() async {
     String userid = FirebaseAuth.instance.currentUser!.uid;
-    this.loggedUser = await MyFirebaseFireStore.myFirebaseFireStore
-        .getUserFromFs( userid);
+    MyUser? myUser = await MyFirebaseFireStore.myFirebaseFireStore.getUserFromFs(userid);
+    this.loggedUser = myUser;
     notifyListeners();
+    return myUser;
+  }
+
+  Future<bool> deleteUserData() async {
+    try {
+      await MyFirebaseFireStore.myFirebaseFireStore.deleteCurrentUserData();
+      await MyAuthFirebase.instance.deleteUserAccount();
+      return true;
+    } on Exception catch (exception) {
+      return false;
+    }
   }
 
   logout() async {
@@ -149,21 +150,20 @@ class AppProvider extends ChangeNotifier {
   }
 
   addProduct(MyProduct product) async {
-    String image_url =
-        await MyFirebaseFireStore.myFirebaseFireStore.uploadImage(product.pickedImageFile!);
+    String image_url = await MyFirebaseFireStore.myFirebaseFireStore.uploadImage(product.pickedImageFile!);
     // MyProduct product = MyProduct(
     //     image_url: image_url,
     //     description: descriptionController.text,
     //     price: num.parse(priceController.text),
     //     name: nameController.text);
-    product.image_url =image_url;
+    product.image_url = image_url;
     // await MyFirebaseFireStore.myFirebaseFireStore.addProduct(product, freelancerCategory);
     await MyFirebaseFireStore.myFirebaseFireStore.addDesignerProduct(product, freelancerCategory);
     // getAllProduct();
-    Navigator.of(RouterHelper.routerHelper.routerKey.currentState!.context)
-        .pop();
+    Navigator.of(RouterHelper.routerHelper.routerKey.currentState!.context).pop();
   }
-  Future<String> addConsulting(Consulting consulting)async{
+
+  Future<String> addConsulting(Consulting consulting) async {
     return await MyFirebaseFireStore.myFirebaseFireStore.addConsulting(consulting);
   }
 
@@ -204,8 +204,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   deleteProduct(MyProduct productiD) async {
-    await MyFirebaseFireStore.myFirebaseFireStore
-        .deleteProduct(productiD, freelancerCategory);
+    await MyFirebaseFireStore.myFirebaseFireStore.deleteProduct(productiD, freelancerCategory);
     getAllProduct();
   }
 }

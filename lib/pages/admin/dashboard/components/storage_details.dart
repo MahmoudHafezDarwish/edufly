@@ -1,4 +1,4 @@
-import 'package:edufly/gen/assets.gen.dart';
+import 'package:Design/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utile/constants.dart';

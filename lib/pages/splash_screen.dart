@@ -1,5 +1,4 @@
-import 'package:edufly/pages/HomeDesigner/mainNav.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/pages/HomeDesigner/mainNav.dart';
 import 'package:flutter/material.dart';
 
 import '../custom_widgets/widgets/LinearGradientText.dart';
@@ -46,12 +45,12 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: const [
             GradientText(
               ' Design',
               gradient: kPrimaryGradientColor,
-              style: const TextStyle(
-                  fontFamily: 'BesleyBlack',
+              style: TextStyle(
+                  fontFamily: fontFamilayTajawal,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 10,
                   fontSize: 24,
@@ -62,15 +61,6 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(
               height: 5,
             ),
-            // Text(
-            //   "E-LEARNING",
-            //   style: TextStyle(
-            //       fontFamily: 'Lobster-Regular',
-            //       fontWeight: FontWeight.w400,
-            //       fontSize: 20,
-            //       color: Colors.black,
-            //       backgroundColor: Colors.transparent),
-            // ),
           ],
         ),
       ),

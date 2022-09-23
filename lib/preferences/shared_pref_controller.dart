@@ -1,4 +1,4 @@
-import 'package:edufly/models/modelsFirebase/MyUsres.dart';
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PrefKeys { loggedIn, id, name, email, lang, userIsFreelancer }

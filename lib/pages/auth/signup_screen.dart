@@ -1,10 +1,11 @@
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/pages/auth/privacy_policy.dart';
+import 'package:Design/utile/RouterHelper.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
-import 'package:string_validator/string_validator.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../custom_widgets/widgets/user_type_radio.dart';
@@ -24,14 +25,11 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   late TextEditingController _email;
 
-  // late TextEditingController _phone;
   String phoneNumber = '';
   late TextEditingController _firstName;
 
-  // late TextEditingController _address;
   late TextEditingController _password;
 
-  // late TextEditingController _ideNumber;
   bool isPassword = true;
   var formKey;
   bool isAccept = false;
@@ -42,10 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // TODO: implement initState
     _email = TextEditingController();
     _password = TextEditingController();
-    // _ideNumber = TextEditingController();
-    // _phone = TextEditingController();
     _firstName = TextEditingController();
-    // _address = TextEditingController();
     isPassword = true;
     formKey = GlobalKey<FormState>();
     super.initState();
@@ -53,14 +48,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _email.dispose();
     _password.dispose();
-    // _phone.dispose();
     _firstName.dispose();
-    // _address.dispose();
-    // _ideNumber.dispose();
   }
 
   @override
@@ -68,7 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Sign up'),
+        title: const Text('Sign up'),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData.fallback(),
@@ -84,7 +75,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsetsDirectional.only(
+                    margin: const EdgeInsetsDirectional.only(
                       top: 1,
                     ),
                     child: Text(
@@ -126,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             TextFormField(
                               keyboardType: TextInputType.text,
                               controller: _firstName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 20,
                                 fontFamily: fontFamilayTajawal,
@@ -156,84 +147,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                            // TextFormField(
-                            //   keyboardType: TextInputType.text,
-                            //   controller: _ideNumber,
-                            //   style: TextStyle(
-                            //     fontWeight: FontWeight.normal,
-                            //     fontSize: 20,
-                            //     fontFamily: "Besley-Medium",
-                            //     color: kPrimaryColor,
-                            //   ),
-                            //   validator: (value) {
-                            //     if (value!.isEmpty) {
-                            //       return 'First name must not be null';
-                            //     } else {
-                            //       return null;
-                            //     }
-                            //   },
-                            //   onSaved: (value) {
-                            //     print(value);
-                            //   },
-                            //   decoration: InputDecoration(
-                            //     hintText: "رقم الهوية",
-                            //     prefixIcon: Icon(
-                            //       Icons.numbers,
-                            //       color: kPrimaryColor,
-                            //     ),
-                            //     hintStyle: TextStyle(
-                            //       fontWeight: FontWeight.w400,
-                            //       fontSize: 20,
-                            //       fontFamily: "Besley-Regular",
-                            //       color: Colors.black.withOpacity(.5),
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: 10,
-                            // ),
-
-                            // TextFormField(
-                            //   keyboardType: TextInputType.text,
-                            //   controller: _address,
-                            //   style: TextStyle(
-                            //     fontWeight: FontWeight.normal,
-                            //     fontSize: 20,
-                            //     fontFamily: "Besley-Medium",
-                            //     color: kPrimaryColor,p
-                            //   ),
-                            //   validator: (value) {
-                            //     if (value!.isEmpty) {
-                            //       return 'Address must not be null';
-                            //     } else {
-                            //       return null;
-                            //     }
-                            //   },
-                            //   decoration: InputDecoration(
-                            //     hintText: "العنوان",
-                            //     prefixIcon: Icon(
-                            //       Icons.person,
-                            //       color: kPrimaryColor,
-                            //     ),
-                            //     hintStyle: TextStyle(
-                            //       fontWeight: FontWeight.w400,
-                            //       fontSize: 20,
-                            //       fontFamily: "Besley-Regular",
-                            //       color: Colors.black.withOpacity(.5),
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: 10,
-                            // ),
                             TextFormField(
                               textDirection: TextDirection.ltr,
                               keyboardType: TextInputType.emailAddress,
                               controller: _email,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 20,
                                 fontFamily: fontFamilayTajawal,
@@ -243,10 +164,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 if (value!.isEmpty) {
                                   return 'Email must not be null';
                                 } else {
-                                  bool valid = isEmail(value);
-                                  valid
-                                      ? ToastMessage.showToast("isEmail", valid)
-                                      : ToastMessage.showToast("is Not Email", valid);
+                                  // bool valid = isEmail(value);
+                                  // valid
+                                  //     ? ToastMessage.showToast("isEmail", valid)
+                                  //     : ToastMessage.showToast("is Not Email", valid);
                                   return null;
                                 }
                               },
@@ -264,46 +185,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
 
-                            // TextFormField(
-                            //   keyboardType: TextInputType.phone,
-                            //   controller: _phone,
-                            //   style: TextStyle(
-                            //     fontWeight: FontWeight.normal,
-                            //     fontSize: 20,
-                            //     fontFamily: fontFamilayTajawal,
-                            //     color: kPrimaryColor,
-                            //   ),
-                            //   validator: (value) {
-                            //     if (value!.isEmpty) {
-                            //       return 'Phone number must not be null';
-                            //     } else {
-                            //       bool valid = isNumeric(value);
-                            //       valid
-                            //           ? ToastMessage.showToast("isPhone", valid)
-                            //           : ToastMessage.showToast(
-                            //               "is Not Email", valid);
-                            //
-                            //       return null;
-                            //     }
-                            //   },
-                            //   decoration: InputDecoration(
-                            //     hintText: "رقم الهاتف",
-                            //     prefixIcon: Icon(
-                            //       Icons.phone,
-                            //       color: kPrimaryColor,
-                            //     ),
-                            //     hintStyle: TextStyle(
-                            //       fontWeight: FontWeight.w400,
-                            //       fontSize: 20,
-                            //       fontFamily: fontFamilayTajawal,
-                            //       color: Colors.black.withOpacity(.5),
-                            //     ),
-                            //   ),
-                            // ),
+
                             SizedBox(
                               height: 45,
                               child: TextFormField(
@@ -429,35 +315,35 @@ class _SignupScreenState extends State<SignupScreen> {
                                           text: TextSpan(
                                             children: [
                                               TextSpan(
-                                                text: 'I agree to the ',
+                                                text: 'أنا أوافق على ',
                                                 style: TextStyle(color: kPrimaryColor.withOpacity(0.6), fontSize: 16),
                                               ),
                                               TextSpan(
-                                                text: 'Terms & Conditions',
-                                                style: TextStyle(
+                                                text: 'سياسة الاستخدام',
+                                                style: const TextStyle(
                                                     color: kPrimaryColor,
                                                     decoration: TextDecoration.underline,
                                                     fontSize: 16),
                                                 recognizer: TapGestureRecognizer()
                                                   ..onTap = () {
-                                                    // single tapped
+                                                  RouterHelper.routerHelper.routingToSpecificWidgetWithoutPop(PrivacyPolicyScreen());
                                                   },
                                               ),
-                                              TextSpan(
-                                                text: ' and ',
-                                                style: TextStyle(color: kPrimaryColor.withOpacity(0.6), fontSize: 16),
-                                              ),
-                                              TextSpan(
-                                                text: 'Privacy Policy ',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    decoration: TextDecoration.underline,
-                                                    fontSize: 16),
-                                                recognizer: TapGestureRecognizer()
-                                                  ..onTap = () {
-                                                    // long pressed
-                                                  },
-                                              ),
+                                              // TextSpan(
+                                              //   text: ' and ',
+                                              //   style: TextStyle(color: kPrimaryColor.withOpacity(0.6), fontSize: 16),
+                                              // ),
+                                              // TextSpan(
+                                              //   text: 'Privacy Policy ',
+                                              //   style: TextStyle(
+                                              //       color: kPrimaryColor,
+                                              //       decoration: TextDecoration.underline,
+                                              //       fontSize: 16),
+                                              //   recognizer: TapGestureRecognizer()
+                                              //     ..onTap = () {
+                                              //       // long pressed
+                                              //     },
+                                              // ),
                                             ],
                                           ),
                                         )),

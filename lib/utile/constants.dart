@@ -1,4 +1,4 @@
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/material.dart';
 
 const kTextColor = Color(0xFF535353);

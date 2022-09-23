@@ -42,7 +42,7 @@ class RatingScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                "مع منتجات متجر Edufly ؟",
+                "مع منتجات متجر Design ؟",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,

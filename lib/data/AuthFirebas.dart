@@ -73,11 +73,6 @@ class MyAuthFirebase {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       await userCredential.user!.sendEmailVerification();
-      bool isVerified = userCredential.user!.emailVerified;
-      print('is email Verified $isVerified');
-      // await logout();
-      //verify email
-
       return userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       print('Excepton : ${e.code} :: Message ${e.message}');

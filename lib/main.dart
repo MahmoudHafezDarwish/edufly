@@ -1,13 +1,11 @@
-import 'package:edufly/pages/edit_product/provider_models/ProductDetails.dart';
-import 'package:edufly/preferences/shared_pref_controller.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/RouterHelper.dart';
+import 'package:Design/preferences/shared_pref_controller.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/RouterHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loggy/loggy.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +35,6 @@ class ElearningApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AppProvider>(create: (context) => AppProvider()),
-        // Provider<ProductDetails>(create: (context) => ProductDetails()),
       ],
       child: ScreenUtilInit(
           designSize: const Size(360, 690),

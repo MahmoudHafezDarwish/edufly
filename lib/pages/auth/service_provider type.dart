@@ -1,5 +1,5 @@
-import 'package:edufly/utile/constants.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/utile/constants.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/material.dart';
 
 class UserServiceType extends StatefulWidget {

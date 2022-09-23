@@ -1,5 +1,5 @@
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

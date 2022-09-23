@@ -1,4 +1,4 @@
-import 'package:edufly/pages/admin/dashboard/main_screen.dart';
+import 'package:Design/pages/admin/dashboard/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

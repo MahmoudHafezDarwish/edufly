@@ -1,5 +1,5 @@
-import 'package:edufly/custom_widgets/widgets/product_card_widget.dart';
-import 'package:edufly/custom_widgets/widgets/section_tile.dart';
+import 'package:Design/custom_widgets/widgets/product_card_widget.dart';
+import 'package:Design/custom_widgets/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 

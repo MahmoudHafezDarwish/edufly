@@ -1,6 +1,6 @@
-import 'package:edufly/data/firebase_firestore.dart';
-import 'package:edufly/models/modelsFirebase/my_product.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/data/firebase_firestore.dart';
+import 'package:Design/models/modelsFirebase/my_product.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -135,7 +135,7 @@ class _ProductCardState extends State<ProductCard> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 12.sp,
-                            fontFamily: "Besley-Regular",
+                            fontFamily: fontFamilayTajawal,
                             color: kPrimaryColor,
                           ),
                           text: product.name,
@@ -146,7 +146,7 @@ class _ProductCardState extends State<ProductCard> {
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 20.sp,
-                          fontFamily: "Besley-Regular",
+                          fontFamily: fontFamilayTajawal,
                           color: kSecondaryColor,
                         )),
                   ],
@@ -154,18 +154,19 @@ class _ProductCardState extends State<ProductCard> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  product.description ?? '!!!',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12,
-                    fontFamily: "Besley-Regular",
-                    color: Colors.grey,
-                    // overflow: TextOverflow.ellipsis,
+                child: Expanded(
+                  child: Text(
+                    product.description ?? '!!!',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12,
+                      fontFamily: fontFamilayTajawal,
+                      color: Colors.grey,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    textAlign: TextAlign.start,
+                    maxLines: 3,
                   ),
-                  textAlign: TextAlign.start,
-                  maxLines: 2,
-                  overflow: TextOverflow.clip,
                 ),
               ),
               // RichText(

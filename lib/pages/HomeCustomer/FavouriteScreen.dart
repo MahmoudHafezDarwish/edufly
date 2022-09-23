@@ -1,13 +1,8 @@
-import 'package:edufly/pages/courses/StageCourses.dart';
 import 'package:flutter/material.dart';
 
 import '../../custom_widgets/product/products_section.dart';
-import '../../models/courseModel.dart';
-import '../../theme/color/light_color.dart';
-import '../../theme/theme.dart';
-import '../../utile/RouterHelper.dart';
+
 import '../../utile/constants.dart';
-import '../../utile/size_config.dart';
 import '../courses/CoursesDetail.dart';
 import '../data_streams/favourite_products_stream.dart';
 

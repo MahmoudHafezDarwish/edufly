@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:edufly/pages/auth/login_screen.dart';
-import 'package:edufly/utile/constants.dart';
-import 'package:edufly/utile/size_config.dart';
-import 'package:edufly/utile/tost.dart';
+import 'package:Design/utile/constants.dart';
+import 'package:Design/utile/size_config.dart';
+import 'package:Design/utile/tost.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';

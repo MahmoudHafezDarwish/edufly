@@ -1,11 +1,10 @@
-import 'package:edufly/models/modelsFirebase/consulting.dart';
-import 'package:edufly/utile/tost.dart';
+import 'package:Design/models/modelsFirebase/consulting.dart';
+import 'package:Design/utile/tost.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/AppProvider.dart';
-import '../../theme/theme.dart';
 import '../../utile/constants.dart';
 
 class FeedbackScreen extends StatefulWidget {

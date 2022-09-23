@@ -1,14 +1,9 @@
-import 'package:edufly/models/course.dart';
-import 'package:edufly/models/userProfile.dart';
-import 'package:edufly/pages/data_streams/users_products_stream.dart';
-import 'package:edufly/pages/edit_product/provider_models/ProductDetails.dart';
+import 'package:Design/pages/data_streams/users_products_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../custom_widgets/product/products_section.dart';
-import '../../../custom_widgets/widgets/adminCard.dart';
 import '../../../provider/AppProvider.dart';
 import '../../courses/CoursesDetail.dart';
-import 'createCourse.dart';
 
 class UserHomeFeed extends StatefulWidget {
   @override

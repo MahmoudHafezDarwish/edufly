@@ -1,30 +1,23 @@
-import 'package:edufly/pages/admin/admin_app.dart';
-import 'package:edufly/pages/admin/dashboard/dashboard_screen.dart';
-import 'package:edufly/pages/admin/dashboard/main_screen.dart';
-import 'package:edufly/pages/auth/Profile.dart';
-import 'package:edufly/pages/courses/CoursesDetail.dart';
-import 'package:edufly/pages/reviewUser/feedback_screen.dart';
+import 'package:Design/pages/admin/admin_app.dart';
+import 'package:Design/pages/admin/dashboard/dashboard_screen.dart';
+import 'package:Design/pages/admin/dashboard/main_screen.dart';
+import 'package:Design/pages/auth/Profile.dart';
+import 'package:Design/pages/auth/privacy_policy.dart';
+import 'package:Design/pages/courses/CoursesDetail.dart';
+import 'package:Design/pages/reviewUser/feedback_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../pages/HomeCustomer/FavouriteScreen.dart';
 import '../pages/HomeCustomer/bottom_home_navigation.dart';
 import '../pages/HomeCustomer/cart_screen.dart';
 import '../pages/HomeCustomer/history_order_screen.dart';
 import '../pages/HomeCustomer/home_cart_screen.dart';
 import '../pages/HomeCustomer/settings_screen.dart';
-import '../pages/HomeDesigner/SCREENS/addPostInCourse.dart';
-import '../pages/HomeDesigner/SCREENS/courseDetail.dart';
 import '../pages/HomeDesigner/SCREENS/createCourse.dart';
-import '../pages/HomeDesigner/SCREENS/enrolledCourse.dart';
-import '../pages/HomeDesigner/SCREENS/feed.dart';
-import '../pages/HomeDesigner/SCREENS/userHome.dart';
-import '../pages/HomeDesigner/courseNav.dart';
 import '../pages/HomeDesigner/mainNav.dart';
 import '../pages/auth/login_screen.dart';
 import '../pages/auth/service_provider type.dart';
 import '../pages/auth/signup_screen.dart';
 import '../pages/courses/StageCourses.dart';
-import '../pages/edit_product/edit_product_screen.dart';
 import '../pages/outboarding/outboarding_screen.dart';
 import '../pages/payment/payment_mode.dart';
 import '../pages/payment/payment_successful.dart';
@@ -65,35 +58,29 @@ class RouterHelper {
   }
 
   Map<String, Widget Function(BuildContext)> map = {
-    '/splash': (context) => SplashScreen(),
-    '/OutBoardingScreen': (context) => OutboardingScreen(),
-    '/login': (context) => LoginScreen(),
-    '/signup': (context) => SignupScreen(),
+    '/splash': (context) => const SplashScreen(),
+    '/OutBoardingScreen': (context) => const OutboardingScreen(),
+    '/login': (context) => const LoginScreen(),
+    '/signup': (context) => const SignupScreen(),
+    PrivacyPolicyScreen.routeName: (context) => const PrivacyPolicyScreen(),
     '/FavouriteScreen': (context) => FavouriteScreen(),
     '/main': (context) => HomeScreenBottom(),
-    '/homeCartScreen': (context) => HomeCartScreen(),
-    '/setting': (context) => SettingScreen(),
-    '/cart': (context) => CartScreen(),
-    '/detailsScreen': (context) => HomeCartScreen(),
-    '/StageCourses': (context) => StageCourses(),
+    '/homeCartScreen': (context) => const HomeCartScreen(),
+    '/setting': (context) => const SettingScreen(),
+    '/cart': (context) => const CartScreen(),
+    '/detailsScreen': (context) => const HomeCartScreen(),
+    '/StageCourses': (context) => const StageCourses(),
     '/CoursesDetails': (context) => CoursesDetails(productId: '',),
-    '/PaymentSuccessful': (context) => PaymentSuccessfulScreen(),
-    '/PaymentMode': (context) => PaymentMode(),
+    '/PaymentSuccessful': (context) => const PaymentSuccessfulScreen(),
+    '/PaymentMode': (context) => const PaymentMode(),
     '/RatingScreen': (context) => RatingScreen(),
     '/FeedbackScreen': (context) => FeedbackScreen(),
-    '/HistoryOrderScreen': (context) => HistoryOrderScreen(),
-    CourseDetail.routeName: (ctx) => CourseDetail(),
+    '/HistoryOrderScreen': (context) => const HistoryOrderScreen(),
     CreateCourse.routeName: (ctx) => CreateCourse(),
-    EditProductScreen.routeName:(ctx) => EditProductScreen(),
-    AddPostCourse.routeName: (ctx) => CreateCourse(),
     MainNav.routeName: (ctx) => MainNav(),
-    CourseNav.routeName: (ctx) => CourseNav(),
-    Feed.routeName: (ctx) => CourseNav(),
-    UserHomeFeed.routeName: (ctx) => CourseNav(),
-    EnrolledCourse.routeName: (ctx) => CourseNav(),
     ProfilePage.routeName: (ctx) => ProfilePage(),
-    UserServiceType.routeName: (ctx) => UserServiceType(),
-    AdminApp.routeName: (ctx) => AdminApp(),
+    UserServiceType.routeName: (ctx) => const UserServiceType(),
+    AdminApp.routeName: (ctx) => const AdminApp(),
     MainScreenAdmin.routeName: (ctx) => MainScreenAdmin(),
     DashboardScreenAdmin.routeName: (ctx) => DashboardScreenAdmin()
   };

@@ -1,8 +1,6 @@
-import 'package:edufly/pages/HomeCustomer/settings_screen.dart';
-import 'package:edufly/pages/auth/Profile.dart';
-import 'package:edufly/pages/edit_product/edit_product_screen.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/pages/auth/Profile.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,23 +27,6 @@ class _MainNavState extends State<MainNav> {
 
   void initState() {
     super.initState();
-    print('init called');
-    // Provider.of<UserProvider>(context, listen: false).signOut();
-    // Provider.of<UserProvider>(context, listen: false)
-    //     .getCurrentUser()
-    //     .then((value) => {
-    //           setState(() {
-    //             isLoading = true;
-    //           }),
-    //           Provider.of<UserProvider>(context, listen: false)
-    //               .getUser()
-    //               .then((value) => {
-    //                     setState(() {
-    //                       profile_picture = value.profile_picture;
-    //                       isLoading = false;
-    //                     })
-    //                   })
-    //         });
   }
 
   @override
@@ -53,31 +34,9 @@ class _MainNavState extends State<MainNav> {
     return isLoading == false
         ? Scaffold(
             appBar: AppBar(
-                title: Text(appBarTitles[pageIndex]),
-                backgroundColor: kPrimaryColor,
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.logout, color: Colors.white),
-                    tooltip: 'User',
-                    onPressed: () {
-                      Provider.of<AppProvider>(context, listen: false).logout();
-                      //async
-                      // await Provider.of<UserProvider>(context,
-                      //         listen: false)
-                      //     .signOut();
-                      // Provider.of<CoursePostProvider>(context,
-                      //         listen: false)
-                      //     .clearCoursePostProvider();
-                      // Provider.of<CourseProvider>(context, listen: false)
-                      //     .clearCourseProvider();
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => Auth(),
-                      //     ));
-                    },
-                  )
-                ]),
+              title: Text(appBarTitles[pageIndex]),
+              backgroundColor: kPrimaryColor,
+            ),
             body: pages[pageIndex],
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Colors.white,
@@ -99,8 +58,7 @@ class _MainNavState extends State<MainNav> {
                 BottomNavigationBarItem(
                   icon: Image.asset(height: 20, width: 20, 'images/order.png'),
                   label: 'الطلبات',
-                  activeIcon: Image.asset(
-                      height: 25, width: 25, 'images/activeOrder.png'),
+                  activeIcon: Image.asset(height: 25, width: 25, 'images/activeOrder.png'),
                 ),
                 BottomNavigationBarItem(
                     icon: Icon(
@@ -186,20 +144,6 @@ class _MainNavState extends State<MainNav> {
                   ),
                   ListTile(
                     leading: Icon(
-                      Icons.reorder,
-                      color: kPrimaryColor,
-                    ),
-                    title: Text('أرشيف الطلبات'),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14,
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/HistoryOrderScreen');
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
                       Icons.book_online_outlined,
                       color: kPrimaryColor,
                     ),
@@ -256,8 +200,10 @@ class _MainNavState extends State<MainNav> {
                       Icons.logout,
                       color: Colors.red,
                     ),
-                    title: Text('Log OuT'),
-                    onTap: () {},
+                    title: const Text('تسجيل خروج'),
+                    onTap: () {
+                      showAlertDialog(context);
+                    },
                   ),
                 ],
               ),
@@ -266,22 +212,20 @@ class _MainNavState extends State<MainNav> {
         : CircularProgressIndicator();
   }
 
-  void showAleertDialog() {
+   void showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Colors.white70,
-            title: Text("Are you sure?"),
+            backgroundColor: Colors.white,
+            title: const Text('هل أنت متأكد تريد تسجيل خروج ؟'),
             elevation: 5,
-            titleTextStyle: TextStyle(
-              color: Colors.blue,
-              fontSize: 18,
-            ),
+            titleTextStyle: const TextStyle(color: Colors.black, fontSize: 18, fontFamily: fontFamilayTajawal),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Provider.of<AppProvider>(context, listen: false).logout();
                 },
                 style: TextButton.styleFrom(
                   primary: Colors.white70,
@@ -289,29 +233,20 @@ class _MainNavState extends State<MainNav> {
                   backgroundColor: Colors.green,
                   side: BorderSide(width: 2, color: Colors.green),
                 ),
-                child: Text("Yes"),
+                child: Text("نعم"),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.white70,
+                  foregroundColor: Colors.white70,
                   elevation: 5,
                   backgroundColor: Colors.red,
                   side: BorderSide(width: 2, color: Colors.red),
                 ),
-                child: Text("No"),
+                child: const Text("لا"),
               ),
-              // InkWell(
-              //   child:Text("Yes",style: TextStyle(
-              //     color: Colors.green,
-              //     fontSize: 18,
-              //   ),) ,
-              //   onTap: (){
-              //
-              //   },
-              // ),
             ],
           );
         });
@@ -361,33 +296,6 @@ class _MainNavState extends State<MainNav> {
                           ),
                           child: Text("English"),
                         ),
-                        /*
-                          ListTile(
-                          leading: Icon(
-                          Icons.language,
-                          color: Colors.red,
-                          ),
-                          title: Text('Arabic'),
-                          onTap: (){
-                            showLanguageBottomSheet();
-                          },
-                          trailing: Icon(
-                            Icons.check_circle_outline_sharp,
-                            size: 14,
-                          ),
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.logout,
-                            color: Colors.red,
-                          ),
-                          title: Text('English'),
-                          trailing: Icon(
-                            Icons.check,
-                            size: 14,
-                          ),
-                        ),
-                        */
                       ],
                     ),
                   );

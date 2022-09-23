@@ -1,7 +1,7 @@
-import 'package:edufly/custom_widgets/widgets/dotted_text.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/constants.dart';
-import 'package:edufly/utile/tost.dart';
+import 'package:Design/custom_widgets/widgets/dotted_text.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/constants.dart';
+import 'package:Design/utile/tost.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

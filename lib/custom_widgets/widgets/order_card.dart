@@ -1,7 +1,5 @@
-import 'package:edufly/get/stage_category_contrller.dart';
-import 'package:edufly/pages/courses/StageCourses.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/RouterHelper.dart';
+import 'package:Design/get/stage_category_contrller.dart';
+import 'package:Design/pages/courses/StageCourses.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:provider/provider.dart';

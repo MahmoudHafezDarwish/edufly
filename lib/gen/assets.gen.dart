@@ -95,6 +95,9 @@ class $ImagesGen {
   AssetGenImage get activeOrder =>
       const AssetGenImage('images/activeOrder.png');
 
+  /// File path: images/app_logo.png
+  AssetGenImage get appLogo => const AssetGenImage('images/app_logo.png');
+
   /// File path: images/cat1.png
   AssetGenImage get cat1 => const AssetGenImage('images/cat1.png');
 

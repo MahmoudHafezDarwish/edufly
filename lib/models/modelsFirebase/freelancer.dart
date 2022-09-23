@@ -1,4 +1,4 @@
-import 'package:edufly/models/modelsFirebase/MyUsres.dart';
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
 
 class Freelancer extends MyUser {
   String freelancerCategory = 'Designer';

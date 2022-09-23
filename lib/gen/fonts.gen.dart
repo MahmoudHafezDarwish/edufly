@@ -15,4 +15,7 @@ class FontFamily {
 
   /// Font family: LobsterRegular
   static const String lobsterRegular = 'LobsterRegular';
+
+  /// Font family: Tajawal
+  static const String tajawal = 'Tajawal';
 }

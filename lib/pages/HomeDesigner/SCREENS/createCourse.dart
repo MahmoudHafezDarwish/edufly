@@ -1,15 +1,13 @@
 import 'dart:io';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loggy/loggy.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/modelsFirebase/my_product.dart';
-import '../../../utile/size_config.dart';
 
 class CreateCourse extends StatefulWidget {
   static const routeName = '/createCourse';

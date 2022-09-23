@@ -1,14 +1,12 @@
-import 'package:edufly/get/stage_category_contrller.dart';
-import 'package:edufly/pages/courses/CoursesDetail.dart';
-import 'package:edufly/pages/data_streams/stage_products_stream.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/RouterHelper.dart';
-import 'package:edufly/utile/constants.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/get/stage_category_contrller.dart';
+import 'package:Design/pages/courses/CoursesDetail.dart';
+import 'package:Design/pages/data_streams/stage_products_stream.dart';
+import 'package:Design/utile/RouterHelper.dart';
+import 'package:Design/utile/constants.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:provider/provider.dart';
 
 import '../../custom_widgets/product/products_section.dart';
 import '../../models/courseModel.dart';

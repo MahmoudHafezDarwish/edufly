@@ -1,4 +1,4 @@
-import 'package:edufly/models/review.dart';
+import 'package:Design/models/review.dart';
 
 import 'include.dart';
 

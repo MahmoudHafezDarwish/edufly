@@ -1,13 +1,11 @@
-import 'package:edufly/utile/constants.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/utile/constants.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../custom_widgets/widgets/LinearGradientText.dart';
-import '../../custom_widgets/widgets/categorries.dart';
 import '../../custom_widgets/widgets/order_card.dart';
-import '../../custom_widgets/widgets/products_section.dart';
-import '../../gen/assets.gen.dart';
+
 
 class OrdersSreen extends StatefulWidget {
   OrdersSreen({Key? key}) : super(key: key);
@@ -204,7 +202,7 @@ class _OrdersSreenState extends State<OrdersSreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GradientText(
-                                    ' edufly',
+                                    ' Design',
                                     gradient: kPrimaryGradientColor,
                                     style: const TextStyle(
                                         fontFamily: 'BesleyBlack',

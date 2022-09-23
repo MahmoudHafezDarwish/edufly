@@ -1,12 +1,10 @@
 
-import 'package:edufly/pages/admin/admin_app.dart';
-import 'package:edufly/pages/outboarding/outboarding_dot.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/pages/outboarding/outboarding_dot.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../HomeDesigner/mainNav.dart';
 import 'FirstScreen.dart';
-import 'package:edufly/gen/assets.gen.dart';
+import 'package:Design/gen/assets.gen.dart';
 
 class OutboardingScreen extends StatefulWidget {
   const OutboardingScreen({Key? key}) : super(key: key);
@@ -45,7 +43,7 @@ class _OutboardingScreenState extends State<OutboardingScreen> {
                 subTitle:
                     "استكشف الكتب الإلكترونية التعليمية في تطبيق Design",
                 // image: 'images/out1.png',
-                image: Assets.images.out1.path,
+                image: Assets.images.appLogo.path,
               ),
               OutBoardingContentScreen(
                 title: "تعرف على كتابك الإلكتروني بنقرة واحدة",

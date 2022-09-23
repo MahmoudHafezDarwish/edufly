@@ -1,7 +1,6 @@
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/AppProvider.dart';
@@ -246,15 +245,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                   bool isLogin = await logIn();
                                   setState(() {
-                                    if (isLogin) {
-                                      isLoading = false;
-                                    } else {
-                                      isLoading = true;
-                                    }
+                                    // if (isLogin) {
+                                    //   isLoading = false;
+                                    // } else {
+                                    //   isLoading = true;
+                                    // }
                                   });
                                 },
-                                child: Text(
-                                  isLoading ? 'جاري التحميل' : 'تسجيل دخول',
+                                child: const Text(
+                                  // isLoading ? 'جاري التحميل' : 'تسجيل دخول',
+                                   'تسجيل دخول',
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 20,

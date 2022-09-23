@@ -1,7 +1,7 @@
-import 'package:edufly/data/firebase_firestore.dart';
-import 'package:edufly/models/modelsFirebase/MyUsres.dart';
-import 'package:edufly/models/modelsFirebase/my_product.dart';
-import 'package:edufly/utile/size_config.dart';
+import 'package:Design/data/firebase_firestore.dart';
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
+import 'package:Design/models/modelsFirebase/my_product.dart';
+import 'package:Design/utile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logger/logger.dart';

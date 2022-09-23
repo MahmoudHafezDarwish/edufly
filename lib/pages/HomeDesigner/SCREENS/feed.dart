@@ -1,12 +1,7 @@
-import 'package:edufly/custom_widgets/product/enrolled_user_section.dart';
-import 'package:edufly/models/course.dart';
-import 'package:edufly/models/userProfile.dart';
-import 'package:edufly/pages/courses/CoursesDetail.dart';
-import 'package:edufly/pages/data_streams/enrolled_products_stream.dart';
-import 'package:edufly/pages/data_streams/enrolled_users_stream.dart';
+import 'package:Design/custom_widgets/product/enrolled_user_section.dart';
+import 'package:Design/pages/courses/CoursesDetail.dart';
+import 'package:Design/pages/data_streams/enrolled_users_stream.dart';
 import 'package:flutter/material.dart';
-import '../../../custom_widgets/widgets/FeedCard.dart';
-import 'createCourse.dart';
 
 class Feed extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 
-import 'package:edufly/pages/HomeCustomer/settings_screen.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/pages/HomeCustomer/settings_screen.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/screen.dart';

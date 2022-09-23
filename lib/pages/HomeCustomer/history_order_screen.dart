@@ -1,7 +1,6 @@
-import 'package:edufly/custom_widgets/product/products_order_section.dart';
-import 'package:edufly/gen/assets.gen.dart';
-import 'package:edufly/pages/data_streams/ordered_products_stream.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/custom_widgets/product/products_order_section.dart';
+import 'package:Design/pages/data_streams/ordered_products_stream.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../custom_widgets/product/products_section.dart';

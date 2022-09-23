@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edufly/models/modelsFirebase/MyUsres.dart';
-import 'package:edufly/provider/AppProvider.dart';
-import 'package:edufly/utile/constants.dart';
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
+import 'package:Design/provider/AppProvider.dart';
+import 'package:Design/utile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
