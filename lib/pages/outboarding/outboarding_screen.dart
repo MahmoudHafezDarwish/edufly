@@ -43,7 +43,7 @@ class _OutboardingScreenState extends State<OutboardingScreen> {
                 subTitle:
                     "استكشف الكتب الإلكترونية التعليمية في تطبيق Design",
                 // image: 'images/out1.png',
-                image: Assets.images.appLogo.path,
+                image: Assets.images.out1.path,
               ),
               OutBoardingContentScreen(
                 title: "تعرف على كتابك الإلكتروني بنقرة واحدة",

@@ -1,3 +1,4 @@
+import 'package:Design/models/modelsFirebase/MyUsres.dart';
 import 'package:Design/pages/auth/Profile.dart';
 import 'package:Design/provider/AppProvider.dart';
 import 'package:Design/utile/constants.dart';
@@ -31,6 +32,8 @@ class _MainNavState extends State<MainNav> {
 
   @override
   Widget build(BuildContext context) {
+    MyUser myUser = Provider.of<AppProvider>(context, listen: false).loggedUser!;
+
     return isLoading == false
         ? Scaffold(
             appBar: AppBar(
@@ -105,14 +108,14 @@ class _MainNavState extends State<MainNav> {
                       //   height: 235,
                       // ),
 
-                      backgroundImage: AssetImage('images/Bg.png'),
+                      backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png'),
                     ),
                   ),
                   SizedBox(
                     height: 22,
                   ),
                   Text(
-                    'اسم المستخدم',
+                    myUser.name??'اسم المستخدم',
                     style: TextStyle(
                       fontSize: 20,
                       color: Color(0xff444657),
@@ -122,7 +125,7 @@ class _MainNavState extends State<MainNav> {
                     height: 5,
                   ),
                   Text(
-                    'username@gmail.com',
+                    myUser.email??'username@gmail.com',
                     style: TextStyle(
                       fontSize: 16,
                       color: Color(0xff444657),

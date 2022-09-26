@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>74211433556-pa4kqtprhg2pc6ilb0da0ur8jcpenpoi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.74211433556-pa4kqtprhg2pc6ilb0da0ur8jcpenpoi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB1a54TG8QQ_IlGnZfz5RM1SzVBXYl4Xs0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>74211433556</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.edufly</string>
+	<key>PROJECT_ID</key>
+	<string>e-learningedufly</string>
+	<key>STORAGE_BUCKET</key>
+	<string>e-learningedufly.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:74211433556:ios:8b7620c941f0626326a1c1</string>
+	<key>DATABASE_URL</key>
+	<string>https://e-learningedufly-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

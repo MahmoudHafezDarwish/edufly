@@ -33,14 +33,10 @@ class _SettingScreenState extends State<SettingScreen> {
             Container(
               width: 135,
               height: 135,
-              child: CircleAvatar(
-                // child: Image.asset(
-                //   'images/Bg.png',
-                //   width: 235,
-                //   height: 235,
-                // ),
-
-                backgroundImage: AssetImage('images/Bg.png'),
+              child: const CircleAvatar(
+           
+                backgroundImage:
+                    NetworkImage('https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png'),
               ),
             ),
             SizedBox(

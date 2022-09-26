@@ -87,7 +87,7 @@ class _UserEnrolledCardState extends State<UserEnrolledCard> {
               Text(myProduct.name ?? 'user name',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: fontFamilayTajawal,
                     color: kPrimaryColor,
                   )),
