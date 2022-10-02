@@ -16,6 +16,8 @@ class _UserTypeRadioState extends State<UserTypeRadio> {
   SingingCharacter? _character = SingingCharacter.client;
   String valueCategory = 'Designer';
 
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
